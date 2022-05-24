@@ -1,6 +1,8 @@
 # Tutorial 2
 
-### Name: Shivangi Ajaykumar Bhatt
+## Authors
+
+## [Shivangi Ajaykumar Bhatt](sh224186@dal.ca)
 
 ### Banner Id: B00863408
 
@@ -10,7 +12,11 @@
 
 https://git.cs.dal.ca/bhojani/csci5709-group6-project.git
 
-## Individual Branch's Repo
+## Individual Branch's link
+
+https://git.cs.dal.ca/bhojani/csci5709-group6-project/-/tree/shivangi-dev
+
+## Individual private Repo for tutorial
 
 https://git.cs.dal.ca/sbhatt/csci-5709-b00863408-tutorials
 
