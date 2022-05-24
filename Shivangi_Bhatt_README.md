@@ -12,7 +12,7 @@ https://git.cs.dal.ca/bhojani/csci5709-group6-project.git
 
 ## Individual Branch's Repo
 
-https://git.cs.dal.ca/bhojani/csci5709-group6-project/-/tree/shivangi-dev
+https://git.cs.dal.ca/sbhatt/csci-5709-b00863408-tutorials
 
 ## Deployed application on Heroku
 
