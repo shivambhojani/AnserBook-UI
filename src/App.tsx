@@ -16,6 +16,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import useStyles from "./Style";
 import AddIcon from "@mui/icons-material/Add";
 import Post from "./components/Post/Post";
+import EditAppreciation from "./components/Appreciation/EditAppreciation";
 
 function App() {
   const classes = useStyles();
@@ -55,6 +56,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Feed />} />
           <Route path="/post" element={<Post />} />
+          <Route path="/editappreciation" element={<EditAppreciation />} />
         </Routes>
       </BrowserRouter>
     </>
