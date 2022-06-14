@@ -1,7 +1,5 @@
-import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Feed from "./components/Feed/Feeds";
 import {
   AppBar,
@@ -16,6 +14,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import useStyles from "./Style";
 import AddIcon from "@mui/icons-material/Add";
 import Post from "./components/Post/Post";
+import EditAppreciation from "./components/Appreciation/EditAppreciation";
 
 function App() {
   const classes = useStyles();
@@ -55,6 +54,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Feed />} />
           <Route path="/post" element={<Post />} />
+          <Route path="/editappreciation" element={<EditAppreciation />} />
         </Routes>
       </BrowserRouter>
     </>
