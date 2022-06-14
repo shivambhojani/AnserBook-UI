@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,8 @@ interface feed {
 function Feed(props: feed) {
   const classes = useStyles();
   const navigate = useNavigate();
-  const [feed, setFeed] = useState({
+
+  const feed = {
     initials: props.initials,
     username: props.username,
     date: props.date,
@@ -33,10 +34,20 @@ function Feed(props: feed) {
     tags: props.tags,
     type: props.type,
     image: props.image,
-  });
-  {
-    /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
-  }
+  };
+  // const [feed, setFeed] = useState({
+  //   initials: props.initials,
+  //   username: props.username,
+  //   date: props.date,
+  //   question: props.question,
+  //   shortQuestion: props.shortQuestion,
+  //   tags: props.tags,
+  //   type: props.type,
+  //   image: props.image,
+  // });
+  //{
+  /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
+  //}
 
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
     null
@@ -81,7 +92,7 @@ function Feed(props: feed) {
             <Chip
               label={props.type}
               className={
-                props.type.toLowerCase() == "social"
+                props.type.toLowerCase() === "social"
                   ? classes.social
                   : classes.technical
               }
@@ -104,7 +115,7 @@ function Feed(props: feed) {
           <Typography gutterBottom variant="body2">
             {props.question}
           </Typography>
-          {props.image ? <img src={props.image} height="200px" /> : null}
+          {props.image ? <img src={props.image} height="200px" alt="" /> : null}
         </CardActionArea>
 
         <div className={classes.lastRow}>
