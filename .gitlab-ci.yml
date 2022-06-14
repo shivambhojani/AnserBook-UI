@@ -23,4 +23,4 @@ deploy_prod_client:
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY --cleanup
   only:
-    - aman-dev
+    - main
