@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -12,15 +12,13 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import useStyles from "./Style";
 import AddIcon from "@mui/icons-material/Add";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-
   const navigate = useNavigate();
 
-  function avatarclick(){
+  function avatarclick() {
     navigate("/userprofile");
-    
   }
 
   const classes = useStyles();
@@ -49,20 +47,17 @@ const NavBar = () => {
             <NotificationsIcon className={classes.menus} />
           </IconButton>
           <IconButton color="inherit">
-            
+            <Avatar
+              alt="Remy Sharp"
+              src="http://bootdey.com/img/Content/avatar/avatar7.png"
+              sx={{ width: 50, height: 50, backgroundColor: "white" }}
+              onClick={avatarclick}
+            ></Avatar>
           </IconButton>
-        </div>
-        <div>
-        <Avatar
-            alt="Remy Sharp"
-            src="http://bootdey.com/img/Content/avatar/avatar7.png"
-            sx={{ width: 50, height: 50 , backgroundColor:'white'}}
-            onClick={avatarclick}>
-          </Avatar>
         </div>
       </Toolbar>
     </AppBar>
   );
-}
+};
 
 export default NavBar;
