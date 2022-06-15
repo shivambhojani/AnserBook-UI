@@ -3,24 +3,28 @@ import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import { useNavigate } from "react-router-dom";
 
-const Form = (props:any):any => {
-  const { values, errors: err, handleChange: manageChanges, handleSubmit: onsubmit } :any = useForm(
-    login,
-    validate
-  );
-  const [_,setLoggedIn] = useState(false);
- const navigate =  useNavigate()
+const Form = (props: any): any => {
+  const {
+    values,
+    errors: err,
+    handleChange: manageChanges,
+    handleSubmit: onsubmit,
+  }: any = useForm(login, validate);
+  const [_, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   function login() {
     setLoggedIn(true);
-    return navigate("/default")
+    return navigate("/default");
   }
-const submitHandler = (e:any)=>{
-  e.preventDefault();
-
-  navigate("/")
- 
-}
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+    if (values.email === "admin@xyz.com") {
+      navigate("/adminhome");
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <div className="section hightlight">
@@ -41,9 +45,7 @@ const submitHandler = (e:any)=>{
                     value={values.email || ""}
                     required
                   />
-                  {err.email && (
-                    <p className="help is-danger">{err.email}</p>
-                  )}
+                  {err.email && <p className="help is-danger">{err.email}</p>}
                 </div>
               </div>
               <div className="field">

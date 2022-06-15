@@ -3,8 +3,8 @@ import Post from "./components/Post/Post";
 import EditAppreciation from "./components/Appreciation/EditAppreciation";
 import Feeds from "./components/Feed/Feeds";
 import MyAccount from "./components/ProfilePage/MyAccount";
-import AnalyticsAppreciation from "./components/Appreciation/AnalyticsAppreciation";
 import Form from "./components/Login/Form";
+import AdminHome from "./components/Admin/AdminHome";
 const Routing: React.FC = () => {
   return (
     <Routes>
@@ -13,7 +13,7 @@ const Routing: React.FC = () => {
       <Route path="/login" element={<Form />} />
       <Route path="/editappreciation" element={<EditAppreciation />} />
       <Route path="/userprofile" element={<MyAccount />} />
-      <Route path="analyticsappreciation" element={<AnalyticsAppreciation />} />
+      <Route path="/adminhome" element={<AdminHome />} />
     </Routes>
   );
 };
