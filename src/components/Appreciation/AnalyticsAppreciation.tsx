@@ -1,27 +1,73 @@
-import { Pie } from "react-chartjs-2";
+import React from "react";
+import Highcharts from "highcharts/highstock";
+import PieChart from "highcharts-react-official";
 
-interface DatasetType {
-  data: number[];
-  backgroundColor: string[];
-}
-
-function AnalayticsAppreciation({
-  labels = ["2010", "2012", "2014", "2016", "2018"],
-  datasets = [
+const options = {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: "pie",
+  },
+  title: {
+    text: "Reputation Earned: 80",
+  },
+  tooltip: {
+    pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+  },
+  accessibility: {
+    point: {
+      valueSuffix: "%",
+    },
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: "pointer",
+      dataLabels: {
+        enabled: true,
+        format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+      },
+    },
+  },
+  series: [
     {
-      data: [2000, 4000, 2300, 2222, 3333],
-      backgroundColor: ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"],
+      name: "Brands",
+      colorByPoint: true,
+      data: [
+        {
+          name: "Earned from Comments",
+          y: 10,
+          sliced: true,
+          selected: true,
+        },
+        {
+          name: "Earned from Likes",
+          y: 5,
+        },
+        {
+          name: "Earned from Posts",
+          y: 12,
+        },
+        {
+          name: "Earned from Best Answer",
+          y: 53,
+        },
+      ],
     },
   ],
-}) {
-  return (
-    <Pie
-      data={{
-        labels: labels,
-        datasets: datasets,
-      }}
-    />
-  );
-}
+};
 
-export default AnalayticsAppreciation;
+export default class AnalyticsAppreciation extends React.Component {
+  constructor(props: any) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>
+        <PieChart highcharts={Highcharts} options={options} />
+      </div>
+    );
+  }
+}
