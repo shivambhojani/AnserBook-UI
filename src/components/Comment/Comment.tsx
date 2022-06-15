@@ -13,6 +13,7 @@ import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 import { getThemeProps } from "@mui/system";
 
 interface comment {
+  avatar: string;
   author: string;
   date: string;
   content: string;
@@ -25,7 +26,7 @@ export default function Comment(props: comment) {
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
+            {props.avatar}
           </Avatar>
         }
         title={props.author}
