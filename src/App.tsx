@@ -9,6 +9,7 @@ function App() {
 
   return (
     <>
+
       <NavBar></NavBar>
       {/* <Feeds></Feeds> */}
       <Routing></Routing>
