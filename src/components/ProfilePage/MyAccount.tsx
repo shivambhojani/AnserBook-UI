@@ -8,7 +8,7 @@ import ProfilePage from './ProfilePage';
 import "./MyAccount.css"
 import MyFriends from './MyFriends';
 
-export default function LabTabs() {
+export default function MyAccount() {
   const [value, setValue] = React.useState('1');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -23,7 +23,7 @@ export default function LabTabs() {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Profile Settings" value="1" />
               <Tab label="My Posts" value="2" />
-              <Tab label="My Friends" value="3" />
+              <Tab label="Subscribed Users" value="3" />
             </TabList>
           </div>
         </Box>
