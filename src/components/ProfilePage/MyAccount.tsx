@@ -12,14 +12,15 @@ import Feeds from "../Feed/Feeds";
 import Feed from "../Feed/Feed";
 import { Container } from "@mui/system";
 import MyPosts from "./MyPosts";
+import MyBookmarkLists from "../BookmarksList/MyBookmarkLists";
 
 export default function MyAccount() {
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = React.useState("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  
+
   const [posts, setPosts] = React.useState([
     {
       initials: "SB",
@@ -29,7 +30,7 @@ export default function MyAccount() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
       tags: ["Tag1", "Tag2", "Tag3"],
       type: "Social",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
+      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
     },
     {
       initials: "SB",
@@ -39,8 +40,8 @@ export default function MyAccount() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
       tags: ["Tag1", "Tag2", "Tag3"],
       type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-    }
+      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    },
   ]);
 
   const [feeds, setFeeds] = React.useState([
@@ -97,7 +98,7 @@ export default function MyAccount() {
               <Tab label="My Posts" value="2" />
               <Tab label="Subscribed Users" value="3" />
               <Tab label="My Reputation" value="4" />
-              
+              <Tab label="My Bookmark lists" value="5" />
             </TabList>
           </div>
         </Box>
@@ -108,8 +109,8 @@ export default function MyAccount() {
           <Container>
             <Grid container spacing={2}>
               {posts.map((post: any) => (
-            <MyPosts {...post} />
-          ))}
+                <MyPosts {...post} />
+              ))}
             </Grid>{" "}
           </Container>
         </TabPanel>
@@ -118,6 +119,9 @@ export default function MyAccount() {
         </TabPanel>
         <TabPanel value="4">
           <AnalyticsAppreciation />
+        </TabPanel>
+        <TabPanel value="5">
+          <MyBookmarkLists />
         </TabPanel>
       </TabContext>
     </Box>
