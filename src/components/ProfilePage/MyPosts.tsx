@@ -4,14 +4,15 @@ import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Chip, Avatar, IconButton } from "@mui/material";
-import useStyles from "./Style";
+import useStyles from "../Feed/Style.js";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CardActionArea, Menu, MenuItem } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkSelector from "../BookmarkSelector/BookmarkSelector";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 
-interface feed {
+interface post {
   initials: string;
   image?: any;
   username: string;
@@ -22,9 +23,28 @@ interface feed {
   type: string;
 }
 
-function Feed(props: feed) {
+/*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "background.paper",
+  border: "3px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3
+};
+
+function MyPosts(props: post) {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const handleDeleteOpenOption = () => setDel(true);
+  const handleDeleteCloseOption = () => setDel(false);
+
   const [feed, setFeed] = useState({
     initials: props.initials,
     username: props.username,
@@ -33,42 +53,55 @@ function Feed(props: feed) {
     shortQuestion: props.shortQuestion,
     tags: props.tags,
     type: props.type,
-    image: props.image,
+    image: props.image
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
   }
 
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
-    null,
+    null
   );
+
+  const [del, setDel] = React.useState(false);
+
   const open = Boolean(anchorElement);
+
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElement(event.currentTarget);
   };
+
   const handleCloseMenu = () => {
     setAnchorElement(null);
   };
-  const redirectToPost = () => {
-    navigate("/post", {
-      state: {
-        feed,
-      },
-    });
+
+  const handleEdit = () => {
+    navigate("/editpost");
+  };
+
+  const handleDelete = () => {
+    console.log("delete");
+    setDel(true);
   };
 
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
-
-    <Card>
+    <Card sx={{ margin: 2, boxShadow: 2, gap: 2, borderRadius: 2 }}>
+      <div>
+        <Modal open={del} onClose={handleDeleteCloseOption}>
+          <Box sx={style}>
+            <Typography id="title" variant="h6" component="h2">
+              This post has been deleted.
+            </Typography>
+          </Box>
+        </Modal>
+      </div>
       <CardContent>
         <div className={classes.flex}>
           <div className={classes.tags}>
-            <Avatar className={classes.avatar}>{props.initials}</Avatar>
-
             <div>
-              <Typography variant="h5" component="div">
-                {props.username}
+              <Typography gutterBottom variant="h5">
+                {props.shortQuestion}
               </Typography>
               <Typography
                 variant="body2"
@@ -88,44 +121,37 @@ function Feed(props: feed) {
               }
             />
           </div>
-          <BookmarkSelector />
           <IconButton onClick={handleOpenMenu}>
             {" "}
             <MoreVertIcon className={classes.moreIcon} />
           </IconButton>
+
           {/* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */}
+
           <Menu anchorEl={anchorElement} open={open} onClose={handleCloseMenu}>
-            <MenuItem onClick={handleCloseMenu}>Subscribe</MenuItem>
-            <MenuItem onClick={handleCloseMenu}>Report</MenuItem>
+            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+            <MenuItem onClick={handleDelete}>Delete</MenuItem>
           </Menu>
         </div>
-        <CardActionArea onClick={redirectToPost}>
-          <Typography gutterBottom variant="h5">
-            {props.shortQuestion}
-          </Typography>
+        <CardActionArea>
           <Typography gutterBottom variant="body2">
             {props.question}
           </Typography>
-          {props.image ? (
-            <img src={props.image} style={{ height: "200px" }} />
-          ) : null}
+          {props.image ? <img src={props.image} height="200px" /> : null}
         </CardActionArea>
 
         <div className={classes.lastRow}>
           <div className={classes.tags}>
             {" "}
-            {props.tags.map(tag => (
+            {props.tags.map((tag) => (
               <Chip label={tag} className={classes.tag} />
             ))}
           </div>
-          <div>
-            <FavoriteIcon color="warning" className={classes.icon} />
-            <BookmarkBorderIcon />
-          </div>
+          <div></div>
         </div>
       </CardContent>
     </Card>
   );
 }
 
-export default Feed;
+export default MyPosts;
