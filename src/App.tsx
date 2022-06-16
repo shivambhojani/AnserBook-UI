@@ -6,12 +6,10 @@ import React from "react";
 import Feeds from "./components/Feed/Feeds";
 
 function App() {
-
   return (
     <>
-      <NavBar></NavBar>
-      {/* <Feeds></Feeds> */}
-      <Routing></Routing>
+      <NavBar />
+      <Routing />
     </>
   );
 }
