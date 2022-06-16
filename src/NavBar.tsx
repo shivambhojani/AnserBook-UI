@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -36,27 +36,27 @@ const style = {
 
 const options = [
   {
-    type: "User",
+    groupBy: "User",
     search: "Shivangi Bhatt",
   },
   {
-    type: "User",
+    groupBy: "User",
     search: "Shivam Bhojani",
   },
   {
-    type: "User",
+    groupBy: "User",
     search: "Aman Bhandari",
   },
   {
-    type: "Post",
+    groupBy: "Post",
     search: "Lorem ipsum 1 dolor sit amet, consectetur adipiscing elit. ",
   },
   {
-    type: "Post",
+    groupBy: "Post",
     search: "Lorem ipsum 2 dolor sit amet, consectetur adipiscing elit. ",
   },
   {
-    type: "Post",
+    groupBy: "Post",
     search: "Lorem ipsum 3 dolor sit amet, consectetur adipiscing elit. ",
   },
 ];
@@ -67,12 +67,17 @@ const options = [
 const NavBar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState<{
+    groupBy: any;
+    search: any;
+  }>();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   function avatarclick() {
     navigate("/userprofile");
   }
-  function createPostClick(){
+  function createPostClick() {
     navigate("/createPost");
   }
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -91,36 +96,9 @@ const NavBar = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -170,6 +148,31 @@ const NavBar = () => {
       </MenuItem>
     </Menu>
   );
+  useEffect(() => {
+    if (searchValue && searchValue.groupBy) {
+      if (searchValue.groupBy == "User") {
+        navigate("/openprofile");
+      } else {
+        console.log("hi");
+        navigate("/post", {
+          state: {
+            feed: {
+              initials: "SB",
+              username: "Shivangi Bhatt",
+              date: "Februrary 28, 2022",
+              image: "./assets/Post.png",
+              question:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+              tags: ["Tag1", "Tag2", "Tag3"],
+              type: "Social",
+              shortQuestion:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+            },
+          },
+        });
+      }
+    }
+  }, [searchValue]);
 
   return (
     <AppBar position="static">
@@ -188,8 +191,13 @@ const NavBar = () => {
         <Autocomplete
           id="free-solo-2-demo"
           disableClearable
+          value={searchValue}
+          onChange={(event: any, newValue: any) => {
+            setSearchValue(newValue);
+            console.log("newValue=-==-", newValue);
+          }}
           options={options}
-          groupBy={(option) => option.type}
+          groupBy={(option) => option.groupBy}
           getOptionLabel={(option) => option.search}
           renderInput={(params) => (
             <TextField
@@ -200,7 +208,7 @@ const NavBar = () => {
               InputProps={{
                 ...params.InputProps,
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="end">
                     <SearchIcon className={classes.searchIcon} />
                   </InputAdornment>
                 ),
