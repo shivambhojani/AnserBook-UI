@@ -1,0 +1,8 @@
+.card{
+    width:20%
+}
+
+.divAvatar, .subscribebutton{
+    display: flex;
+    justify-content: center;
+}

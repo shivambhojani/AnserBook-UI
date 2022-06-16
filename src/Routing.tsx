@@ -5,6 +5,7 @@ import Feeds from "./components/Feed/Feeds";
 import MyAccount from "./components/ProfilePage/MyAccount";
 import Form from "./components/Login/Form";
 import AdminHome from "./components/Admin/AdminHome";
+import UserProfile from "./components/ProfilePage/UserProfile";
 const Routing: React.FC = () => {
   return (
     <Routes>
@@ -14,6 +15,7 @@ const Routing: React.FC = () => {
       <Route path="/editappreciation" element={<EditAppreciation />} />
       <Route path="/userprofile" element={<MyAccount />} />
       <Route path="/adminhome" element={<AdminHome />} />
+      <Route path="/openprofile" element={<UserProfile />} />
     </Routes>
   );
 };
