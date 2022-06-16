@@ -153,7 +153,6 @@ const NavBar = () => {
       if (searchValue.groupBy == "User") {
         navigate("/openprofile");
       } else {
-        console.log("hi");
         navigate("/post", {
           state: {
             feed: {
@@ -177,7 +176,7 @@ const NavBar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <a href="/" className={classes.link}>
+        <a href="/feeds" className={classes.link}>
           <Typography
             variant="h6"
             noWrap

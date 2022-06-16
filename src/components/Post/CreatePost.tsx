@@ -1,9 +1,5 @@
 import { Stack, TextField } from "@mui/material";
-import {
-  Typography,
-  Grid,
-  Button
-} from "@mui/material";
+import { Typography, Grid, Button } from "@mui/material";
 import React from "react";
 import { TagsInput } from "react-tag-input-component";
 import SendIcon from "@mui/icons-material/Send";
@@ -24,7 +20,7 @@ const style = {
   bgcolor: "background.paper",
   width: 500,
   boxShadow: 24,
-  border: "3px solid #000"
+  border: "3px solid #000",
 };
 
 const CreatePost = () => {
@@ -48,19 +44,19 @@ const CreatePost = () => {
   };
 
   const discardClick = () => {
-    navigate("/");
-  }
+    navigate("/feeds");
+  };
 
   const handleChangeInBody = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setBody(value);
   };
 
   const handleChangeInTopic = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
-      target: { value }
+      target: { value },
     } = event;
     setTopic(value);
   };
