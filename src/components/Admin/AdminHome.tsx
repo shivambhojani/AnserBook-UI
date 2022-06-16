@@ -6,6 +6,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import "./AdminHome.css";
 import AdminDashboard from "./AdminDashboard";
+import AppreciationManage from "./AppreciationManage";
+import ProfileListing from "./ProfileListing";
 
 export default function AdminHome() {
   const [value, setValue] = React.useState("1");
@@ -23,12 +25,17 @@ export default function AdminHome() {
               <Tab label="Dashboard" value="1" />
               <Tab label="Edit Appreciation" value="2" />
               <Tab label="Manage Users" value="3" />
-              <Tab label="Manage Roles" value="4" />
             </TabList>
           </div>
         </Box>
         <TabPanel value="1">
           <AdminDashboard></AdminDashboard>
+        </TabPanel>
+        <TabPanel value="2">
+          <AppreciationManage />
+        </TabPanel>
+        <TabPanel value="3">
+          <ProfileListing />
         </TabPanel>
       </TabContext>
     </Box>
