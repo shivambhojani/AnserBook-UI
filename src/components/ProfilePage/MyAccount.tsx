@@ -12,8 +12,8 @@ import Feeds from "../Feed/Feeds";
 import Feed from "../Feed/Feed";
 import { Container } from "@mui/system";
 
-export default function LabTabs() {
-  const [value, setValue] = React.useState("1");
+export default function MyAccount() {
+  const [value, setValue] = React.useState('1');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -71,8 +71,9 @@ export default function LabTabs() {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Profile Settings" value="1" />
               <Tab label="My Posts" value="2" />
-              <Tab label="My Friends" value="3" />
+              <Tab label="Subscribed Users" value="3" />
               <Tab label="My Reputation" value="4" />
+              
             </TabList>
           </div>
         </Box>
