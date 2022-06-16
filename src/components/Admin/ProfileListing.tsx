@@ -10,7 +10,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { TextField } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 
 export interface Profile {
   id: string;
@@ -67,12 +67,12 @@ function ProfileListing() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
               <TableCell align="right">First Name</TableCell>
               <TableCell align="right">Last Name</TableCell>
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Title</TableCell>
               <TableCell align="right">Picture</TableCell>
+              <TableCell align="right">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -80,23 +80,17 @@ function ProfileListing() {
               <TableRow
                 key={profile.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={() => {
-                  navigate("/userprofile", {
-                    state: {
-                      id: profile.id,
-                    },
-                  });
-                }}
+                onClick={() => {}}
               >
-                <TableCell component="th" scope="row">
-                  {profile.id}
-                </TableCell>
                 <TableCell align="right">{profile.firstName}</TableCell>
                 <TableCell align="right">{profile.lastName}</TableCell>
                 <TableCell align="right">{profile.email}</TableCell>
                 <TableCell align="right">{profile.title}</TableCell>
                 <TableCell align="right">
                   <img src={profile.picture} alt="new" />
+                </TableCell>
+                <TableCell align="right">
+                  <Button variant="contained">Deactivate</Button>
                 </TableCell>
               </TableRow>
             ))}
