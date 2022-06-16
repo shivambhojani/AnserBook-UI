@@ -21,7 +21,7 @@ const MyBookmarkLists: React.FC = () => {
       container
       sx={{
         bgcolor: "#009688",
-        padding: "2rem",
+        padding: "1rem",
         margin: "auto",
         justifyContent: "center",
         alignItems: "center",
@@ -35,7 +35,7 @@ const MyBookmarkLists: React.FC = () => {
           sm={10}
           md={4}
           xl={4}
-          sx={{ bgcolor: "#272727", padding: "2rem" }}
+          sx={{ bgcolor: "#272727", padding: "1rem" }}
         >
           <BookmarkListItem
             key={bm.id}
