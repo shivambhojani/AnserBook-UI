@@ -19,8 +19,6 @@ const Routing: React.FC = () => {
       <Route path="/userprofile" element={<MyAccount />} />
       <Route path="/adminhome" element={<AdminHome />} />
       <Route path="/openprofile" element={<UserProfile />} />
-	  <Route path="/createpost" element={<CreatePost />} />
-      <Route path="/editpost" element={<EditPost />} />
     </Routes>
   );
 };
