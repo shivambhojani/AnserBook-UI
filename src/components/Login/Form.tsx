@@ -53,7 +53,6 @@ const Form = (props: any): any => {
 
       <Grid item xs={12} sm={7} md={6} component={Paper} elevation={6}>
         <div className="box">
-          <h1>Login</h1>
           <form onSubmit={submitHandler} noValidate>
             <div className="attributes">
               <label className="label">Email Address</label>
@@ -88,7 +87,9 @@ const Form = (props: any): any => {
               type="submit"
               className="button is-block is-info is-fullwidth"
               // onClick={submitHandler()}
-            ></button>
+            >
+              Submit
+            </button>
           </form>
         </div>
       </Grid>
