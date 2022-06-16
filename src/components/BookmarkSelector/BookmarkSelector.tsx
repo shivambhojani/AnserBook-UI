@@ -9,6 +9,8 @@ import Button from "@mui/material/Button";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import bmListData from "../../data/dummy-bookmark-lists.json";
 import { BookmarkList } from "../../models";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const filter = createFilterOptions<BookmarkList>();
 
@@ -32,6 +34,7 @@ const BookmarkSelector: React.FC = () => {
     setValue({
       name: dialogValue.name,
     });
+    toast.success(`${dialogValue.name} is now added to the list`);
     handleClose();
   };
 
@@ -118,6 +121,17 @@ const BookmarkSelector: React.FC = () => {
           </DialogActions>
         </form>
       </Dialog>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };
