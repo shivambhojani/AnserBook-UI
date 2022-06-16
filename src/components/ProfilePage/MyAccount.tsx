@@ -8,8 +8,6 @@ import ProfilePage from "./ProfilePage";
 import "./MyAccount.css";
 import MyFriends from "./MyFriends";
 import AnalyticsAppreciation from "../Appreciation/AnalyticsAppreciation";
-import Feeds from "../Feed/Feeds";
-import Feed from "../Feed/Feed";
 import { Container } from "@mui/system";
 import MyPosts from "./MyPosts";
 import MyBookmarkLists from "../BookmarksList/MyBookmarkLists";
@@ -44,50 +42,6 @@ export default function MyAccount() {
     },
   ]);
 
-  const [feeds, setFeeds] = React.useState([
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "Februrary 28, 2022",
-      image: "./assets/Post.png",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Social",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "Februrary 28, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "Februrary 29, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Social",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "January 28, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-  ]);
-
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
@@ -109,7 +63,7 @@ export default function MyAccount() {
           <Container>
             <Grid container spacing={2}>
               {posts.map((post: any) => (
-                <MyPosts {...post} />
+                <MyPosts key={post.date} {...post} />
               ))}
             </Grid>{" "}
           </Container>

@@ -33,7 +33,7 @@ const BookmarkListItem: React.FC<BookmarkListWithFeeds> = ({
   useEffect(() => {
     const filteredPosts = feeds.filter(feed => posts.includes(feed.id));
     setBmPostsFiltered(filteredPosts);
-  }, []);
+  }, [posts, feeds]);
 
   return (
     <>

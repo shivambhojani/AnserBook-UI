@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Post from "./components/Post/Post";
 import EditAppreciation from "./components/Appreciation/EditAppreciation";
 import Feeds from "./components/Feed/Feeds";
