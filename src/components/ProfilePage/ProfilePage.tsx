@@ -168,7 +168,7 @@ const ProfilePage = () => {
 
   return (
     <Container>
-      <Grid container spacing={2} alignItems="center" justifyContent="center">
+      <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12} md={8}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
@@ -276,67 +276,63 @@ const ProfilePage = () => {
                 fullWidth
               ></TextField>{" "}
             </Grid>
-            <Grid item xs={12} md={7}>
-              <div className="savebutton">
-                <Button
-                  disabled={disable}
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    checkforEmptyValue(
-                      phone,
-                      name,
-                      dob,
-                      location,
-                      organization,
-                      pin,
-                      address,
-                      city
-                    )
-                  }
-                >
-                  Save
-                </Button>
-              </div>
+            <Grid item xs={12} md={12}>
+              <Button
+                disabled={disable}
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  checkforEmptyValue(
+                    phone,
+                    name,
+                    dob,
+                    location,
+                    organization,
+                    pin,
+                    address,
+                    city
+                  )
+                }
+              >
+                Save
+              </Button>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
           <div className="col-xl-4">
-            <div className="card mb-4 mb-xl-0">
-              <div className="card-header">
-                Profile Picture
-                <div className="card-body text-center">
-                  <div className="cardBodyItems">
-                    <div>
-                      <img
-                        className="img-account-profile rounded-circle mb-2"
-                        src="http://bootdey.com/img/Content/avatar/avatar7.png"
-                        alt=""
-                      ></img>
+            <div className="card mb-4 mb-xl-0 p-3">
+              <div className="card-header">Profile Picture</div>
+              <div className="card-body text-center">
+                <div className="cardBodyItems m-3">
+                  <div>
+                    <img
+                      className="img-account-profile rounded-circle mb-2"
+                      src="http://bootdey.com/img/Content/avatar/avatar7.png"
+                      alt=""
+                    ></img>
+                  </div>
+                  <div>
+                    <div className="small font-italic text-muted mb-4">
+                      JPG or PNG no larger than 5 MB
                     </div>
-                    <div>
-                      <div className="small font-italic text-muted mb-4">
-                        JPG or PNG no larger than 5 MB
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="contained-button-file">
-                        <Input
-                          accept="image/*"
-                          id="contained-button-file"
-                          multiple
-                          type="file"
-                        />
-                        <Button
-                          variant="contained"
-                          component="span"
-                          color="primary"
-                        >
-                          Upload
-                        </Button>
-                      </label>
-                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="contained-button-file">
+                      <Input
+                        accept="image/*"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                      />
+                      <Button
+                        variant="contained"
+                        component="span"
+                        color="primary"
+                      >
+                        Upload
+                      </Button>
+                    </label>
                   </div>
                 </div>
               </div>
