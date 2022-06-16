@@ -67,6 +67,8 @@ const options = [
 const NavBar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   function avatarclick() {
@@ -88,36 +90,9 @@ const NavBar = () => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -185,6 +160,26 @@ const NavBar = () => {
         <Autocomplete
           id="free-solo-2-demo"
           disableClearable
+          value={searchValue}
+          onChange={(event: any, newValue: any) => {
+            setSearchValue(newValue);
+            if ((newValue.type = "User")) navigate("/openprofile");
+            else if ((newValue.type = "Post"))
+              navigate("/post", {
+                state: {
+                  initials: "SB",
+                  username: "Shivangi Bhatt",
+                  date: "Februrary 28, 2022",
+                  image: "./assets/Post.png",
+                  question:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+                  tags: ["Tag1", "Tag2", "Tag3"],
+                  type: "Social",
+                  shortQuestion:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+                },
+              });
+          }}
           options={options}
           groupBy={(option) => option.type}
           getOptionLabel={(option) => option.search}
@@ -197,7 +192,7 @@ const NavBar = () => {
               InputProps={{
                 ...params.InputProps,
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="end">
                     <SearchIcon className={classes.searchIcon} />
                   </InputAdornment>
                 ),
