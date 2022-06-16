@@ -1,6 +1,32 @@
 {
   "name": "assignment1",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "contributors": [
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "aman"
+    },
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "aman"
+    },
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "aman"
+    },
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "aman"
+    },
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "aman"
+    },
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "aman"
+    }
+  ],
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.0",
