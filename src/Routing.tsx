@@ -8,9 +8,9 @@ import AdminHome from "./components/Admin/AdminHome";
 const Routing: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Feeds />} />
+      <Route path="/" element={<Form />} />
       <Route path="/post" element={<Post />} />
-      <Route path="/login" element={<Form />} />
+      <Route path="/feeds" element={<Feeds />} />
       <Route path="/editappreciation" element={<EditAppreciation />} />
       <Route path="/userprofile" element={<MyAccount />} />
       <Route path="/adminhome" element={<AdminHome />} />

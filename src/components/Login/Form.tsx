@@ -22,7 +22,7 @@ const Form = (props: any): any => {
     if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
     } else {
-      navigate("/");
+      navigate("/feeds");
     }
   };
 
