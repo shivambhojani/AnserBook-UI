@@ -140,7 +140,7 @@ const NavBar = () => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <Button color="inherit" onClick={createPostClick}>
+        <Button color="inherit">
           {" "}
           <AddIcon />
           Create Post
