@@ -1,5 +1,5 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
+import { Box, Grid } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -8,6 +8,9 @@ import ProfilePage from "./ProfilePage";
 import "./MyAccount.css";
 import MyFriends from "./MyFriends";
 import AnalyticsAppreciation from "../Appreciation/AnalyticsAppreciation";
+import Feeds from "../Feed/Feeds";
+import Feed from "../Feed/Feed";
+import { Container } from "@mui/system";
 
 export default function MyAccount() {
   const [value, setValue] = React.useState('1');
@@ -15,6 +18,50 @@ export default function MyAccount() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const [feeds, setFeeds] = React.useState([
+    {
+      initials: "SB",
+      username: "Shivangi Bhatt",
+      date: "Februrary 28, 2022",
+      image: "./assets/Post.png",
+      question:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+      tags: ["Tag1", "Tag2", "Tag3"],
+      type: "Social",
+      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    },
+    {
+      initials: "SB",
+      username: "Shivangi Bhatt",
+      date: "Februrary 28, 2022",
+      question:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+      tags: ["Tag1", "Tag2", "Tag3"],
+      type: "Technical",
+      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    },
+    {
+      initials: "SB",
+      username: "Shivangi Bhatt",
+      date: "Februrary 29, 2022",
+      question:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+      tags: ["Tag1", "Tag2", "Tag3"],
+      type: "Social",
+      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    },
+    {
+      initials: "SB",
+      username: "Shivangi Bhatt",
+      date: "January 28, 2022",
+      question:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+      tags: ["Tag1", "Tag2", "Tag3"],
+      type: "Technical",
+      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+    },
+  ]);
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
@@ -34,7 +81,15 @@ export default function MyAccount() {
           <ProfilePage></ProfilePage>
         </TabPanel>
         <TabPanel value="2">
-          <h1>My Posts</h1>
+          <Container>
+            <Grid container spacing={2}>
+              {feeds.map((feed: any) => (
+                <Grid item xs={12} md={12}>
+                  <Feed {...feed} />
+                </Grid>
+              ))}
+            </Grid>{" "}
+          </Container>
         </TabPanel>
         <TabPanel value="3">
           <MyFriends></MyFriends>
