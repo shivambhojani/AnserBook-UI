@@ -19,6 +19,17 @@ const useStyles = makeStyles({
     backgroundColor: "gray !important",
     marginLeft: "15px !important",
   },
+  searchBox: {
+    margin: "5px !important",
+    outline: "white !important  ",
+  },
+  searchInput: {
+    color: "white !important",
+    borderColor: "white !important",
+  },
+  searchIcon: {
+    color: "white",
+  },
 });
 
 export default useStyles;
