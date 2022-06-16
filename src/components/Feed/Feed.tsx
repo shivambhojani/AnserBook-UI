@@ -9,6 +9,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CardActionArea, Menu, MenuItem } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkSelector from "../BookmarkSelector/BookmarkSelector";
 
 interface feed {
   initials: string;
@@ -39,7 +40,7 @@ function Feed(props: feed) {
   }
 
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
   const open = Boolean(anchorElement);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -87,6 +88,7 @@ function Feed(props: feed) {
               }
             />
           </div>
+          <BookmarkSelector />
           <IconButton onClick={handleOpenMenu}>
             {" "}
             <MoreVertIcon className={classes.moreIcon} />
@@ -112,7 +114,7 @@ function Feed(props: feed) {
         <div className={classes.lastRow}>
           <div className={classes.tags}>
             {" "}
-            {props.tags.map((tag) => (
+            {props.tags.map(tag => (
               <Chip label={tag} className={classes.tag} />
             ))}
           </div>

@@ -30,16 +30,16 @@ function ProfileListing() {
   useEffect(() => {
     axios
       .get("https://tutorial4-api.herokuapp.com/api/users/")
-      .then(function (response) {
+      .then(function (response: any) {
         setProfiles(response.data.data);
         setFilteredProfile(response.data.data);
       })
-      .catch(function (error) {});
+      .catch(function (error: any) {});
   }, []);
 
   const searchUsers = (searchValue: string) => {
     if (searchValue !== "") {
-      const filtered = profiles.filter((item) => {
+      const filtered = profiles.filter(item => {
         return (
           item.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
           item.lastName.toLowerCase().includes(searchValue.toLowerCase())
@@ -59,7 +59,7 @@ function ProfileListing() {
         label="Search"
         variant="outlined"
         className="TextFields"
-        onChange={(e) => {
+        onChange={e => {
           searchUsers(e.target.value);
         }}
       />
@@ -76,7 +76,7 @@ function ProfileListing() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProfile.map((profile) => (
+            {filteredProfile.map(profile => (
               <TableRow
                 key={profile.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
