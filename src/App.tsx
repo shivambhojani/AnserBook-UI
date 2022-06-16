@@ -2,13 +2,14 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import Routing from "./Routing";
-import React from "react";
-import Feeds from "./components/Feed/Feeds";
+import { useLocation } from "react-router-dom";
 
 function App() {
+  const location = useLocation();
+
   return (
     <>
-      <NavBar />
+      {location.pathname !== "/" ? <NavBar /> : null}
       <Routing />
     </>
   );
