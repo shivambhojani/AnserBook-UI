@@ -1,30 +1,30 @@
 {
-  "name": "assignment1",
+  "name": "AnswerMe",
   "version": "1.0.0",
   "contributors": [
     {
       "name": "Aman Singh Bhandari",
-      "email": "aman"
+      "email": "am727005@dal.ca"
     },
     {
-      "name": "Aman Singh Bhandari",
-      "email": "aman"
+      "name": "Kuldeep Bhimani",
+      "email": "kl681090@dal.ca"
     },
     {
-      "name": "Aman Singh Bhandari",
-      "email": "aman"
+      "name": "Naga Pavan Srivathsav Chevuru",
+      "email": "ng490417@dal.ca"
     },
     {
-      "name": "Aman Singh Bhandari",
-      "email": "aman"
+      "name": "Saurabh Jayeshbhai Das",
+      "email": "sr850847@dal.ca"
     },
     {
-      "name": "Aman Singh Bhandari",
-      "email": "aman"
+      "name": "Shivam Bhojani",
+      "email": "sh827646@dal.ca"
     },
     {
-      "name": "Aman Singh Bhandari",
-      "email": "aman"
+      "name": "Shivangi Bhatt",
+      "email": "sh224186@dal.ca"
     }
   ],
   "private": true,
