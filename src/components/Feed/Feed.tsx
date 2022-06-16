@@ -104,7 +104,9 @@ function Feed(props: feed) {
           <Typography gutterBottom variant="body2">
             {props.question}
           </Typography>
-          {props.image ? <img src={props.image} height="200px" /> : null}
+          {props.image ? (
+            <img src={props.image} style={{ height: "200px" }} />
+          ) : null}
         </CardActionArea>
 
         <div className={classes.lastRow}>
