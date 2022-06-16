@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Post from "./components/Post/Post";
 import EditAppreciation from "./components/Appreciation/EditAppreciation";
 import Feeds from "./components/Feed/Feeds";
@@ -19,7 +19,7 @@ const Routing: React.FC = () => {
       <Route path="/userprofile" element={<MyAccount />} />
       <Route path="/adminhome" element={<AdminHome />} />
       <Route path="/openprofile" element={<UserProfile />} />
-	  <Route path="/createpost" element={<CreatePost />} />
+      <Route path="/createpost" element={<CreatePost />} />
       <Route path="/editpost" element={<EditPost />} />
     </Routes>
   );
