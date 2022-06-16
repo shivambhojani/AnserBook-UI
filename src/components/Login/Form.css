@@ -1,0 +1,56 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 64px 128px;
+}
+
+.imagecontainer {
+  display: flex;
+  background: #6d7dda;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagegrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imagebox {
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #6d7dda;
+}
+
+.imageframe {
+  display: inline-block;
+  height: fit-content !important;
+}
+
+.image {
+  padding: 50px;
+}
+
+.title {
+  color: #ffffff;
+  text-align: center;
+  font-size: 3rem !important;
+}
+
+.titlecontainer {
+  margin: 0px 0px 1.5rem 0px;
+  font-weight: 700 !important;
+}
+
+.box {
+  margin: 10 10 10 10;
+  width: 40%;
+  position: absolute;
+  top: 50%;
+  transform: translate(10%, -50%);
+}
