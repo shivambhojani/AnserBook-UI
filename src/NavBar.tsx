@@ -214,7 +214,7 @@ const NavBar = () => {
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Button color="inherit">
+          <Button color="inherit" onClick={createPostClick}>
             {" "}
             <AddIcon />
             Create Post
