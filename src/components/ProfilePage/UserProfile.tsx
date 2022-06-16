@@ -70,7 +70,7 @@ const Profile = () => {
 
         <>
             <div className="maindiv">
-                <div className = "card">
+                <div className = "carddiv">
                 <Card sx={{ maxWidth: 500}}>
                     <div className = "divAvatar">
                     <CardHeader
