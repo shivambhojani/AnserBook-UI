@@ -1,6 +1,32 @@
 {
-  "name": "assignment1",
-  "version": "0.1.0",
+  "name": "AnswerMe",
+  "version": "1.0.0",
+  "contributors": [
+    {
+      "name": "Aman Singh Bhandari",
+      "email": "am727005@dal.ca"
+    },
+    {
+      "name": "Kuldeep Bhimani",
+      "email": "kl681090@dal.ca"
+    },
+    {
+      "name": "Naga Pavan Srivathsav Chevuru",
+      "email": "ng490417@dal.ca"
+    },
+    {
+      "name": "Saurabh Jayeshbhai Das",
+      "email": "sr850847@dal.ca"
+    },
+    {
+      "name": "Shivam Bhojani",
+      "email": "sh827646@dal.ca"
+    },
+    {
+      "name": "Shivangi Bhatt",
+      "email": "sh224186@dal.ca"
+    }
+  ],
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.0",
