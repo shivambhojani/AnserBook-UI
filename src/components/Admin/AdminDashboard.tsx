@@ -2,6 +2,8 @@ import React from "react";
 import Highcharts from "highcharts/highstock";
 import HighChartsReact from "highcharts-react-official";
 import OutlinedCard from "./OutlinedCard";
+import { Grid } from "@mui/material";
+import { Container } from "@mui/system";
 
 const options = {
   chart: {
@@ -35,8 +37,8 @@ export default class AdminDashboard extends React.Component {
 
   render() {
     return (
-      <div>
-        <div
+      <Container>
+        {/* <div
           style={{
             display: "flex",
             flexDirection: "row",
@@ -45,17 +47,38 @@ export default class AdminDashboard extends React.Component {
             flexWrap: "wrap",
             flexBasis: "33%",
           }}
-        >
-          <OutlinedCard title="Total Posts" body="1231"></OutlinedCard>
-          <OutlinedCard title="Total Users" body="635"></OutlinedCard>
-          <OutlinedCard title="Total Roles" body="2"></OutlinedCard>
-          <OutlinedCard title="Total Posts Answered" body="973"></OutlinedCard>
-        </div>
+        > */}
+        <Grid container spacing={2}>
+          <Grid item xs={6} md={3}>
+            <div style={{ textAlign: "center" }}>
+              <OutlinedCard title="Total Posts" body="1231"></OutlinedCard>
+            </div>
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <div style={{ textAlign: "center" }}>
+              <OutlinedCard title="Total Users" body="635"></OutlinedCard>
+            </div>
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <div style={{ textAlign: "center" }}>
+              <OutlinedCard title="Total Roles" body="2"></OutlinedCard>
+            </div>
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <div style={{ textAlign: "center" }}>
+              <OutlinedCard
+                title="Total Posts Answered"
+                body="973"
+              ></OutlinedCard>
+            </div>
+          </Grid>
+        </Grid>
+        {/* </div> */}
 
-        <div style={{ margin: "20px" }}>
+        <div style={{ marginTop: "20px" }}>
           <HighChartsReact highcharts={Highcharts} options={options} />
         </div>
-      </div>
+      </Container>
     );
   }
 }
