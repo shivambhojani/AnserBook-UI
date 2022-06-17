@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Form = (props:any):any => {
   const { values, errors: err, handleChange: manageChanges, handleSubmit: onsubmit } :any = useForm(
@@ -13,14 +14,9 @@ const Form = (props:any):any => {
 
   function login() {
     setLoggedIn(true);
-    return navigate("/default")
+    return navigate("/")
   }
-const submitHandler = (e:any)=>{
-  e.preventDefault();
 
-  navigate("/")
- 
-}
 
   return (
     <div className="section hightlight">
@@ -28,7 +24,7 @@ const submitHandler = (e:any)=>{
         <div className="column is-6 is-offset-3">
           <div className="box">
             <h1>Login</h1>
-            <form onSubmit={submitHandler} noValidate>
+            <form onSubmit={onsubmit} noValidate>
               <div className="attributes">
                 <label className="label">Email Address</label>
                 <div className="data-block">
@@ -62,6 +58,12 @@ const submitHandler = (e:any)=>{
                   <p className="help is-danger">{err.password}</p>
                 )}
               </div>
+
+               <Link to='/forgot-password'>
+                <p className="my-3" style={{textAlign:"center"}}>Forgot Password?</p>
+              </Link>
+
+
               <button
                 type="submit"
                 className="button is-block is-info is-fullwidth"
@@ -69,6 +71,9 @@ const submitHandler = (e:any)=>{
               >
                 Login
               </button>
+              <Link to='/register'>
+                <p className="mt-5" style={{textAlign:"center"}}>Create New Account ?</p>
+              </Link>
             </form>
           </div>
         </div>
