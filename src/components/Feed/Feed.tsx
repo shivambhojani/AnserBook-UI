@@ -10,7 +10,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CardActionArea, Menu, MenuItem } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkSelector from "../BookmarkSelector/BookmarkSelector";
-
+import { FacebookSelector } from "@charkour/react-reactions";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface feed {
   initials: string;
   image?: any;
@@ -119,11 +121,33 @@ function Feed(props: feed) {
             ))}
           </div>
           <div>
-            <FavoriteIcon color="warning" className={classes.icon} />
-            <BookmarkBorderIcon />
+            <FacebookSelector
+              onSelect={() => {
+                toast.info("🦄 Cool reaction!", {
+                  position: "top-right",
+                  autoClose: 1000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                });
+              }}
+            />
           </div>
         </div>
       </CardContent>
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Card>
   );
 }
