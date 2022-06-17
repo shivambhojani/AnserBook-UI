@@ -68,23 +68,22 @@ const Profile = () => {
     // console.log(userid)
     return (
 
-        <>
-            <div className="maindiv">
-                <div className = "carddiv">
-                <Card sx={{ maxWidth: 500}}>
-                    <div className = "divAvatar">
-                    <CardHeader
-                        avatar={
-                            <Avatar
-                                alt="Tony Stark"
-                                src="https://randomuser.me/api/portraits/women/82.jpg"
-                                sx={{ width: 200, height: 200 }}
-                            />
-                        }
-                    />
+        <><div>
+            <div className="carddiv">
+                <Card sx={{ maxWidth: 345 }}>
+                    <div className = "imagediv">
+                        <CardHeader
+                            avatar={
+                                <Avatar
+                                    alt="Tony Stark"
+                                    src="https://randomuser.me/api/portraits/women/82.jpg"
+                                    sx={{ width: 200, height: 200 }}
+                                />
+                            }
+                        />
                     </div>
                     <div className="subscribebutton">
-                    <Button variant="contained">Subscribe</Button>
+                        <Button variant="contained">Subscribe</Button>
                     </div>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary"> ID: 5788 </Typography>
@@ -100,8 +99,8 @@ const Profile = () => {
                     </CardContent>
 
                 </Card>
-                </div>
             </div>
+        </div>
         </>
     )
 };

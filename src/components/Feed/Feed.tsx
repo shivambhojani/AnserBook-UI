@@ -61,7 +61,8 @@ function Feed(props: feed) {
 
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
-
+<>
+<br />
     <Card>
       <CardContent>
         <div className={classes.flex}>
@@ -149,6 +150,7 @@ function Feed(props: feed) {
         pauseOnHover
       />
     </Card>
+    </>
   );
 }
 
