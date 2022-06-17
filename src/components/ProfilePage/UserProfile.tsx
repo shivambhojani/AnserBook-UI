@@ -71,16 +71,17 @@ const Profile = () => {
         <><div>
             <div className="carddiv">
                 <Card sx={{ maxWidth: 345 }}>
-                    <CardHeader
-                        avatar={
-                            <Avatar
-                                alt="Tony Stark"
-                                src="https://randomuser.me/api/portraits/women/82.jpg"
-                                sx={{ width: 200, height: 200 }}
-                            />
-                        }
-                    />
-
+                    <div className = "imagediv">
+                        <CardHeader
+                            avatar={
+                                <Avatar
+                                    alt="Tony Stark"
+                                    src="https://randomuser.me/api/portraits/women/82.jpg"
+                                    sx={{ width: 200, height: 200 }}
+                                />
+                            }
+                        />
+                    </div>
                     <div className="subscribebutton">
                         <Button variant="contained">Subscribe</Button>
                     </div>
