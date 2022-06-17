@@ -5,7 +5,11 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
 import { Feed } from "../../models/models";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BookmarkListItemEntry: React.FC<Feed> = ({
   id,
@@ -16,9 +20,22 @@ const BookmarkListItemEntry: React.FC<Feed> = ({
   return (
     <List
       key={id}
-      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.black" }}
+      sx={{ width: "100%", minWidth: 300, bgcolor: "background.black" }}
     >
-      <ListItem alignItems="flex-start">
+      <ListItem
+        alignItems="center"
+        secondaryAction={
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={() => {
+              toast.error("Will remove this from the list");
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        }
+      >
         <ListItemAvatar>
           <Avatar src={imgUrl} />
         </ListItemAvatar>
@@ -34,12 +51,23 @@ const BookmarkListItemEntry: React.FC<Feed> = ({
                 variant="body2"
                 color="text.primary"
               >
-                {`${body.slice(0, 150)}...`}
+                {`${body.slice(0, 50)}...`}
               </Typography>
             </>
           }
         />
       </ListItem>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Divider variant="inset" component="li" />
     </List>
   );

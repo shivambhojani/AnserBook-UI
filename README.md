@@ -1,4 +1,4 @@
-# Group 6 project - AnswerMe
+# Group 6 project - AnswerBook
 
 - _Date Created_: 16 JUN 2022
 - _Last Modification Date_: 16 JUN 2022
@@ -7,12 +7,12 @@
 
 ## Author
 
-- **[Aman Singh Bhandari](am727005@dal.ca) – B00910008**
-- **[Kuldeep Bhimani](kl681090@dal.ca) – B00910009**
-- **[Naga Pavan Srivathsav Chevuru](ng490417@dal.ca) – B00893685**
-- **[Saurabh Jayeshbhai Das](sr850847@dal.ca) – B00911733**
-- **[Shivam Bhojani](sh827646@dal.ca) – B00895637**
-- **[Shivangi Bhatt](sh224186@dal.ca) – B00863408**
+- **[Aman Singh Bhandari](mailto:am727005@dal.ca) – B00910008**
+- **[Kuldeep Bhimani](mailto:kl681090@dal.ca) – B00910009**
+- **[Naga Pavan Srivathsav Chevuru](mailto:ng490417@dal.ca) – B00893685**
+- **[Saurabh Jayeshbhai Das](mailto:sr850847@dal.ca) – B00911733**
+- **[Shivam Bhojani](mailto:sh827646@dal.ca) – B00895637**
+- **[Shivangi Bhatt](mailto:sh224186@dal.ca) – B00863408**
 
 ## Getting Started - To run the React [2] app locally
 
