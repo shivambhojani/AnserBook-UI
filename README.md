@@ -1,4 +1,4 @@
-# Group 6 project - AnswerMe
+# Group 6 project - AnswerBook
 
 - _Date Created_: 16 JUN 2022
 - _Last Modification Date_: 16 JUN 2022
@@ -53,6 +53,8 @@ npm start
 ```
 
 You will then see the app running locally on <http://localhost:3000/>
+
+![AnswerBook](https://media.giphy.com/media/6DqoQ1nUj4dLJsuMvq/giphy.gif)
 
 ---
 
