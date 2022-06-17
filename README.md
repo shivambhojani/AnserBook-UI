@@ -54,6 +54,8 @@ npm start
 
 You will then see the app running locally on <http://localhost:3000/>
 
+![AnswerBook](https://media.giphy.com/media/6DqoQ1nUj4dLJsuMvq/giphy.gif)
+
 ---
 
 ## Deployment
