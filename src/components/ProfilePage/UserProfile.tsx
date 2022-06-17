@@ -63,7 +63,6 @@ const Profile = () => {
   //     fetchData();
   // }, [])
 
-<<<<<<< HEAD
   // console.log(userid)
   return (
     <>
@@ -104,58 +103,6 @@ const Profile = () => {
       </div>
     </>
   );
-=======
-    //         setData(result.data.data)
-    //         console.log(result.data.data);
-    //     }).catch(err => {
-    //         console.error(err);
-    //         alert("Something wrong with API")
-    //     });
-    // };
-
-    // useEffect(() => {
-    //     fetchData();
-    // }, [])
-
-    // console.log(userid)
-    return (
-
-        <><div>
-            <div className="carddiv">
-                <Card sx={{ maxWidth: 345 }}>
-                    <div className = "imagediv">
-                        <CardHeader
-                            avatar={
-                                <Avatar
-                                    alt="Tony Stark"
-                                    src="https://randomuser.me/api/portraits/women/82.jpg"
-                                    sx={{ width: 200, height: 200 }}
-                                />
-                            }
-                        />
-                    </div>
-                    <div className="subscribebutton">
-                        <Button variant="contained">Subscribe</Button>
-                    </div>
-                    <CardContent>
-                        <Typography variant="body2" color="text.secondary"> ID: 5788 </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Title: Miss.
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Name: Lilly Collins
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Email: lilly@gmail.com
-                        </Typography>
-                    </CardContent>
-
-                </Card>
-            </div>
-        </div>
-        </>
-    )
->>>>>>> c934455982d197dffe0f6c673ecf9b2d1142223b
 };
 
 export default Profile;
