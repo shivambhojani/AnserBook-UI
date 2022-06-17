@@ -68,11 +68,9 @@ const Profile = () => {
     // console.log(userid)
     return (
 
-        <>
-            <div className="maindiv">
-                <div className = "carddiv">
-                <Card sx={{ maxWidth: 500}}>
-                    <div className = "divAvatar">
+        <><div>
+            <div className="carddiv">
+                <Card sx={{ maxWidth: 345 }}>
                     <CardHeader
                         avatar={
                             <Avatar
@@ -82,9 +80,9 @@ const Profile = () => {
                             />
                         }
                     />
-                    </div>
+
                     <div className="subscribebutton">
-                    <Button variant="contained">Subscribe</Button>
+                        <Button variant="contained">Subscribe</Button>
                     </div>
                     <CardContent>
                         <Typography variant="body2" color="text.secondary"> ID: 5788 </Typography>
@@ -100,8 +98,8 @@ const Profile = () => {
                     </CardContent>
 
                 </Card>
-                </div>
             </div>
+        </div>
         </>
     )
 };

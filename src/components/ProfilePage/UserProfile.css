@@ -1,8 +1,8 @@
 .carddiv{
-    width:20%
+    padding: 5%;
 }
 
-.divAvatar, .subscribebutton{
-    display: flex;
+.subscribebutton {
     justify-content: center;
+    display: flex
 }
