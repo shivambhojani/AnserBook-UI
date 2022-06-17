@@ -39,7 +39,7 @@ function ProfileListing() {
 
   const searchUsers = (searchValue: string) => {
     if (searchValue !== "") {
-      const filtered = profiles.filter(item => {
+      const filtered = profiles.filter((item) => {
         return (
           item.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
           item.lastName.toLowerCase().includes(searchValue.toLowerCase())
@@ -59,7 +59,7 @@ function ProfileListing() {
         label="Search"
         variant="outlined"
         className="TextFields"
-        onChange={e => {
+        onChange={(e) => {
           searchUsers(e.target.value);
         }}
       />
@@ -67,16 +67,16 @@ function ProfileListing() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
               <TableCell align="right">First Name</TableCell>
               <TableCell align="right">Last Name</TableCell>
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Title</TableCell>
               <TableCell align="right">Picture</TableCell>
+              <TableCell align="right">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredProfile.map(profile => (
+            {filteredProfile.map((profile) => (
               <TableRow
                 key={profile.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
