@@ -1,4 +1,4 @@
-# Group 6 project - AnswerMe
+# Group 6 project - AnswerBook
 
 - _Date Created_: 16 JUN 2022
 - _Last Modification Date_: 16 JUN 2022
