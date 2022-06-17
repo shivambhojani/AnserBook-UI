@@ -39,6 +39,20 @@ const useStyles = makeStyles({
   icon: {
     marginRight: "10px",
   },
+  end: {
+    display: "flex",
+    justifyContent: "end",
+  },
+  "@media (max-width: 960px)": {
+    end: {
+      display: "flex",
+      justifyContent: "center",
+    },
+    tags: {
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
 });
 
 export default useStyles;
