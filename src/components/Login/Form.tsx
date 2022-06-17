@@ -3,6 +3,7 @@ import "./Form.css";
 import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Grid, Typography, Box } from "@mui/material";
 import logo from "../../assets/app-logo.png";
 import Paper from "@mui/material/Paper";
@@ -19,16 +20,11 @@ const Form = (props: any): any => {
 
   function login() {
     setLoggedIn(true);
-    return navigate("/default");
-  }
-  const submitHandler = (e: any) => {
-    e.preventDefault();
-    if (values.email === "admin@xyz.com") {
+     if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
     } else {
       navigate("/feeds");
-    }
-  };
+    }  }
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -53,7 +49,7 @@ const Form = (props: any): any => {
 
       <Grid item xs={12} sm={7} md={6} component={Paper} elevation={6}>
         <div className="box">
-          <form onSubmit={submitHandler} noValidate>
+          <form onSubmit={onsubmit} noValidate>
             <div className="attributes">
               <label className="label">Email Address</label>
               <div className="data-block">
@@ -83,6 +79,9 @@ const Form = (props: any): any => {
               </div>
               {err.password && <p className="help is-danger">{err.password}</p>}
             </div>
+             <Link to='/forgot-password'>
+              <p className="mt-2" style={{textAlign:"center"}}>Forgot Password?</p>
+            </Link>
             <button
               type="submit"
               className="button is-block is-info is-fullwidth"
@@ -90,6 +89,9 @@ const Form = (props: any): any => {
             >
               Submit
             </button>
+            <Link to='/register'>
+              <p className="mt-5" style={{textAlign:"center"}}>Create New Account ?</p>
+            </Link>
           </form>
         </div>
       </Grid>
