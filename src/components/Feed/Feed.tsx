@@ -42,7 +42,7 @@ function Feed(props: feed) {
   }
 
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
-    null,
+    null
   );
   const open = Boolean(anchorElement);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -116,7 +116,7 @@ function Feed(props: feed) {
         <div className={classes.lastRow}>
           <div className={classes.tags}>
             {" "}
-            {props.tags.map(tag => (
+            {props.tags.map((tag) => (
               <Chip label={tag} className={classes.tag} />
             ))}
           </div>
