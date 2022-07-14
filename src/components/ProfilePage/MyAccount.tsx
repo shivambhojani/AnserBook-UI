@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Tabs } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -47,13 +47,20 @@ export default function MyAccount() {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <div className="Tabs">
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <Tabs
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              variant="scrollable"
+              centered
+              sx={{ width: "100%" }}
+              scrollButtons="auto"
+            >
               <Tab label="Profile Settings" value="1" />
               <Tab label="My Posts" value="2" />
               <Tab label="Subscribed Users" value="3" />
               <Tab label="My Reputation" value="4" />
               <Tab label="My Bookmark lists" value="5" />
-            </TabList>
+            </Tabs>
           </div>
         </Box>
         <TabPanel value="1">

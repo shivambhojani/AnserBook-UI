@@ -21,7 +21,12 @@ export default function AdminHome() {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <div className="Tabs">
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
+            <TabList
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              variant="scrollable"
+              scrollButtons="auto"
+            >
               <Tab label="Dashboard" value="1" />
               <Tab label="Edit Appreciation" value="2" />
               <Tab label="Manage Users" value="3" />

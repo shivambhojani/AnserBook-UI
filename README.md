@@ -54,6 +54,8 @@ npm start
 
 You will then see the app running locally on <http://localhost:3000/>
 
+![AnswerBook](https://media.giphy.com/media/6DqoQ1nUj4dLJsuMvq/giphy.gif)
+
 ---
 
 ## Deployment
@@ -84,3 +86,5 @@ The app is deployed on Heroku at - [link](https://answerbook-group6.herokuapp.co
 [5] “Declarative routing for React apps at any scale | React Router,” Reactrouter.com, 2022. [Online]. Available: <https://reactrouter.com/>. [Accessed: Jun. 14, 2022].
 
 [6] “React-toastify | React-Toastify,” Github.io, 2022. [Online]. Available: <https://fkhadra.github.io/react-toastify/introduction>. [Accessed: Jun. 14, 2022].
+
+[7] "React Autocomplete component - Material UI", Mui.com, 2022. [Online]. Available: https://mui.com/material-ui/react-autocomplete/#grouped. [Accessed: 17- Jun- 2022]

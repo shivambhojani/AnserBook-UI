@@ -1,6 +1,5 @@
 .Tabs{
-    display: flex;
-    justify-content: center;
+    margin: auto !important;
 }
 
 /* .css-8je8zh-MuiTouchRipple-root {
