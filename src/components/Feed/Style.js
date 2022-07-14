@@ -41,7 +41,6 @@ const useStyles = makeStyles({
   },
   end: {
     display: "flex",
-    justifyContent: "end",
   },
   "@media (max-width: 960px)": {
     end: {
