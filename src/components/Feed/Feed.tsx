@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { Chip, Avatar, IconButton, Grid } from "@mui/material";
+import { Chip, Avatar, IconButton, Grid, Button, Popover } from "@mui/material";
 import useStyles from "./Style";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -29,6 +29,10 @@ interface feed {
 function Feed(props: feed) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [emojiSelector, setEmojiSelector] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
 
   const [feed, setFeed] = useState({
     initials: props.user.firstname.charAt(0) + props.user.lastname.charAt(0),
@@ -63,6 +67,13 @@ function Feed(props: feed) {
     });
   };
 
+  const callbackend = (select: any) => {
+    console.log(select);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
     <>
@@ -141,22 +152,41 @@ function Feed(props: feed) {
               </Grid>
               <Grid item md={4} xs={12}>
                 <div className={classes.end}>
-                  {/* <FacebookSelector
-                    onSelect={(select) => {
-                      console.log(select);
-
-                      toast.info("🦄 Cool reaction!", {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                      });
+                  <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
                     }}
-                  /> */}
-                  <FacebookCounter />
+                  >
+                    <FacebookSelector
+                      iconSize={20}
+                      onSelect={(select) => {
+                        console.log(select);
+                        callbackend(select);
+                        // toast.info("🦄 Cool reaction!", {
+                        //   position: "top-right",
+                        //   autoClose: 1000,
+                        //   hideProgressBar: false,
+                        //   closeOnClick: true,
+                        //   pauseOnHover: true,
+                        //   draggable: true,
+                        //   progress: undefined,
+                        // });
+                      }}
+                    />{" "}
+                  </Popover>
+
+                  <Button
+                    onClick={(e) => {
+                      setAnchorEl(e.currentTarget);
+                    }}
+                    style={{ float: "right" }}
+                  >
+                    <FacebookCounter />
+                  </Button>
                 </div>
               </Grid>
             </Grid>
