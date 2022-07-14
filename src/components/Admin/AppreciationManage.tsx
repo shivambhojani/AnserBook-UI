@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import "./AppreciationManage.css";
 import Button from "@mui/material/Button";
@@ -6,6 +6,8 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { ReactElement } from "react";
 import { useState } from "react";
+import axios from "axios";
+import httpClient from "../../thunk/interceptor";
 
 let bestAnswerPoints: any; //Hook to store points
 let setBestAnswerPoints: any; //Hook to store points
@@ -24,7 +26,16 @@ function AppreciationManage() {
   [commentPoints, setCommentPoints] = useState("");
   [likePoints, setLikePoints] = useState("");
   [postPoints, setPostPoints] = useState("");
-  [editMode, setEditMode] = useState("YES");
+  [editMode, setEditMode] = useState("NO");
+
+  useEffect(() => {
+    httpClient.get("/appreciation/2322").then(function (response) {
+      setCommentPoints(response.data.appreciation.commentsScore);
+      setLikePoints(response.data.appreciation.likesScore);
+      setBestAnswerPoints(response.data.appreciation.bestAnswerScore);
+      setPostPoints(response.data.appreciation.postsScore);
+    });
+  }, []);
 
   return (
     <Box className="Box">
@@ -37,6 +48,16 @@ const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
   // Preventing the page from reloading
   event.preventDefault();
   setEditMode("NO");
+  const body = {
+    userId: 2322,
+    likesScore: likePoints,
+    commentsScore: commentPoints,
+    bestAnswerScore: bestAnswerPoints,
+    postsScore: postPoints,
+  };
+  httpClient.put("/appreciation", body).then(function (response) {
+    alert("done");
+  });
 };
 
 const BodyContent: React.FC = (): ReactElement => {
@@ -54,10 +75,6 @@ const BodyContent: React.FC = (): ReactElement => {
         <div className="DivText">
           <label>Points for Liking Posts</label>
           <h2 className="ValueLabel">{likePoints}</h2>
-        </div>
-        <div>
-          <label>Points for Adding Posts</label>
-          <h2 className="ValueLabel">{postPoints}</h2>
         </div>
         <div>
           <label>Points for Adding Posts</label>
