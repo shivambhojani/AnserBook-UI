@@ -6,68 +6,72 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Card,
+  CardContent,
 } from "@mui/material";
 import Feed from "./Feed";
 import { Container } from "@mui/system";
 import Employee from "./Employee";
 import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
+import axios from "axios";
+import { BackendURL } from "../../data/constants";
 
 function Feeds() {
   const classes = useStyles();
-  const [feeds, setFeeds] = React.useState([
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "Februrary 28, 2022",
-      image: "./assets/Post.png",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Social",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "HB",
-      username: "Hardik Bhatt",
-      date: "Februrary 28, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "DS",
-      username: "Donna Singh",
-      date: "Februrary 29, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Social",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "AS",
-      username: "Aadesh Shah",
-      date: "January 28, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "BS",
-      username: "Bhushan Singh",
-      date: "Februrary 28, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-  ]);
+  // const [feeds, setFeeds] = React.useState([
+  //   {
+  //     initials: "SB",
+  //     username: "Shivangi Bhatt",
+  //     date: "Februrary 28, 2022",
+  //     image: "./assets/Post.png",
+  //     question:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+  //     tags: ["Tag1", "Tag2", "Tag3"],
+  //     type: "Social",
+  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+  //   },
+  //   {
+  //     initials: "HB",
+  //     username: "Hardik Bhatt",
+  //     date: "Februrary 28, 2022",
+  //     question:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+  //     tags: ["Tag1", "Tag2", "Tag3"],
+  //     type: "Technical",
+  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+  //   },
+  //   {
+  //     initials: "DS",
+  //     username: "Donna Singh",
+  //     date: "Februrary 29, 2022",
+  //     question:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+  //     tags: ["Tag1", "Tag2", "Tag3"],
+  //     type: "Social",
+  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+  //   },
+  //   {
+  //     initials: "AS",
+  //     username: "Aadesh Shah",
+  //     date: "January 28, 2022",
+  //     question:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+  //     tags: ["Tag1", "Tag2", "Tag3"],
+  //     type: "Technical",
+  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+  //   },
+  //   {
+  //     initials: "BS",
+  //     username: "Bhushan Singh",
+  //     date: "Februrary 28, 2022",
+  //     question:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
+  //     tags: ["Tag1", "Tag2", "Tag3"],
+  //     type: "Technical",
+  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
+  //   },
+  // ]);
   const [employees, setEmployees] = React.useState([
     {
       username: "Shivangi Bhatt",
@@ -93,11 +97,22 @@ function Feeds() {
       badge: "Silver",
     },
   ]);
-
-  const [filter, setFilter] = useState("");
+  const [feeds, setFeeds] = React.useState([]);
+  const [filter, setFilter] = useState("all");
+  useEffect(() => {
+    axios
+      .get(BackendURL + "feeds/" + filter)
+      .then((res) => {
+        setFeeds(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [filter]);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     setFilter(event.target.value);
+    // console.log("event.target.value", event.target.value);
   };
   return (
     <>
@@ -122,7 +137,7 @@ function Feeds() {
                   onChange={handleFilterChange}
                   label="Filter"
                 >
-                  <MenuItem value="">
+                  <MenuItem value="All">
                     <em>All</em>
                   </MenuItem>
                   <MenuItem value={"hotTopics"}>Hot Topics</MenuItem>
@@ -132,9 +147,22 @@ function Feeds() {
                 </Select>
               </FormControl>
             </div>
-            {feeds.map((feed: any) => (
-              <Feed {...feed} />
-            ))}
+            {feeds.length > 0 ? (
+              feeds.map((feed: any) => <Feed {...feed} />)
+            ) : (
+              <Card color="red">
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    align="center"
+                    // className={classes.text}
+                  >
+                    No Posts found
+                  </Typography>
+                </CardContent>
+              </Card>
+            )}
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography variant="h5" component="div" style={{ margin: "20px" }}>
