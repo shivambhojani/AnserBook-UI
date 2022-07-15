@@ -19,12 +19,14 @@ const Form = (props: any): any => {
   const navigate = useNavigate();
 
   function login() {
+    localStorage.setItem("userID", "hp@gmail.com");
     setLoggedIn(true);
-     if (values.email === "admin@xyz.com") {
+    if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
     } else {
       navigate("/feeds");
-    }  }
+    }
+  }
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -79,8 +81,10 @@ const Form = (props: any): any => {
               </div>
               {err.password && <p className="help is-danger">{err.password}</p>}
             </div>
-             <Link to='/forgot-password'>
-              <p className="mt-2" style={{textAlign:"center"}}>Forgot Password?</p>
+            <Link to="/forgot-password">
+              <p className="mt-2" style={{ textAlign: "center" }}>
+                Forgot Password?
+              </p>
             </Link>
             <button
               type="submit"
@@ -89,8 +93,10 @@ const Form = (props: any): any => {
             >
               Submit
             </button>
-            <Link to='/register'>
-              <p className="mt-5" style={{textAlign:"center"}}>Create New Account ?</p>
+            <Link to="/register">
+              <p className="mt-5" style={{ textAlign: "center" }}>
+                Create New Account ?
+              </p>
             </Link>
           </form>
         </div>
