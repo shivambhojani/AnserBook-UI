@@ -31,16 +31,12 @@ export default function MyAccount() {
   },[])
 
   const fetchPosts = ():void => {
-     UtilityUser().then(function (response) {
-      setUserId(response.user._id);
-      console.log('User Id------>',userId);
-      axios.get('https://csci5709-answerme-backend.herokuapp.com/posts/'+response.user._id).then(result => {
+    axios.get(`https://csci5709-answerme-backend.herokuapp.com/posts/62d0919a99fa533dda996089`).then(result => {
       console.log(result.data.posts);
       setPosts(result.data.posts);
-      }).catch(err => {
+    }).catch(err => {
       console.error(err);
     })
-    });
   }
   
   return (
