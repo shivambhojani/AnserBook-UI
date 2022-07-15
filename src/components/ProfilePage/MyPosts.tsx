@@ -11,17 +11,23 @@ import { CardActionArea, Menu, MenuItem } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import moment from "moment";
+import axios from 'axios';
 
 interface post {
   initials: string;
   image?: any;
   username: string;
-  date: string;
-  question: string;
-  shortQuestion: string;
+  createdOn: string;
+  body: string;
+  topic: string;
   tags: Array<string>;
   type: string;
+  user: any;
+  _id: string;
+  reactions: any;
 }
+
 
 /*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
 const style = {
@@ -39,22 +45,28 @@ const style = {
 };
 
 function MyPosts(props: post) {
+  
   const classes = useStyles();
   const navigate = useNavigate();
 
   const handleDeleteOpenOption = () => setDel(true);
   const handleDeleteCloseOption = () => setDel(false);
 
-  const [feed, setFeed] = useState({
-    initials: props.initials,
-    username: props.username,
-    date: props.date,
-    question: props.question,
-    shortQuestion: props.shortQuestion,
+
+  const [post, setPost] = useState({
+    _id: props._id,
+    initials: props.user.firstname.charAt(0) + props.user.lastname.charAt(0),
+    username: props.user.firstname + " " + props.user.lastname,
+    createdOn: props.createdOn,
+    body: props.body,
+    topic: props.topic,
     tags: props.tags,
     type: props.type,
-    image: props.image
+    image: props.image,
+    user: props.user,
+    reactions: props.reactions,
   });
+
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
   }
@@ -64,6 +76,8 @@ function MyPosts(props: post) {
   );
 
   const [del, setDel] = React.useState(false);
+
+  const [id, setId] = React.useState();
 
   const open = Boolean(anchorElement);
 
@@ -76,12 +90,21 @@ function MyPosts(props: post) {
   };
 
   const handleEdit = () => {
-    navigate("/editpost");
+    console.log({post})
+    navigate("/editpost", {state: post});
   };
 
-  const handleDelete = () => {
+  const handleDelete = (id:string) => {
     console.log("delete");
-    setDel(true);
+    console.log(id);
+    //setDel(true);
+
+    axios.delete(`https://csci5709-answerme-backend.herokuapp.com/posts/deletePost/`+id)
+      .then(res => {
+        console.log(res);
+      })
+
+    navigate("/feeds");
   };
 
   return (
@@ -101,14 +124,14 @@ function MyPosts(props: post) {
           <div className={classes.tags}>
             <div>
               <Typography gutterBottom variant="h5">
-                {props.shortQuestion}
+                {props.topic}
               </Typography>
               <Typography
                 variant="body2"
                 component="div"
                 color="text.secondary"
               >
-                {props.date}
+                {moment(props.createdOn).format("MMM Do YYYY")}
               </Typography>
             </div>
 
@@ -130,12 +153,12 @@ function MyPosts(props: post) {
 
           <Menu anchorEl={anchorElement} open={open} onClose={handleCloseMenu}>
             <MenuItem onClick={handleEdit}>Edit</MenuItem>
-            <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            <MenuItem onClick={ () => handleDelete(post._id)}>Delete</MenuItem>
           </Menu>
         </div>
         <CardActionArea>
           <Typography gutterBottom variant="body2">
-            {props.question}
+            {props.body}
           </Typography>
           {props.image ? <img src={props.image} height="200px" /> : null}
         </CardActionArea>
