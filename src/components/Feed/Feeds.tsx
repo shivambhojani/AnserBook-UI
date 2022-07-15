@@ -16,6 +16,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
 import { BackendURL } from "../../data/constants";
+import UtilityUser from "../Utility/UtilityUser";
 
 function Feeds() {
   const classes = useStyles();
@@ -100,23 +101,31 @@ function Feeds() {
   const [feeds, setFeeds] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
+
+  // get the user details to check out the bookmark lists
+  useEffect(() => {
+    UtilityUser().then(function (response) {
+      console.log("User fetched for bms:", response.user);
+    });
+  }, []);
+
   useEffect(() => {
     httpClient
       .get("/feeds/feeds/" + filter)
-      .then((res) => {
+      .then(res => {
         setFeeds(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, [filter]);
   useEffect(() => {
     httpClient
       .get("/feeds/getStarEmployees")
-      .then((res) => {
+      .then(res => {
         setEmployees(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);
