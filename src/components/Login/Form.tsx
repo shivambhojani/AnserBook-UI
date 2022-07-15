@@ -7,8 +7,24 @@ import { Link } from "react-router-dom";
 import { Grid, Typography, Box } from "@mui/material";
 import logo from "../../assets/app-logo.png";
 import Paper from "@mui/material/Paper";
+import httpClient from "../../thunk/interceptor";
 
 const Form = (props: any): any => {
+  const submitHandler = () => {
+    httpClient
+      .post("/auth/login", {
+        email: values.email,
+        password: values.password,
+      })
+      .then(function (response) {
+        localStorage.setItem("token", "Bearer " + response.data.token);
+        localStorage.setItem("userID", values.email);
+
+        console.log(`EMAILD` + localStorage.getItem("userID"));
+        console.log(`BEARER::::` + localStorage.getItem("token"));
+      });
+  };
+
   const {
     values,
     errors: err,
@@ -20,11 +36,12 @@ const Form = (props: any): any => {
 
   function login() {
     setLoggedIn(true);
-     if (values.email === "admin@xyz.com") {
+    if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
     } else {
       navigate("/feeds");
-    }  }
+    }
+  }
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -79,18 +96,22 @@ const Form = (props: any): any => {
               </div>
               {err.password && <p className="help is-danger">{err.password}</p>}
             </div>
-             <Link to='/forgot-password'>
-              <p className="mt-2" style={{textAlign:"center"}}>Forgot Password?</p>
+            <Link to="/forgot-password">
+              <p className="mt-2" style={{ textAlign: "center" }}>
+                Forgot Password?
+              </p>
             </Link>
             <button
               type="submit"
               className="button is-block is-info is-fullwidth"
-              // onClick={submitHandler()}
+              onClick={() => submitHandler()}
             >
               Submit
             </button>
-            <Link to='/register'>
-              <p className="mt-5" style={{textAlign:"center"}}>Create New Account ?</p>
+            <Link to="/register">
+              <p className="mt-5" style={{ textAlign: "center" }}>
+                Create New Account ?
+              </p>
             </Link>
           </form>
         </div>

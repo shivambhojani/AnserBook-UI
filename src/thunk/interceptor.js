@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_BASE_URL,
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:5000"
+      : process.env.REACT_APP_SERVER_BASE_URL,
 });
 
 httpClient.interceptors.request.use(async function (config) {
@@ -17,9 +20,9 @@ httpClient.interceptors.response.use(
   async function (config) {
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error.response.data);
-  }
+  },
 );
 
 export default httpClient;
