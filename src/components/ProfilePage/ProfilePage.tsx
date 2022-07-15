@@ -11,7 +11,7 @@ import "./ProfilePage.css";
 import { Container } from "@mui/system";
 
 import CountrySelect from "./CountrySelect";
-import React from "react";
+import React, { useEffect } from "react";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
@@ -28,6 +28,13 @@ const Input = styled("input")({
 });
 
 const ProfilePage = () => {
+
+  useEffect(()=>{
+    const loggedInUserEmailId = localStorage.getItem("userID");
+    console.log(loggedInUserEmailId)
+    
+  });
+
   const [dob, setdob] = React.useState<Date | null>(null);
 
   const handleChange = (newValue: Date | null) => {
