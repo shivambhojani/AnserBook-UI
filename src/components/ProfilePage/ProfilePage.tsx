@@ -72,7 +72,6 @@ const ProfilePage = () => {
 
   useEffect(() => {
 
-
     httpClient.get("/userprofile/currentuser?email=" + loggedInUserEmailId).then((res) => {
       console.log(res.data);
       setfirstname(res.data.user.firstname);
