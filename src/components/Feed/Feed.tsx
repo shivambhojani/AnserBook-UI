@@ -62,12 +62,6 @@ function Feed(props: feed) {
     UtilityUser().then(function (response) {
       setUserId(response.user._id);
       setSubscribed(response.user.subscribedTo.includes(props.user._id));
-      console.log(
-        "user details::" + response.user.subscribedTo,
-        props.user._id,
-        "   " + response.user.subscribedTo.includes(props.user._id)
-      );
-      console.log("props", props);
     });
   }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
@@ -87,7 +81,6 @@ function Feed(props: feed) {
       },
     });
   };
-  console.log("subscribed", subscribed);
 
   const callbackend = (select: any) => {
     console.log(select);
@@ -99,7 +92,7 @@ function Feed(props: feed) {
       })
       .then((res) => {
         console.log(res.data.message);
-        window.location.reload();
+        navigate(0);
       })
       .catch((err) => {
         console.log(err);
@@ -125,6 +118,9 @@ function Feed(props: feed) {
         SubscribeToUserId: props.user._id,
       })
       .then((res) => {
+        setSubscribed(true);
+        navigate(0);
+
         console.log(res.data.message);
       })
       .catch((err) => {
@@ -138,6 +134,9 @@ function Feed(props: feed) {
         SubscribeToUserId: props.user._id,
       })
       .then((res) => {
+        setSubscribed(false);
+        navigate(0);
+
         console.log(res.data.message);
       })
       .catch((err) => {
@@ -209,14 +208,17 @@ function Feed(props: feed) {
 
           <div className={classes.lastRow}>
             <Grid container spacing={2}>
-              <Grid item md={4} xs={12}>
-                <div className={classes.tags}>
-                  {" "}
-                  {props.tags.map((tag) => (
-                    <Chip label={tag} className={classes.tag} />
-                  ))}
-                </div>
-              </Grid>
+              {props.tags.length > 0 ? (
+                <Grid item md={4} xs={12}>
+                  <div className={classes.tags}>
+                    {" "}
+                    {props.tags.map((tag) => (
+                      <Chip label={tag} className={classes.tag} />
+                    ))}
+                  </div>
+                </Grid>
+              ) : null}
+
               <Grid item md={4} xs={12}>
                 <div className={classes.tags}>
                   <BookmarkSelector />

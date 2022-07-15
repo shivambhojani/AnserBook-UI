@@ -9,19 +9,19 @@ const Form = () => {
     errors: err,
     handleChange: manageChanges,
     handleSubmit: onsubmit,
-  }:any = useForm(login, validate);
+  }: any = useForm(login, validate);
 
   const navigate = useNavigate();
 
   function login() {
-    navigate("/")
+    navigate("/");
   }
 
   return (
     <div className="section hightlight">
       <div className="container">
         <div className="column is-6 is-offset-3">
-          <div className="box">
+          <div className="">
             <h1>Register</h1>
             <form onSubmit={onsubmit} noValidate>
               <div className="attributes">
