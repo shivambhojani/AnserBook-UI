@@ -3,39 +3,53 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { Chip, Avatar, IconButton, Grid } from "@mui/material";
+import { Chip, Avatar, IconButton, Grid, Button, Popover } from "@mui/material";
 import useStyles from "./Style";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { CardActionArea, Menu, MenuItem } from "@mui/material";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkSelector from "../BookmarkSelector/BookmarkSelector";
-import { FacebookSelector } from "@charkour/react-reactions";
+import { FacebookSelector, FacebookCounter } from "@charkour/react-reactions";
 import { ToastContainer, toast } from "react-toastify";
+import moment from "moment";
 import "react-toastify/dist/ReactToastify.css";
+import httpClient from "../../thunk/interceptor";
+
 interface feed {
   initials: string;
   image?: any;
   username: string;
-  date: string;
-  question: string;
-  shortQuestion: string;
+  createdOn: string;
+  body: string;
+  topic: string;
   tags: Array<string>;
   type: string;
+  user: any;
+  _id: string;
+  reactions: any;
 }
 
 function Feed(props: feed) {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [emojiSelector, setEmojiSelector] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
   const [feed, setFeed] = useState({
-    initials: props.initials,
-    username: props.username,
-    date: props.date,
-    question: props.question,
-    shortQuestion: props.shortQuestion,
+    _id: props._id,
+    initials: props.user.firstname.charAt(0) + props.user.lastname.charAt(0),
+    username: props.user.firstname + " " + props.user.lastname,
+    createdOn: props.createdOn,
+    body: props.body,
+    topic: props.topic,
     tags: props.tags,
     type: props.type,
     image: props.image,
+    user: props.user,
+    reactions: props.reactions,
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
@@ -59,6 +73,26 @@ function Feed(props: feed) {
     });
   };
 
+  const callbackend = (select: any) => {
+    console.log(select);
+    httpClient
+      .post("/feeds/addReactions/" + props._id, {
+        reaction: select,
+        userId: "62cf74a88ae652bb3c6cd3b4",
+        userName: "kb bhim",
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
     <>
@@ -67,18 +101,21 @@ function Feed(props: feed) {
         <CardContent>
           <div className={classes.flex}>
             <div className={classes.tags}>
-              <Avatar className={classes.avatar}>{props.initials}</Avatar>
+              <Avatar className={classes.avatar}>
+                {props.user.firstname.charAt(0).toUpperCase() +
+                  props.user.lastname.charAt(0).toUpperCase()}
+              </Avatar>
 
               <div>
                 <Typography variant="h5" component="div">
-                  {props.username}
+                  {props.user.firstname + " " + props.user.lastname}
                 </Typography>
                 <Typography
                   variant="body2"
                   component="div"
                   color="text.secondary"
                 >
-                  {props.date}
+                  {moment(props.createdOn).format("MMM Do YYYY")}
                 </Typography>
               </div>
 
@@ -107,10 +144,10 @@ function Feed(props: feed) {
           </div>
           <CardActionArea onClick={redirectToPost}>
             <Typography gutterBottom variant="h5">
-              {props.shortQuestion}
+              {props.topic}
             </Typography>
             <Typography gutterBottom variant="body2">
-              {props.question}
+              {props.body}
             </Typography>
             {props.image ? (
               <img src={props.image} style={{ height: "200px" }} />
@@ -119,7 +156,7 @@ function Feed(props: feed) {
 
           <div className={classes.lastRow}>
             <Grid container spacing={2}>
-              <Grid item md={3} xs={12}>
+              <Grid item md={4} xs={12}>
                 <div className={classes.tags}>
                   {" "}
                   {props.tags.map((tag) => (
@@ -134,19 +171,44 @@ function Feed(props: feed) {
               </Grid>
               <Grid item md={4} xs={12}>
                 <div className={classes.end}>
-                  <FacebookSelector
-                    onSelect={() => {
-                      toast.info("🦄 Cool reaction!", {
-                        position: "top-right",
-                        autoClose: 1000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                      });
+                  <Popover
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "left",
                     }}
-                  />
+                  >
+                    <FacebookSelector
+                      iconSize={20}
+                      onSelect={(select) => {
+                        console.log(select);
+                        callbackend(select);
+                        // toast.info("🦄 Cool reaction!", {
+                        //   position: "top-right",
+                        //   autoClose: 1000,
+                        //   hideProgressBar: false,
+                        //   closeOnClick: true,
+                        //   pauseOnHover: true,
+                        //   draggable: true,
+                        //   progress: undefined,
+                        // });
+                      }}
+                    />{" "}
+                  </Popover>
+
+                  <Button
+                    onClick={(e) => {
+                      setAnchorEl(e.currentTarget);
+                    }}
+                    style={{ float: "right" }}
+                  >
+                    <FacebookCounter
+                      counters={props.reactions}
+                      alwaysShowOthers={true}
+                    />
+                  </Button>
                 </div>
               </Grid>
             </Grid>
