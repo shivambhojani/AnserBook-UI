@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import moment from "moment";
 import axios from 'axios';
+import { Container } from "@mui/system";
 
 interface post {
   initials: string;
@@ -45,7 +46,7 @@ const style = {
 };
 
 function MyPosts(props: post) {
-  
+
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -109,6 +110,7 @@ function MyPosts(props: post) {
 
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
+    <Container className="mt-3">
     <Card sx={{ margin: 2, boxShadow: 2, gap: 2, borderRadius: 2 }}>
       <div>
         <Modal open={del} onClose={handleDeleteCloseOption}>
@@ -174,6 +176,7 @@ function MyPosts(props: post) {
         </div>
       </CardContent>
     </Card>
+    </Container>
   );
 }
 

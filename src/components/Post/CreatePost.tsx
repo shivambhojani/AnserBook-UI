@@ -34,16 +34,16 @@ const CreatePost = () => {
   const [del, setDel] = React.useState(false);
 
   const [tags, setTags] = React.useState<string[]>();
-  const [errorstags, setErrostags] = React.useState<{ tags: string }>();
 
   const [topic, setTopic] = React.useState<string>();
-  const [errorstopic, setErrostopic] = React.useState<{ topic: string }>();
+  const [errorstopic, setErrostopic] = React.useState<{ name: string }>();
 
   const [body, setBody] = React.useState<string>();
-  const [errorsbody, setErrosbody] = React.useState<{ body: string }>();
+  const [errorsbody, setErrosbody] = React.useState<{ name: string }>();
 
   const [type, setType] = React.useState('');
-  
+  const [errorstype, setErrostype] = React.useState<{ name: string }>();
+
   const [userId, setUserId] = useState();
 
   useEffect(() => {
@@ -60,24 +60,61 @@ const CreatePost = () => {
   };
 
   const postClick = () => {
-      const postBody = { 
-      "userId": userId ,  
-      "topic": topic,  
-      "body": body,  
-      "tags": tags,  
-      "type": type, 
-      "reactions":[],  
-      "__v": 0
+
+    setErrostopic({name: ""});
+    setErrosbody({name: ""});
+    setErrostype({name: ""});
+
+    let err:number = 0;
+
+    let str = topic || "";
+    let result1 = typeof str === "string" ? str.trim() : "";
+    if (result1.length === 0) {
+      setErrostopic({ name: "Topic cannot be empty" });
+      err = err + 1;
+    }else if (result1.length < 15){
+      setErrostopic({ name: "Topic should have atleast 15 characters" });
+      err = err + 1;
     }
-    
-    console.log(postBody);
 
-    axios.post(`https://csci5709-answerme-backend.herokuapp.com/posts/savePost`, postBody)
-      .then(res => {
-        console.log(res);
-      })
+    str = body || "";
+    result1 = typeof str === "string" ? str.trim() : "";
+    if (result1.length === 0) {
+      setErrosbody({ name: "Body cannot be empty" });
+      err = err + 1;
+    }else if (result1.length < 30){
+      setErrosbody({ name: "Body should have atleast 30 characters" });
+      err = err + 1;
+    }
 
-    navigate("/feeds");
+    str = type || "";
+    result1 = typeof str === "string" ? str.trim() : "";
+    if (result1.length === 0) {
+      setErrostype({ name: "Type cannot be empty" });
+      err = err + 1;
+    }
+
+    if (err === 0) {
+      const postBody = {
+        "userId": userId ,
+        "topic": topic,
+        "body": body,
+        "tags": tags,
+        "type": type,
+        "reactions":[],
+        "__v": 0
+      }
+
+      console.log(postBody);
+
+      axios.post(`https://csci5709-answerme-backend.herokuapp.com/posts/savePost`, postBody)
+        .then(res => {
+          console.log(res);
+        })
+
+      navigate("/feeds");
+    }
+
   };
 
   const discardClick = () => {
@@ -100,24 +137,6 @@ const CreatePost = () => {
 
   return (
     <Grid container spacing={4} alignItems="center" justifyContent="center">
-      <div>
-        <Modal open={del} onClose={handleDeleteCloseOption}>
-          <Box sx={style}>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              This post is now visible to public.
-            </Typography>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              Topic: {topic}
-            </Typography>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              Body: {body}
-            </Typography>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              Tags: {tags}
-            </Typography>
-          </Box>
-        </Modal>
-      </div>
       <Grid item xs={12} md={7}>
         <Stack
           className="divProfileFields"
@@ -151,6 +170,8 @@ const CreatePost = () => {
                   placeholder="e.g. what are wireframes?"
                   name="topic"
                   autoFocus
+                  error={Boolean(errorstopic?.name)}
+                  helperText={errorstopic?.name}
                 />
               </Stack>
               <Stack spacing={2}>
@@ -167,6 +188,8 @@ const CreatePost = () => {
                   multiline
                   rows={6}
                   id="body"
+                  error={Boolean(errorsbody?.name)}
+                  helperText={errorsbody?.name}
                 />
               </Stack>
               <Stack spacing={2}>
@@ -192,6 +215,7 @@ const CreatePost = () => {
                     value={type}
                     label="Type"
                     onChange={handleChangeInType}
+                    error={Boolean(errorstype?.name)}
                   >
                     <MenuItem value={'Social'}>Social</MenuItem>
                     <MenuItem value={'Technical'}>Technical</MenuItem>
