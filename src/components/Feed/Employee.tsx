@@ -7,6 +7,7 @@ import useStyles from "./Style";
 
 export default function Employee(props: any) {
   const classes = useStyles();
+  console.log("props", props);
 
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
