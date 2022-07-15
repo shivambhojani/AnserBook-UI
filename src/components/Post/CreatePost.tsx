@@ -1,6 +1,6 @@
 import { Stack, TextField } from "@mui/material";
 import { Typography, Grid, Button } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TagsInput } from "react-tag-input-component";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -11,6 +11,7 @@ import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import UtilityUser from "../Utility/UtilityUser";
 
 /*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
 const style = {
@@ -42,6 +43,15 @@ const CreatePost = () => {
   const [errorsbody, setErrosbody] = React.useState<{ body: string }>();
 
   const [type, setType] = React.useState('');
+  
+  const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    UtilityUser().then(function (response) {
+      setUserId(response.user._id);
+      console.log('User Id------>',userId);
+    });
+  }, []);
 
   const handleDeleteCloseOption = () => setDel(false);
 
@@ -51,7 +61,7 @@ const CreatePost = () => {
 
   const postClick = () => {
       const postBody = { 
-      "userId": "62d0919a99fa533dda996089" ,  
+      "userId": userId ,  
       "topic": topic,  
       "body": body,  
       "tags": tags,  
