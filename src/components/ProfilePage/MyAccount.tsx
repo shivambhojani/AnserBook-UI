@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Grid, Tabs } from "@mui/material";
+import { Box, Grid, Tabs,Typography,Card, CardContent } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -11,37 +11,31 @@ import AnalyticsAppreciation from "../Appreciation/AnalyticsAppreciation";
 import { Container } from "@mui/system";
 import MyPosts from "./MyPosts";
 import MyBookmarkLists from "../BookmarksList/MyBookmarkLists";
+import axios from 'axios';
 
 export default function MyAccount() {
   const [value, setValue] = React.useState("1");
+  
+  const [posts, setPosts] = React.useState([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-  const [posts, setPosts] = React.useState([
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "Februrary 28, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Social",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-    {
-      initials: "SB",
-      username: "Shivangi Bhatt",
-      date: "Februrary 29, 2022",
-      question:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-      tags: ["Tag1", "Tag2", "Tag3"],
-      type: "Technical",
-      shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-    },
-  ]);
+ 
+  React.useEffect(() => {
+    fetchPosts();
+  },[])
 
+  const fetchPosts = ():void => {
+    axios.get(`https://csci5709-answerme-backend.herokuapp.com/posts/62d0919a99fa533dda996089`).then(result => {
+      console.log(result.data.posts);
+      setPosts(result.data.posts);
+    }).catch(err => {
+      console.error(err);
+    })
+  }
+  
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
       <TabContext value={value}>
@@ -69,9 +63,22 @@ export default function MyAccount() {
         <TabPanel value="2">
           <Container>
             <Grid container spacing={2}>
-              {posts.map((post: any) => (
-                <MyPosts key={post.date} {...post} />
-              ))}
+              {posts.length > 0 ? (
+				  posts.map((post: any) => <MyPosts {...post}/>)
+				  ) : (
+				  <Card color="red">
+					<CardContent>
+					  <Typography
+						gutterBottom
+						variant="h6"
+						align="center"
+						// className={classes.text}
+					  >
+						No Posts found
+					  </Typography>
+					</CardContent>
+				  </Card>
+				)}
             </Grid>{" "}
           </Container>
         </TabPanel>
