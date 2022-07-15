@@ -93,6 +93,33 @@ function Feed(props: feed) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const subscribe = () => {
+    httpClient
+      .post("/subscribeUser", {
+        loggedInUserId: "62cf74a88ae652bb3c6cd3b4",
+        SubscribeToUserId: props.user._id,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const unSubscribe = () => {
+    httpClient
+      .post("/unSubscribeUser", {
+        loggedInUserId: "62cf74a88ae652bb3c6cd3b4",
+        SubscribeToUserId: props.user._id,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
     <>

@@ -14,13 +14,13 @@ export default function Employee(props: any) {
       <CardMedia
         component="img"
         height="140"
-        image={props.image}
+        image={props.image ? props.image : "./assets/userImage.jpg"}
         alt="green iguana"
       />
       <CardContent>
         <div className={classes.flex}>
           <Typography variant="h5" component="div">
-            {props.username}
+            {props.user.firstname + " " + props.user.lastname}
           </Typography>
           <Button>Subscribe</Button>
         </div>
@@ -28,7 +28,7 @@ export default function Employee(props: any) {
           {props.info}
         </Typography>
         <div className={classes.lastRow}>
-          <div>Score: {props.score}</div>
+          <div>Score: {props.totalScore}</div>
           <div>Badge: {props.badge}</div>
         </div>
       </CardContent>
