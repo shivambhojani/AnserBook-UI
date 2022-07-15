@@ -6,7 +6,6 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { ReactElement } from "react";
 import { useState } from "react";
-import axios from "axios";
 import httpClient from "../../thunk/interceptor";
 
 let bestAnswerPoints: any; //Hook to store points
@@ -29,7 +28,7 @@ function AppreciationManage() {
   [editMode, setEditMode] = useState("NO");
 
   useEffect(() => {
-    httpClient.get("/appreciation/2322").then(function (response) {
+    httpClient.get("/offerscore").then(function (response) {
       setCommentPoints(response.data.appreciation.commentsScore);
       setLikePoints(response.data.appreciation.likesScore);
       setBestAnswerPoints(response.data.appreciation.bestAnswerScore);
@@ -49,15 +48,12 @@ const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   setEditMode("NO");
   const body = {
-    userId: 2322,
     likesScore: likePoints,
     commentsScore: commentPoints,
     bestAnswerScore: bestAnswerPoints,
     postsScore: postPoints,
   };
-  httpClient.put("/appreciation", body).then(function (response) {
-    alert("done");
-  });
+  httpClient.put("/offerscore", body).then(function (response) {});
 };
 
 const BodyContent: React.FC = (): ReactElement => {
