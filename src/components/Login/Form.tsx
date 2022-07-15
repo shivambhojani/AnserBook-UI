@@ -10,21 +10,20 @@ import Paper from "@mui/material/Paper";
 import httpClient from "../../thunk/interceptor";
 
 const Form = (props: any): any => {
-
-  const submitHandler = () =>{
- 
-    httpClient.post("/auth/login",{
+  const submitHandler = () => {
+    httpClient
+      .post("/auth/login", {
         email: values.email,
-        password: values.password
-      }).then(function (response){
-        localStorage.setItem("token","Bearer "+response.data.token)
-      localStorage.setItem("userID", values.email);
-
-      console.log(`EMAILD`+localStorage.getItem("userID"));
-      console.log(`BEARER::::`+localStorage.getItem("token"));
-        
+        password: values.password,
       })
-  }
+      .then(function (response) {
+        localStorage.setItem("token", "Bearer " + response.data.token);
+        localStorage.setItem("userID", values.email);
+
+        console.log(`EMAILD` + localStorage.getItem("userID"));
+        console.log(`BEARER::::` + localStorage.getItem("token"));
+      });
+  };
 
   const {
     values,
@@ -36,7 +35,6 @@ const Form = (props: any): any => {
   const navigate = useNavigate();
 
   function login() {
-    localStorage.setItem("userID", "sd@gmail.com");
     setLoggedIn(true);
     if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
@@ -106,7 +104,7 @@ const Form = (props: any): any => {
             <button
               type="submit"
               className="button is-block is-info is-fullwidth"
-              onClick={()=>submitHandler()}
+              onClick={() => submitHandler()}
             >
               Submit
             </button>
