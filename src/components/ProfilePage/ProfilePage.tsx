@@ -11,9 +11,11 @@ import "./ProfilePage.css";
 import { Container } from "@mui/system";
 
 import CountrySelect from "./CountrySelect";
-import React from "react";
+import React, { useEffect } from "react";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import httpClient from "../../thunk/interceptor";
+import { SendToMobile } from "@mui/icons-material";
 
 const MyComponent = styled("div")({
   color: "white",
@@ -27,29 +29,34 @@ const Input = styled("input")({
   display: "none",
 });
 
-const ProfilePage = () => {
-  const [dob, setdob] = React.useState<Date | null>(null);
 
-  const handleChange = (newValue: Date | null) => {
-    setdob(newValue);
-  };
+
+const ProfilePage = () => {
+  const loggedInUserEmailId = localStorage.getItem("userID");
+  console.log('email', loggedInUserEmailId)
+  
+  const [dob, setdob] = React.useState<Date | null>(null);
 
   const [disable, setDisable] = React.useState(false);
 
   const [phone, setPhone] = React.useState<string>();
   const [errorsphone, setErrosphone] = React.useState<{ name: string }>();
 
-  const [name, setName] = React.useState<string>();
-  const [errorsName, setErrosName] = React.useState<{ name: string }>();
+  const [firstname, setfirstname] = React.useState<string>();
+  const [errorsfirstname, setErrosfirstname] = React.useState<{ name: string }>();
 
-  //const [dob, setdob] = React.useState<Date | null>(null);
-  const [errorsdob, setErrosdob] = React.useState<{ name: string }>();
+
+  const [lastname, setlastname] = React.useState<string>();
+  const [errorslastname, setErroslastname] = React.useState<{ name: string }>();
+
+  const [email, setemail] = React.useState<String>();
+  const [errorsemail, setErrosemail] = React.useState<{ name: string }>();
 
   const [location, setlocation] = React.useState<string>();
   const [errorslocation, setErroslocation] = React.useState<{ name: string }>();
 
-  const [organization, setorganization] = React.useState<string>();
-  const [errorsorganization, setErrosorganization] = React.useState<{
+  const [id, setid] = React.useState<string>();
+  const [errorsid, setErrorsid] = React.useState<{
     name: string;
   }>();
 
@@ -62,19 +69,43 @@ const ProfilePage = () => {
   const [city, setcity] = React.useState<string>();
   const [errorscity, setErroscity] = React.useState<{ name: string }>();
 
+
+
+  useEffect(() => {
+
+    httpClient.get("/userprofile/currentuser?email=" + loggedInUserEmailId).then((res) => {
+      console.log(res.data);
+      setfirstname(res.data.user.firstname);
+      setlastname(res.data.user.lastname);
+      setemail(res.data.user.email);
+      setid(res.data.user._id);
+      setAddress(res.data.user.addressline1);
+      setcity(res.data.user.city);
+      setPhone(res.data.user.mobile);
+      setpin(res.data.user.pinCode)
+
+    })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  }, []);
+
+
   const checkforEmptyValue = (
+
     phone: any,
-    name: any,
-    dob: any,
-    location: any,
-    orgnization: any,
+    firstname: any,
+    lastname: any,
     pin: any,
     address: any,
     city: any
   ) => {
-    setErrosName({ name: "" });
-    setErrosdob({ name: "" });
-    setErrosorganization({ name: "" });
+    console.log("CheckEmptyValue");
+    setErrosfirstname({ name: "" });
+    setErroslastname({ name: "" });
+    setErrosemail({ name: "" });
+    setErrorsid({ name: "" });
     setErroslocation({ name: "" });
     setErrosphone({ name: "" });
 
@@ -87,48 +118,41 @@ const ProfilePage = () => {
       err = err + 1;
     }
 
-    str = name || "";
+    str = firstname || "";
     result1 = typeof str === "string" ? str.trim() : "";
     if (result1.length === 0) {
-      setErrosName({ name: "Full Name cannot be empty" });
+      setErrosfirstname({ name: "First Name cannot be empty" });
       err = err + 1;
     }
 
-    // dob = dob?.toUTCString;
-    // str = dob || '';
-    // result1 = typeof str === 'string' ? str.trim() : '';
-    // if (result1.length === 0) {
-
-    //     setErrosdob({ name: 'DOB cannot be emtpy' })
-    //     err = err + 1;
-    // }
-
-    const input1 = document.getElementById(
-      "location"
-    ) as HTMLInputElement | null;
-    const value1 = input1?.value;
-    str = value1 || "";
+    str = lastname || "";
     result1 = typeof str === "string" ? str.trim() : "";
-
     if (result1.length === 0) {
-      setErroslocation({ name: "Location cannot be emtpy" });
-      err = err + 1;
-    }
-
-    const input = document.getElementById(
-      "organization"
-    ) as HTMLInputElement | null;
-    const value = input?.value;
-    str = value || "";
-    result1 = typeof str === "string" ? str.trim() : "";
-
-    if (result1.length === 0) {
-      setErrosorganization({ name: "Organization Name cannot be emtpy" });
+      setErroslastname({ name: "Last Name cannot be empty" });
       err = err + 1;
     }
 
     if (err === 0) {
-      alert("Information saved successfully");
+      console.log("No Errors")
+      httpClient
+        .put("/userprofile/currentuser?email=" + loggedInUserEmailId, {
+          firstname: firstname,
+          lastname: lastname,
+          addressline1: address,
+          city: city,
+          mobile: phone,
+          pincode: pin
+        })
+        .then((res) => {
+          console.log(res.data);
+          alert("Information Saved Successfully")
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+
     }
   };
 
@@ -150,19 +174,71 @@ const ProfilePage = () => {
     }
   };
 
-  const handleChangeInFullName = (
+  const handleChangeInFirstName = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDisable(false);
     const {
       target: { value },
     } = event;
-    setErrosName({ name: "" });
-    setName(value);
+    setErrosfirstname({ name: "" });
+    setfirstname(value);
     let reg = new RegExp(/^[a-zA-Z][a-zA-Z ]*$/).test(value);
     if (!reg) {
       setDisable(true);
-      setErrosName({ name: "Only Alphabets are allowed with spaces" });
+      setErrosfirstname({ name: "Only Alphabets are allowed with spaces" });
+    }
+  };
+
+  const handleChangeInAddress = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDisable(false);
+    const {
+      target: { value },
+    } = event;
+    setErrosaddress({ name: "" });
+    setAddress(value);
+
+  };
+
+  const handleChangeInPin = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDisable(false);
+    const {
+      target: { value },
+    } = event;
+    setErrospin({ name: "" });
+    setpin(value);
+
+  };
+
+  const handleChangeInCity = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDisable(false);
+    const {
+      target: { value },
+    } = event;
+    setErroscity({ name: "" });
+    setcity(value);
+
+  };
+
+  const handleChangeInLastName = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDisable(false);
+    const {
+      target: { value },
+    } = event;
+    setErroslastname({ name: "" });
+    setlastname(value);
+    let reg = new RegExp(/^[a-zA-Z][a-zA-Z ]*$/).test(value);
+    if (!reg) {
+      setDisable(true);
+      setErroslastname({ name: "Only Alphabets are allowed with spaces" });
     }
   };
 
@@ -173,88 +249,77 @@ const ProfilePage = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
-                label="Full Name"
+                InputLabelProps={{ shrink: true }}
+                label="First Name"
                 id="fullname"
-                onChange={handleChangeInFullName}
+                onChange={handleChangeInFirstName}
                 variant="outlined"
                 required
-                value={name}
-                error={Boolean(errorsName?.name)}
-                helperText={errorsName?.name}
+
+                value={firstname}
+                error={Boolean(errorsfirstname?.name)}
+                helperText={errorsfirstname?.name}
                 fullWidth
               ></TextField>
             </Grid>{" "}
             <Grid item xs={12} md={6}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                  label="Date of birth"
-                  inputFormat="MM/dd/yyyy"
-                  value={dob}
-                  onChange={handleChange}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      error={Boolean(errorsdob?.name)}
-                      helperText={errorsdob?.name}
-                      fullWidth
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </Grid>{" "}
-            <Grid item xs={12} md={6}>
               <TextField
-                required
-                id="organization"
-                label="Organization Name"
+                InputLabelProps={{ shrink: true }}
+                label="Last Name"
+                id="lastname"
+                onChange={handleChangeInLastName}
                 variant="outlined"
-                value={organization}
-                error={Boolean(errorsorganization?.name)}
-                helperText={errorsorganization?.name}
-                fullWidth
-              ></TextField>{" "}
-            </Grid>{" "}
-            <Grid item xs={12} md={6}>
-              <TextField
                 required
-                id="location"
-                label="Location"
-                variant="outlined"
-                value={location}
-                error={Boolean(errorslocation?.name)}
-                helperText={errorslocation?.name}
+                value={lastname}
+                error={Boolean(errorslastname?.name)}
+                helperText={errorslastname?.name}
                 fullWidth
-              ></TextField>{" "}
+              ></TextField>
             </Grid>{" "}
             <Grid item xs={12} md={12}>
               <TextField
+                InputLabelProps={{ shrink: true }}
+                onChange={handleChangeInAddress}
                 label="Address"
                 variant="outlined"
                 value={address}
                 fullWidth
               ></TextField>{" "}
             </Grid>{" "}
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
+                InputLabelProps={{ shrink: true }}
+                onChange={handleChangeInPin}
                 label="Pin"
                 variant="outlined"
                 value={pin}
                 fullWidth
               ></TextField>{" "}
             </Grid>{" "}
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
+                InputLabelProps={{ shrink: true }}
+                onChange={handleChangeInCity}
                 label="City"
                 variant="outlined"
                 value={city}
                 fullWidth
               ></TextField>{" "}
             </Grid>
-            <Grid item xs={12} md={4}>
-              <CountrySelect />{" "}
+            <Grid item xs={12} md={6}>
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                label="Email ID"
+                value={email}
+                variant="outlined"
+                required
+                aria-readonly
+                fullWidth
+              ></TextField>{" "}
             </Grid>{" "}
             <Grid item xs={12} md={6}>
               <TextField
+                InputLabelProps={{ shrink: true }}
                 onChange={handleChangeInMobileNo}
                 label="Mobile No"
                 variant="outlined"
@@ -267,8 +332,9 @@ const ProfilePage = () => {
             </Grid>{" "}
             <Grid item xs={12} md={6}>
               <TextField
+                InputLabelProps={{ shrink: true }}
                 label="Employee ID"
-                value={"1234"}
+                value={id}
                 variant="outlined"
                 required
                 aria-readonly
@@ -283,10 +349,8 @@ const ProfilePage = () => {
                 onClick={() =>
                   checkforEmptyValue(
                     phone,
-                    name,
-                    dob,
-                    location,
-                    organization,
+                    firstname,
+                    lastname,
                     pin,
                     address,
                     city
