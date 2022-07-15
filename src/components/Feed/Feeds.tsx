@@ -14,7 +14,7 @@ import { Container } from "@mui/system";
 import Employee from "./Employee";
 import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
-import axios from "axios";
+import httpClient from "../../thunk/interceptor";
 import { BackendURL } from "../../data/constants";
 
 function Feeds() {
@@ -100,8 +100,8 @@ function Feeds() {
   const [feeds, setFeeds] = React.useState([]);
   const [filter, setFilter] = useState("all");
   useEffect(() => {
-    axios
-      .get(BackendURL + "feeds/" + filter)
+    httpClient
+      .get("/feeds/" + filter)
       .then((res) => {
         setFeeds(res.data.message);
       })
@@ -148,7 +148,7 @@ function Feeds() {
               </FormControl>
             </div>
             {feeds.length > 0 ? (
-              feeds.map((feed: any) => <Feed {...feed} />)
+              feeds.map((feed: any) => <Feed {...feed} filter={filter} />)
             ) : (
               <Card color="red">
                 <CardContent>

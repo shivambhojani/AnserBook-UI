@@ -14,6 +14,8 @@ import { FacebookSelector, FacebookCounter } from "@charkour/react-reactions";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 import "react-toastify/dist/ReactToastify.css";
+import httpClient from "../../thunk/interceptor";
+
 interface feed {
   initials: string;
   image?: any;
@@ -24,6 +26,8 @@ interface feed {
   tags: Array<string>;
   type: string;
   user: any;
+  _id: string;
+  reactions: any;
 }
 
 function Feed(props: feed) {
@@ -35,6 +39,7 @@ function Feed(props: feed) {
   );
 
   const [feed, setFeed] = useState({
+    _id: props._id,
     initials: props.user.firstname.charAt(0) + props.user.lastname.charAt(0),
     username: props.user.firstname + " " + props.user.lastname,
     createdOn: props.createdOn,
@@ -44,6 +49,7 @@ function Feed(props: feed) {
     type: props.type,
     image: props.image,
     user: props.user,
+    reactions: props.reactions,
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
@@ -69,6 +75,19 @@ function Feed(props: feed) {
 
   const callbackend = (select: any) => {
     console.log(select);
+    httpClient
+      .post("/feeds/addReactions/" + props._id, {
+        reaction: select,
+        userId: "62cf74a88ae652bb3c6cd3b4",
+        userName: "kb bhim",
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleClose = () => {
@@ -185,7 +204,10 @@ function Feed(props: feed) {
                     }}
                     style={{ float: "right" }}
                   >
-                    <FacebookCounter />
+                    <FacebookCounter
+                      counters={props.reactions}
+                      alwaysShowOthers={true}
+                    />
                   </Button>
                 </div>
               </Grid>
