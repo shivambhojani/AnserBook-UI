@@ -177,7 +177,6 @@ const CreatePost = () => {
                 <Typography variant="h5" style={{ fontWeight: 600 }}>
                   Type of Post
                 </Typography>
-                <InputLabel id="select-input-label">Type of post</InputLabel>
                   <Select
                     id="select-input-id"
                     value={type}
