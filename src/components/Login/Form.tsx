@@ -8,6 +8,7 @@ import { Grid, Typography, Box } from "@mui/material";
 import logo from "../../assets/app-logo.png";
 import Paper from "@mui/material/Paper";
 import httpClient from "../../thunk/interceptor";
+import { toast } from "react-toastify";
 
 const Form = (props: any): any => {
 
@@ -17,11 +18,14 @@ const Form = (props: any): any => {
         email: values.email,
         password: values.password
       }).then(function (response){
-        localStorage.setItem("token","Bearer "+response.data.token)
-      localStorage.setItem("userID", values.email);
+        if(response.data.message === "ok"){
 
-      console.log(`EMAILD`+localStorage.getItem("userID"));
-      console.log(`BEARER::::`+localStorage.getItem("token"));
+          localStorage.setItem("token","Bearer "+response.data.token)
+          localStorage.setItem("userID", values.email);
+        }
+        else {
+          toast.error(response.data.message)
+        }
         
       })
   }
