@@ -29,11 +29,12 @@ const Input = styled("input")({
   display: "none",
 });
 
-const loggedInUserEmailId = localStorage.getItem("userID");
-console.log('email', loggedInUserEmailId)
+
 
 const ProfilePage = () => {
-
+  const loggedInUserEmailId = localStorage.getItem("userID");
+  console.log('email', loggedInUserEmailId)
+  
   const [dob, setdob] = React.useState<Date | null>(null);
 
   const [disable, setDisable] = React.useState(false);
