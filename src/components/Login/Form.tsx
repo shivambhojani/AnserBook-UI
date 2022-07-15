@@ -27,13 +27,6 @@ const Form = (props: any): any => {
         }
         
       })
-      .then(function (response) {
-        localStorage.setItem("token", "Bearer " + response.data.token);
-        localStorage.setItem("userID", values.email);
-
-        console.log(`EMAILD` + localStorage.getItem("userID"));
-        console.log(`BEARER::::` + localStorage.getItem("token"));
-      });
   };
 
   const {
