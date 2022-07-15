@@ -39,8 +39,12 @@ const ProfilePage = () => {
   const [phone, setPhone] = React.useState<string>();
   const [errorsphone, setErrosphone] = React.useState<{ name: string }>();
 
-  const [name, setName] = React.useState<string>();
-  const [errorsName, setErrosName] = React.useState<{ name: string }>();
+  const [firstname, setfirstname] = React.useState<string>();
+  const [errorsfirstname, setErrosfirstname] = React.useState<{ name: string }>();
+
+
+  const [lastname, setlastname] = React.useState<string>();
+  const [errorslastname, setErroslastname] = React.useState<{ name: string }>();
 
   //const [dob, setdob] = React.useState<Date | null>(null);
   const [errorsdob, setErrosdob] = React.useState<{ name: string }>();
@@ -64,7 +68,8 @@ const ProfilePage = () => {
 
   const checkforEmptyValue = (
     phone: any,
-    name: any,
+    firstname: any,
+    lastname: any,
     dob: any,
     location: any,
     orgnization: any,
@@ -72,7 +77,8 @@ const ProfilePage = () => {
     address: any,
     city: any
   ) => {
-    setErrosName({ name: "" });
+    setErrosfirstname({ name: "" });
+    setErroslastname({ name: "" });
     setErrosdob({ name: "" });
     setErrosorganization({ name: "" });
     setErroslocation({ name: "" });
@@ -87,10 +93,17 @@ const ProfilePage = () => {
       err = err + 1;
     }
 
-    str = name || "";
+    str = firstname || "";
     result1 = typeof str === "string" ? str.trim() : "";
     if (result1.length === 0) {
-      setErrosName({ name: "Full Name cannot be empty" });
+      setErrosfirstname({ name: "First Name cannot be empty" });
+      err = err + 1;
+    }
+
+    str = lastname || "";
+    result1 = typeof str === "string" ? str.trim() : "";
+    if (result1.length === 0) {
+      setErroslastname({ name: "Last Name cannot be empty" });
       err = err + 1;
     }
 
@@ -150,19 +163,35 @@ const ProfilePage = () => {
     }
   };
 
-  const handleChangeInFullName = (
+  const handleChangeInFirstName = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setDisable(false);
     const {
       target: { value },
     } = event;
-    setErrosName({ name: "" });
-    setName(value);
+    setErrosfirstname({ name: "" });
+    setfirstname(value);
     let reg = new RegExp(/^[a-zA-Z][a-zA-Z ]*$/).test(value);
     if (!reg) {
       setDisable(true);
-      setErrosName({ name: "Only Alphabets are allowed with spaces" });
+      setErrosfirstname({ name: "Only Alphabets are allowed with spaces" });
+    }
+  };
+
+  const handleChangeInLastName = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDisable(false);
+    const {
+      target: { value },
+    } = event;
+    setErroslastname({ name: "" });
+    setfirstname(value);
+    let reg = new RegExp(/^[a-zA-Z][a-zA-Z ]*$/).test(value);
+    if (!reg) {
+      setDisable(true);
+      setErroslastname({ name: "Only Alphabets are allowed with spaces" });
     }
   };
 
@@ -173,19 +202,20 @@ const ProfilePage = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <TextField
-                label="Full Name"
+                label="First Name"
                 id="fullname"
-                onChange={handleChangeInFullName}
+                onChange={handleChangeInFirstName}
                 variant="outlined"
                 required
-                value={name}
-                error={Boolean(errorsName?.name)}
-                helperText={errorsName?.name}
+                value={firstname}
+                error={Boolean(errorsfirstname?.name)}
+                helperText={errorsfirstname?.name}
                 fullWidth
               ></TextField>
+
             </Grid>{" "}
             <Grid item xs={12} md={6}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopDatePicker
                   label="Date of birth"
                   inputFormat="MM/dd/yyyy"
@@ -200,9 +230,20 @@ const ProfilePage = () => {
                     />
                   )}
                 />
-              </LocalizationProvider>
+              </LocalizationProvider> */}
+              <TextField
+                label="Last Name"
+                id="lastname"
+                onChange={handleChangeInLastName}
+                variant="outlined"
+                required
+                value={lastname}
+                error={Boolean(errorslastname?.name)}
+                helperText={errorslastname?.name}
+                fullWidth
+              ></TextField>
             </Grid>{" "}
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
               <TextField
                 required
                 id="organization"
@@ -225,7 +266,7 @@ const ProfilePage = () => {
                 helperText={errorslocation?.name}
                 fullWidth
               ></TextField>{" "}
-            </Grid>{" "}
+            </Grid>{" "} */}
             <Grid item xs={12} md={12}>
               <TextField
                 label="Address"
@@ -234,7 +275,7 @@ const ProfilePage = () => {
                 fullWidth
               ></TextField>{" "}
             </Grid>{" "}
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="Pin"
                 variant="outlined"
@@ -242,7 +283,7 @@ const ProfilePage = () => {
                 fullWidth
               ></TextField>{" "}
             </Grid>{" "}
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="City"
                 variant="outlined"
@@ -250,8 +291,15 @@ const ProfilePage = () => {
                 fullWidth
               ></TextField>{" "}
             </Grid>
-            <Grid item xs={12} md={4}>
-              <CountrySelect />{" "}
+            <Grid item xs={12} md={6}>
+              <TextField
+                label="Email ID"
+                value={"1234"}
+                variant="outlined"
+                required
+                aria-readonly
+                fullWidth
+              ></TextField>{" "}
             </Grid>{" "}
             <Grid item xs={12} md={6}>
               <TextField
@@ -283,7 +331,8 @@ const ProfilePage = () => {
                 onClick={() =>
                   checkforEmptyValue(
                     phone,
-                    name,
+                    firstname,
+                    lastname,
                     dob,
                     location,
                     organization,
