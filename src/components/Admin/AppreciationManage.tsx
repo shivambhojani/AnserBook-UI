@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import { ReactElement } from "react";
 import { useState } from "react";
 import httpClient from "../../thunk/interceptor";
+import UtilityUser from "../Utility/UtilityUser";
 
 let bestAnswerPoints: any; //Hook to store points
 let setBestAnswerPoints: any; //Hook to store points
@@ -28,11 +29,15 @@ function AppreciationManage() {
   [editMode, setEditMode] = useState("NO");
 
   useEffect(() => {
+    // UtilityUser().then(function (response) {
+    //   console.log("user details::" + response.user.firstname);
+    // });
+
     httpClient.get("/offerscore").then(function (response) {
-      setCommentPoints(response.data.appreciation.commentsScore);
-      setLikePoints(response.data.appreciation.likesScore);
-      setBestAnswerPoints(response.data.appreciation.bestAnswerScore);
-      setPostPoints(response.data.appreciation.postsScore);
+      setCommentPoints(response.data.score_offered.commentsScore);
+      setLikePoints(response.data.score_offered.likesScore);
+      setBestAnswerPoints(response.data.score_offered.bestAnswerScore);
+      setPostPoints(response.data.score_offered.postsScore);
     });
   }, []);
 
