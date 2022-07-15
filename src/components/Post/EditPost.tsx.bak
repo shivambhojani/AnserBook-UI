@@ -63,8 +63,9 @@ function EditPost() {
     axios.put(`https://csci5709-answerme-backend.herokuapp.com/posts/putPost/`+id, postBody)
       .then(res => {
         console.log(res);
-		navigate("/userprofile");
       })
+
+    navigate("/feeds");
   };
 
   const discardClick = () => {
