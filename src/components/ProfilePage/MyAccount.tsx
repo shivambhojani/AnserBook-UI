@@ -34,7 +34,7 @@ export default function MyAccount() {
      UtilityUser().then(function (response) {
       setUserId(response.user._id);
       console.log('User Id------>',userId);
-      axios.get('https://csci5709-answerme-backend.herokuapp.com/posts/putPost/'+response.user._id).then(result => {
+      axios.get('https://csci5709-answerme-backend.herokuapp.com/posts/'+response.user._id).then(result => {
       console.log(result.data.posts);
       setPosts(result.data.posts);
       }).catch(err => {
