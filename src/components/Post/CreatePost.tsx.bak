@@ -4,67 +4,80 @@ import React from "react";
 import { TagsInput } from "react-tag-input-component";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import UtilityUser from "../Utility/UtilityUser";
 
 /*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
 const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "background.paper",
-  border: "3px solid #000",
-  boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
+  transform: "translate(-50%, -50%)",
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  bgcolor: "background.paper",
+  width: 500,
+  boxShadow: 24,
+  border: "3px solid #000",
 };
 
-function EditPost() {
-
-  const data:any = useLocation();
-
+const CreatePost = () => {
   const navigate = useNavigate();
-
-  const handleDeleteCloseOption = () => setDel(false);
 
   const [del, setDel] = React.useState(false);
 
-  const [tags, setTags] = React.useState<string[]>(data.state.tags);
+  const [tags, setTags] = React.useState<string[]>();
   const [errorstags, setErrostags] = React.useState<{ tags: string }>();
 
-  const [topic, setTopic] = React.useState<string>(data.state.topic);
+  const [topic, setTopic] = React.useState<string>();
   const [errorstopic, setErrostopic] = React.useState<{ topic: string }>();
 
-  const [body, setBody] = React.useState<string>(data.state.body);
+  const [body, setBody] = React.useState<string>();
   const [errorsbody, setErrosbody] = React.useState<{ body: string }>();
 
-  const [id, setId] = React.useState<string>(data.state._id);
+  const [type, setType] = React.useState('');
+  
+  const [userId, setUserId] = useState();
 
-  const [type, setType] = React.useState(data.state.type);
+  useEffect(() => {
+    UtilityUser().then(function (response) {
+      setUserId(response.user._id);
+      console.log('User Id------>',userId);
+    });
+  }, []);
+
+  const handleDeleteCloseOption = () => setDel(false);
+
+  const handleChangeInType = (event: SelectChangeEvent) => {
+    setType(event.target.value as string);
+  };
 
   const postClick = () => {
-    //setDel(true);
-    const postBody = {   
+      const postBody = { 
+      "userId": userId ,  
+      "topic": topic,  
       "body": body,  
       "tags": tags,  
-      "type": type,  
+      "type": type, 
+      "reactions":[],  
+      "__v": 0
     }
     
     console.log(postBody);
 
-    axios.put(`https://csci5709-answerme-backend.herokuapp.com/posts/putPost/`+id, postBody)
+    axios.post(`https://csci5709-answerme-backend.herokuapp.com/posts/savePost`, postBody)
       .then(res => {
         console.log(res);
-		navigate("/userprofile");
       })
+
+    navigate("/feeds");
   };
 
   const discardClick = () => {
@@ -83,10 +96,6 @@ function EditPost() {
       target: { value },
     } = event;
     setTopic(value);
-  };
-
-  const handleChangeInType = (event: SelectChangeEvent) => {
-    setType(event.target.value as string);
   };
 
   return (
@@ -109,7 +118,6 @@ function EditPost() {
           </Box>
         </Modal>
       </div>
-
       <Grid item xs={12} md={7}>
         <Stack
           className="divProfileFields"
@@ -139,11 +147,10 @@ function EditPost() {
                   fullWidth
                   value={topic}
                   onChange={handleChangeInTopic}
-                  disabled
                   id="topic"
+                  placeholder="e.g. what are wireframes?"
                   name="topic"
                   autoFocus
-                  placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
                 />
               </Stack>
               <Stack spacing={2}>
@@ -160,7 +167,6 @@ function EditPost() {
                   multiline
                   rows={6}
                   id="body"
-                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo."
                 />
               </Stack>
               <Stack spacing={2}>
@@ -217,6 +223,6 @@ function EditPost() {
       </Grid>
     </Grid>
   );
-}
+};
 
-export default EditPost;
+export default CreatePost;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 import "react-toastify/dist/ReactToastify.css";
 import httpClient from "../../thunk/interceptor";
+import UtilityUser from "../Utility/UtilityUser";
 
 interface feed {
   initials: string;
@@ -34,6 +35,8 @@ function Feed(props: feed) {
   const classes = useStyles();
   const navigate = useNavigate();
   const [emojiSelector, setEmojiSelector] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [userId, setUserId] = useState();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -55,6 +58,18 @@ function Feed(props: feed) {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
   }
 
+  useEffect(() => {
+    UtilityUser().then(function (response) {
+      setUserId(response.user._id);
+      setSubscribed(response.user.subscribedTo.includes(props.user._id));
+      console.log(
+        "user details::" + response.user.subscribedTo,
+        props.user._id,
+        "   " + response.user.subscribedTo.includes(props.user._id)
+      );
+      console.log("props", props);
+    });
+  }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
     null
   );
@@ -72,6 +87,7 @@ function Feed(props: feed) {
       },
     });
   };
+  console.log("subscribed", subscribed);
 
   const callbackend = (select: any) => {
     console.log(select);
@@ -92,6 +108,41 @@ function Feed(props: feed) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSubscribe = () => {
+    if (!subscribed) {
+      subscribe();
+    } else {
+      unSubscribe();
+    }
+  };
+
+  const subscribe = () => {
+    httpClient
+      .post("/subscribeUser", {
+        loggedInUserId: userId,
+        SubscribeToUserId: props.user._id,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const unSubscribe = () => {
+    httpClient
+      .post("/unSubscribeUser", {
+        loggedInUserId: userId,
+        SubscribeToUserId: props.user._id,
+      })
+      .then((res) => {
+        console.log(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
@@ -138,7 +189,9 @@ function Feed(props: feed) {
               open={open}
               onClose={handleCloseMenu}
             >
-              <MenuItem onClick={handleCloseMenu}>Subscribe</MenuItem>
+              <MenuItem onClick={handleSubscribe}>
+                {!subscribed ? "Subscribe" : "Unsubscribe"}
+              </MenuItem>
               <MenuItem onClick={handleCloseMenu}>Report</MenuItem>
             </Menu>
           </div>
