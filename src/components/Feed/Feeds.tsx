@@ -102,9 +102,12 @@ function Feeds() {
   const [filter, setFilter] = useState("all");
   const [subscribedTo, setSubscribedTo] = useState([]);
 
+  // get the user details to check out the bookmark lists
   useEffect(() => {
     UtilityUser().then(function (response) {
       setSubscribedTo(response.user.subscribedTo);
+
+      console.log("User fetched for bms:", response.user);
     });
   }, []);
 
