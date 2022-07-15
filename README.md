@@ -1,46 +1,90 @@
-# Getting Started with Create React App
+# Group 6 project - AnswerBook
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- _Date Created_: 16 JUN 2022
+- _Last Modification Date_: 16 JUN 2022
+- _Git URL_: <https://git.cs.dal.ca/bhojani/csci5709-group6-project>
+- Project deployed at Heroku [1]: <https://answerbook-group6.herokuapp.com>
 
-## Available Scripts
+## Author
 
-In the project directory, you can run:
+- **[Aman Singh Bhandari](mailto:am727005@dal.ca) – B00910008**
+- **[Kuldeep Bhimani](mailto:kl681090@dal.ca) – B00910009**
+- **[Naga Pavan Srivathsav Chevuru](mailto:ng490417@dal.ca) – B00893685**
+- **[Saurabh Jayeshbhai Das](mailto:sr850847@dal.ca) – B00911733**
+- **[Shivam Bhojani](mailto:sh827646@dal.ca) – B00895637**
+- **[Shivangi Bhatt](mailto:sh224186@dal.ca) – B00863408**
 
-### `npm start`
+## Getting Started - To run the React [2] app locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+To have a local copy of this assignment up and running on your local machine, you will first need to install the following software
 
-### `npm test`
+```
+Node 16.15.0
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Node [3] can be downloaded from - its [offical site](https://nodejs.org/en/).**
 
-### `npm run build`
+### Running locally
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Installing **Node 16.15.0**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+Go to - https://nodejs.org/en/ and install Node for your required operating system.
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Download our React source code by cloning the remote git repository at - [repo link](https://git.cs.dal.ca/bhojani/csci5709-group6-project)
 
-### `npm run eject`
+```
+https://git.cs.dal.ca/bhojani/csci5709-group6-project
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Go to the downloaded project directory and open up any terminal and now install node dependencies using the command
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Run the dev server (opens up the React app on port 3000 by default)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+npm start
+```
 
-## Learn More
+You will then see the app running locally on <http://localhost:3000/>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![AnswerBook](https://media.giphy.com/media/6DqoQ1nUj4dLJsuMvq/giphy.gif)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+## Deployment
+
+The app is deployed on Heroku at - [link](https://answerbook-group6.herokuapp.com)
+
+## Built With
+
+- [React](https://github.com/facebook/react/) - The front-end library used
+- [create-react-app](https://github.com/facebook/create-react-app) - The boilerplate code generator for React
+- [MUI Core](https://www.npmjs.com/package/@mui/material) [4] - For UI components
+- [React router](https://reactrouter.com/) [5] - For routing
+- [React toastify](https://fkhadra.github.io/react-toastify/) [6] - For making the toasts messages
+
+---
+
+## References
+
+[1] “Cloud Application Platform | Heroku,” Heroku.com, 2021. [Online]. Available: <https://www.heroku.com/home>. [Accessed: Jun. 14, 2022].
+‌
+
+[2] “React – A JavaScript library for building user interfaces,” Reactjs.org, 2021. [Online]. Available: <https://reactjs.org/>. [Accessed: Jun. 14, 2022].
+
+‌[3] “Node.js,” Node.js, 2022. [Online]. Available: <https://nodejs.org/en/>. [Accessed: Jun. 14, 2022].
+
+[4] “MUI: The React component library you always wanted,” Mui.com, 2022. [Online]. Available: <https://mui.com/>. [Accessed: Jun. 14, 2022].
+
+[5] “Declarative routing for React apps at any scale | React Router,” Reactrouter.com, 2022. [Online]. Available: <https://reactrouter.com/>. [Accessed: Jun. 14, 2022].
+
+[6] “React-toastify | React-Toastify,” Github.io, 2022. [Online]. Available: <https://fkhadra.github.io/react-toastify/introduction>. [Accessed: Jun. 14, 2022].
+
+[7] "React Autocomplete component - Material UI", Mui.com, 2022. [Online]. Available: https://mui.com/material-ui/react-autocomplete/#grouped. [Accessed: 17- Jun- 2022]

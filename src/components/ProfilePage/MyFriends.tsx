@@ -116,10 +116,10 @@ export default function MyFriends() {
     }, [])
 
     const fetchData = (): void => {
-        axios.get('https://tutorial4-api.herokuapp.com/api/users/').then(result => {
+        axios.get('https://tutorial4-api.herokuapp.com/api/users/').then((result: any) => {
             console.log(result.data);
             setData(result.data.data)
-        }).catch(err => {
+        }).catch((err: any) => {
             console.error(err);
             alert("Something wrong with API")
         });
@@ -165,11 +165,11 @@ export default function MyFriends() {
 
             for (let i = 0; i < tr.length; i++) {
                 td_name = tr[i].getElementsByTagName("td")[1];
-             
+
 
                 if (td_name) {
                     let txtValue_firstName: string = td_name.textContent;
-                   
+
 
                     if (txtValue_firstName?.toUpperCase().indexOf(filter) > -1) {
                         tr[i].style.display = "";

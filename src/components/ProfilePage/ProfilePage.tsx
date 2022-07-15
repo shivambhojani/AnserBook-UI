@@ -270,7 +270,6 @@ const ProfilePage = () => {
                 label="Employee ID"
                 value={"1234"}
                 variant="outlined"
-                helperText="Please enter full name"
                 required
                 aria-readonly
                 fullWidth

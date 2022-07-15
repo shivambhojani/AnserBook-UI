@@ -22,7 +22,7 @@ interface card {
 
 export default function OutlinedCard(props: card) {
   return (
-    <Box sx={{ maxWidth: 200, maxHeight: 200, backgroundColor: "yellow" }}>
+    <Box sx={{ maxWidth: 200, maxHeight: 200 }}>
       <Card variant="outlined">
         <React.Fragment>
           <CardContent>

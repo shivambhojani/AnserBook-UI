@@ -27,7 +27,7 @@ function Post(props: any) {
   };
 
   return (
-    <Container>
+    <Container className="mt-3">
       <Feed {...feed} />
       <Typography variant="h5" component="div" className={classes.margin}>
         0 Answers
