@@ -7,6 +7,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import axios from 'axios';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
 /*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
 const style = {
@@ -37,10 +41,33 @@ const CreatePost = () => {
   const [body, setBody] = React.useState<string>();
   const [errorsbody, setErrosbody] = React.useState<{ body: string }>();
 
+  const [type, setType] = React.useState('');
+
   const handleDeleteCloseOption = () => setDel(false);
 
-  const postClick = (topic: any, body: any, tags: any) => {
-    setDel(true);
+  const handleChangeInType = (event: SelectChangeEvent) => {
+    setType(event.target.value as string);
+  };
+
+  const postClick = () => {
+      const postBody = { 
+      "userId": "62d0919a99fa533dda996089" ,  
+      "topic": topic,  
+      "body": body,  
+      "tags": tags,  
+      "type": type, 
+      "reactions":[],  
+      "__v": 0
+    }
+    
+    console.log(postBody);
+
+    axios.post(`https://csci5709-answerme-backend.herokuapp.com/posts/savePost`, postBody)
+      .then(res => {
+        console.log(res);
+      })
+
+    navigate("/feeds");
   };
 
   const discardClick = () => {
@@ -146,13 +173,28 @@ const CreatePost = () => {
                   placeHolder="Enter tags here"
                 />
               </Stack>
+              <Stack spacing={2}>
+                <Typography variant="h5" style={{ fontWeight: 600 }}>
+                  Type of Post
+                </Typography>
+                <InputLabel id="select-input-label">Type of post</InputLabel>
+                  <Select
+                    id="select-input-id"
+                    value={type}
+                    label="Type"
+                    onChange={handleChangeInType}
+                  >
+                    <MenuItem value={'Social'}>Social</MenuItem>
+                    <MenuItem value={'Technical'}>Technical</MenuItem>
+                  </Select>
+              </Stack>
               <Stack direction="row" spacing={1}>
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   endIcon={<SendIcon />}
-                  onClick={() => postClick(topic, body, tags)}
+                  onClick={() => postClick()}
                 >
                   Post
                 </Button>

@@ -4,9 +4,13 @@ import React from "react";
 import { TagsInput } from "react-tag-input-component";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import axios from 'axios';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
 /*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
 const style = {
@@ -24,27 +28,44 @@ const style = {
 };
 
 function EditPost() {
+
+  const data:any = useLocation();
+
   const navigate = useNavigate();
 
   const handleDeleteCloseOption = () => setDel(false);
 
   const [del, setDel] = React.useState(false);
 
-  const [tags, setTags] = React.useState<string[]>(["Tag1", "Tag2", "Tag3"]);
+  const [tags, setTags] = React.useState<string[]>(data.state.tags);
   const [errorstags, setErrostags] = React.useState<{ tags: string }>();
 
-  const [topic, setTopic] = React.useState<string>(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit?"
-  );
+  const [topic, setTopic] = React.useState<string>(data.state.topic);
   const [errorstopic, setErrostopic] = React.useState<{ topic: string }>();
 
-  const [body, setBody] = React.useState<string>(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo."
-  );
+  const [body, setBody] = React.useState<string>(data.state.body);
   const [errorsbody, setErrosbody] = React.useState<{ body: string }>();
 
-  const postClick = (topic: any, body: any, tags: any) => {
-    setDel(true);
+  const [id, setId] = React.useState<string>(data.state._id);
+
+  const [type, setType] = React.useState(data.state.type);
+
+  const postClick = () => {
+    //setDel(true);
+    const postBody = {   
+      "body": body,  
+      "tags": tags,  
+      "type": type,  
+    }
+    
+    console.log(postBody);
+
+    axios.put(`https://csci5709-answerme-backend.herokuapp.com/posts/putPost/`+id, postBody)
+      .then(res => {
+        console.log(res);
+      })
+
+    navigate("/feeds");
   };
 
   const discardClick = () => {
@@ -63,6 +84,10 @@ function EditPost() {
       target: { value },
     } = event;
     setTopic(value);
+  };
+
+  const handleChangeInType = (event: SelectChangeEvent) => {
+    setType(event.target.value as string);
   };
 
   return (
@@ -153,13 +178,27 @@ function EditPost() {
                   placeHolder="Enter tags here"
                 />
               </Stack>
+              <Stack spacing={2}>
+                <Typography variant="h5" style={{ fontWeight: 600 }}>
+                  Type of Post
+                </Typography>
+                  <Select
+                    id="select-input-id"
+                    value={type}
+                    label="Type"
+                    onChange={handleChangeInType}
+                  >
+                    <MenuItem value={'Social'}>Social</MenuItem>
+                    <MenuItem value={'Technical'}>Technical</MenuItem>
+                  </Select>
+              </Stack>
               <Stack direction="row" spacing={1}>
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   endIcon={<SendIcon />}
-                  onClick={() => postClick(topic, body, tags)}
+                  onClick={() => postClick()}
                 >
                   Post
                 </Button>
