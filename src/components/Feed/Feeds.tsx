@@ -72,36 +72,37 @@ function Feeds() {
   //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
   //   },
   // ]);
-  const [employees, setEmployees] = React.useState([
-    {
-      username: "Shivangi Bhatt",
-      image: "./assets/userImage.jpg",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-      score: 100,
-      badge: "Gold",
-    },
+  // const [employees, setEmployees] = React.useState([
+  //   {
+  //     username: "Shivangi Bhatt",
+  //     image: "./assets/userImage.jpg",
+  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
+  //     score: 100,
+  //     badge: "Gold",
+  //   },
 
-    {
-      username: "Raj Patel",
-      image: "./assets/userImage.jpg",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-      score: 90,
-      badge: "Gold",
-    },
+  //   {
+  //     username: "Raj Patel",
+  //     image: "./assets/userImage.jpg",
+  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
+  //     score: 90,
+  //     badge: "Gold",
+  //   },
 
-    {
-      username: "Donna Singh",
-      image: "./assets/userImage.jpg",
-      info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-      score: 80,
-      badge: "Silver",
-    },
-  ]);
+  //   {
+  //     username: "Donna Singh",
+  //     image: "./assets/userImage.jpg",
+  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
+  //     score: 80,
+  //     badge: "Silver",
+  //   },
+  // ]);
   const [feeds, setFeeds] = React.useState([]);
+  const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
   useEffect(() => {
     httpClient
-      .get("/feeds/" + filter)
+      .get("/feeds/feeds/" + filter)
       .then((res) => {
         setFeeds(res.data.message);
       })
@@ -109,6 +110,16 @@ function Feeds() {
         console.log(err);
       });
   }, [filter]);
+  useEffect(() => {
+    httpClient
+      .get("/feeds/getStarEmployees")
+      .then((res) => {
+        setEmployees(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     setFilter(event.target.value);
