@@ -29,6 +29,7 @@ function Feeds() {
   const [filter, setFilter] = useState("all");
   const [currentUserId, setCurrentUserId] = useState("");
   const [bookmarkedPosts, setBookmarkedPosts] = useState<any>({});
+  const [bookmarkListNames, setBookmarkListNames] = useState<any>([]);
   const [fetchAgain, setFetchAgain] = useState(false);
   const [subscribedTo, setSubscribedTo] = useState([]);
 
@@ -48,11 +49,19 @@ function Feeds() {
         console.log("bmLists:::", result);
         const bookmarkLists = result.data;
         const bmPosts: any = {};
+        const bmListNames: any = [];
+        let i = 0;
 
         for (let bmList of bookmarkLists) {
           const bmListName = bmList.bookmarkListName;
           const postIds = bmList.postIds;
 
+          bmListNames.push({
+            id: ++i,
+            name: bmListName,
+            inputValue: "",
+            getOptionLabel: "",
+          });
           for (let postId of postIds) {
             bmPosts[postId] = bmListName;
           }
@@ -60,6 +69,8 @@ function Feeds() {
 
         console.log("bmPostsMap::", bmPosts);
         setBookmarkedPosts(bmPosts);
+        console.log("bmPostListNames::", bmListNames);
+        setBookmarkListNames(bmListNames);
       })
       .catch((err) => {
         console.log(err);
@@ -102,7 +113,26 @@ function Feeds() {
       .catch((err) => {
         console.log(err);
       });
-  }, [filter, bookmarkedPosts, fetchAgain]);
+  }, [filter, bookmarkedPosts, bookmarkListNames, fetchAgain]);
+
+  const addPostToBookmarkList = async (
+    postId: string,
+    addPostToBookmarkListName: string
+  ) => {
+    console.log(
+      `Will add post ${postId} to bmList ${addPostToBookmarkListName} for the user ${currentUserId}`
+    );
+    bookmarkService
+      .addPostToBookmarkList(currentUserId, postId, addPostToBookmarkListName)
+      .then((result) => {
+        console.log("Res in frontend after adding the bookmark", result);
+        setFetchAgain((prev) => !prev);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const removeFromBookmarkList = async (
     postId: string,
     removeFromBookmarkListName: string
@@ -117,7 +147,7 @@ function Feeds() {
         removeFromBookmarkListName
       )
       .then((result) => {
-        console.log("Res in frotend after deletig the bookmark", result);
+        console.log("Res in frontend after deleting the bookmark", result);
         setFetchAgain((prev) => !prev);
       })
       .catch((err) => {
@@ -177,7 +207,9 @@ function Feeds() {
               feeds.map((feed: any) => (
                 <Feed
                   {...feed}
+                  addPostToBookmarkList={addPostToBookmarkList}
                   removeFromBookmarkList={removeFromBookmarkList}
+                  bookmarkListNames={bookmarkListNames}
                   filter={filter}
                 />
               ))

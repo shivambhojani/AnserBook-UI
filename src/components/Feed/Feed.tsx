@@ -30,10 +30,20 @@ interface feed {
   _id: string;
   reactions: any;
   bookmarkListName: string;
+  addPostToBookmarkList: (
+    postId: string,
+    addPostToBookmarkListName: string,
+  ) => any;
   removeFromBookmarkList: (
     postId: string,
     removeFromBookmarkListName: string
   ) => any;
+  bookmarkListNames: Array<{
+    id: string;
+    name: string;
+    inputValue: string;
+    getOptionLabel: string;
+  }>;
 }
 /*
  * @author: Shivangi Bhatt
@@ -63,7 +73,9 @@ function Feed(props: feed) {
     user: props.user,
     reactions: props.reactions,
     bookmarkListName: props.bookmarkListName,
+    addPostToBookmarkList: props.addPostToBookmarkList,
     removeFromBookmarkList: props.removeFromBookmarkList,
+    bookmarkListNames: props.bookmarkListNames,
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
@@ -173,7 +185,6 @@ function Feed(props: feed) {
                 <Typography variant="h5" component="div">
                   {props.user.firstname + " " + props.user.lastname}
                 </Typography>
-                <h5>Bookmarked in: {props.bookmarkListName}</h5>
                 <Typography
                   variant="body2"
                   component="div"
@@ -270,17 +281,21 @@ function Feed(props: feed) {
                 <div className={classes.tags}>
                   {props.bookmarkListName ? (
                     <Chip
-                      label={props.bookmarkListName}
+                      label={`Bookmarked in ${props.bookmarkListName}`}
                       variant="outlined"
                       onDelete={() => {
-                        props.removeFromBookmarkList(
+                        feed.removeFromBookmarkList(
                           props._id,
                           props.bookmarkListName
                         );
                       }}
                     />
                   ) : (
-                    <BookmarkSelector />
+                    <BookmarkSelector
+                      postId={feed._id}
+                      addPostToBookmarkList={props.addPostToBookmarkList}
+                      bookmarkListNames={props.bookmarkListNames}
+                    />
                   )}
                 </div>
               </Grid>
