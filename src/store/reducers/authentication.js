@@ -37,7 +37,7 @@ export const failedLogout = (error) => {
 // REDUCER
 const reducer = (
   state = {
-    token: "",
+    token: localStorage.getItem("token"),
     message: "",
   },
   action
