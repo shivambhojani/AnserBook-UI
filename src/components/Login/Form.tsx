@@ -23,7 +23,7 @@ const Form = (props: any): any => {
       })
       .then((response) => {
         if (response.data.message === "ok") {
-          //localStorage.setItem("token", "Bearer " + response.data.token);//DON'T UNCOMMENT THIS!!!!
+          localStorage.setItem("token", response.data.token); //DON'T UNCOMMENT THIS!!!!
           localStorage.setItem("userID", values.email);
           console.log("----------" + response.data.token);
           dispatch(gotAuth(response.data)); //store token in redux state---DONT DELETE THIS!!
