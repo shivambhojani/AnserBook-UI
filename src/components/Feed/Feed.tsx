@@ -169,7 +169,6 @@ function Feed(props: feed) {
                 <Typography variant="h5" component="div">
                   {props.user.firstname + " " + props.user.lastname}
                 </Typography>
-                <h5>Bookmarked in: {props.bookmarkListName}</h5>
                 <Typography
                   variant="body2"
                   component="div"
@@ -266,7 +265,7 @@ function Feed(props: feed) {
                 <div className={classes.tags}>
                   {props.bookmarkListName ? (
                     <Chip
-                      label={props.bookmarkListName}
+                      label={`Bookmarked in ${props.bookmarkListName}`}
                       variant="outlined"
                       onDelete={() => {
                         props.removeFromBookmarkList(
