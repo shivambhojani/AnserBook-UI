@@ -1,3 +1,4 @@
+//author - Aman Singh BHandari
 import React, { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import "./AppreciationManage.css";
@@ -22,11 +23,11 @@ let editMode: any; //if the page is in editable mode
 let setEditMode: any; //change the value once the page changes the mode
 
 function AppreciationManage() {
-  [bestAnswerPoints, setBestAnswerPoints] = React.useState(false);
-  [commentPoints, setCommentPoints] = useState("");
-  [likePoints, setLikePoints] = useState("");
-  [postPoints, setPostPoints] = useState("");
-  [editMode, setEditMode] = useState("NO");
+  [bestAnswerPoints, setBestAnswerPoints] = React.useState(false); //scores for best answer
+  [commentPoints, setCommentPoints] = useState(""); //score for comment
+  [likePoints, setLikePoints] = useState(""); //score to add like
+  [postPoints, setPostPoints] = useState(""); //score to add post
+  [editMode, setEditMode] = useState("NO"); //decide to show edit mode or not
 
   useEffect(() => {
     // UtilityUser().then(function (response) {

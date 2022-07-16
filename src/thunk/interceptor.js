@@ -1,6 +1,8 @@
+//author - Aman Singh BHandari
 import axios from "axios";
 
 const httpClient = axios.create({
+  //common functionality to call all the apis in our app
   baseURL:
     process.env.NODE_ENV === "development"
       ? "http://localhost:5000"
@@ -20,9 +22,9 @@ httpClient.interceptors.response.use(
   async function (config) {
     return config;
   },
-  error => {
+  (error) => {
     return Promise.reject(error.response.data);
-  },
+  }
 );
 
 export default httpClient;
