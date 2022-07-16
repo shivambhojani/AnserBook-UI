@@ -9,26 +9,32 @@ import logo from "../../assets/app-logo.png";
 import Paper from "@mui/material/Paper";
 import httpClient from "../../thunk/interceptor";
 import { toast } from "react-toastify";
+import { failedAuth, gotAuth } from "../../store/reducers/authentication";
+import { useDispatch } from "react-redux";
 
 const Form = (props: any): any => {
+  const dispatch = useDispatch();
+
   const submitHandler = () => {
     httpClient
       .post("/auth/login", {
         email: values.email,
-        password: values.password
-      }).then(function (response){
-        if(response.data.message === "ok"){
-
-          localStorage.setItem("token","Bearer "+response.data.token)
-          localStorage.setItem("userID", values.email);
-        
-          IsSubmitted(true)
-        }
-        else {
-          toast.error(response.data.message)
-        }
-        
+        password: values.password,
       })
+      .then((response) => {
+        if (response.data.message === "ok") {
+          localStorage.setItem("token", response.data.token); //DON'T UNCOMMENT THIS!!!!
+          localStorage.setItem("userID", values.email);
+          console.log("----------" + response.data.token);
+          dispatch(gotAuth(response.data)); //store token in redux state---DONT DELETE THIS!!
+
+          login();
+          //IsSubmitted(true);
+        } else {
+          toast.error(response.data.message);
+          failedAuth(""); //failed .. so store failed response
+        }
+      });
   };
 
   const {
@@ -36,13 +42,14 @@ const Form = (props: any): any => {
     errors: err,
     handleChange: manageChanges,
     handleSubmit: onsubmit,
-    IsSubmitted
+    IsSubmitted,
   }: any = useForm(login, validate);
   const [_, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   function login() {
     setLoggedIn(true);
+    console.log("logining----");
     if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
     } else {
