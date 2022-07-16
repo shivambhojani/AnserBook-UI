@@ -16,6 +16,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
+import { bookmarkService } from "../../services/bookmark.service";
 
 function Feeds() {
   const classes = useStyles();
@@ -100,44 +101,111 @@ function Feeds() {
   const [feeds, setFeeds] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
+  const [currentUserId, setCurrentUserId] = useState("");
+  const [bookmarkedPosts, setBookmarkedPosts] = useState<any>({});
+  const [fetchAgain, setFetchAgain] = useState(false);
   const [subscribedTo, setSubscribedTo] = useState([]);
 
   // get the user details to check out the bookmark lists
   useEffect(() => {
     UtilityUser().then(function (response) {
       setSubscribedTo(response.user.subscribedTo);
-
       console.log("User fetched for bms:", response.user);
+      setCurrentUserId(response.user._id);
     });
   }, []);
 
   useEffect(() => {
+    bookmarkService
+      .getBookmarkListOfUser(currentUserId)
+      .then(result => {
+        console.log("bmLists:::", result);
+        const bookmarkLists = result.data;
+        const bmPosts: any = {};
+
+        for (let bmList of bookmarkLists) {
+          const bmListName = bmList.bookmarkListName;
+          const postIds = bmList.postIds;
+
+          for (let postId of postIds) {
+            bmPosts[postId] = bmListName;
+          }
+        }
+
+        console.log("bmPostsMap::", bmPosts);
+        setBookmarkedPosts(bmPosts);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [currentUserId, fetchAgain]);
+
+  useEffect(() => {
     httpClient
       .get("/feeds/feeds/" + filter)
-      .then((res) => {
+      .then(res => {
         if (filter.toLowerCase() == "subscribed") {
-          let posts = res.data.message;
-          console.log(posts[0].user);
+          console.log("Before setting the feeds", res.data.message);
+          const interimFeeds: any = res.data.message;
+
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
+          }
+          let posts = interimFeeds;
 
           let filteredPosts = posts.filter((post: any) =>
-            subscribedTo.includes(post.userId as never)
+            subscribedTo.includes(post.userId as never),
           );
           setFeeds(filteredPosts);
         } else {
-          setFeeds(res.data.message);
+          console.log("Before setting the feeds", res.data.message);
+          const interimFeeds: any = res.data.message;
+
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
+          }
+          setFeeds(interimFeeds);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
-  }, [filter]);
+  }, [filter, bookmarkedPosts, fetchAgain]);
+  const removeFromBookmarkList = async (
+    postId: string,
+    removeFromBookmarkListName: string,
+  ) => {
+    console.log(
+      `Will delete post ${postId} from bmList ${removeFromBookmarkListName} for the user ${currentUserId}`,
+    );
+    bookmarkService
+      .removePostFromBookmarkList(
+        currentUserId,
+        postId,
+        removeFromBookmarkListName,
+      )
+      .then(result => {
+        console.log("Res in frotend after deletig the bookmark", result);
+        setFetchAgain(prev => !prev);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     httpClient
       .get("/feeds/getStarEmployees")
-      .then((res) => {
+      .then(res => {
         setEmployees(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   }, []);
@@ -180,7 +248,13 @@ function Feeds() {
               </FormControl>
             </div>
             {feeds.length > 0 ? (
-              feeds.map((feed: any) => <Feed {...feed} filter={filter} />)
+              feeds.map((feed: any) => (
+                <Feed
+                  {...feed}
+                  removeFromBookmarkList={removeFromBookmarkList}
+                  filter={filter}
+                />
+              ))
             ) : (
               <Card color="red">
                 <CardContent>
