@@ -226,6 +226,18 @@ const NavBar = () => {
             <AddIcon />
             Create Post
           </Button>
+          <Button color="inherit" onClick={()=>{
+              localStorage.removeItem("token")
+          localStorage.removeItem("userID")
+          navigate("/login")
+          }}>
+            {" "}
+            <AddIcon />
+            Logout
+          </Button>
+
+       
+          
           <IconButton onClick={handleOpen} color="inherit">
             <NotificationsIcon className={classes.menus} />
           </IconButton>

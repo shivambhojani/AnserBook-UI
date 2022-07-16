@@ -1,106 +1,154 @@
-//author - Aman Singh BHandari
-import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import "./ProfileListing.css";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { TextField, Button } from "@mui/material";
+import * as React from "react";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
-export interface Profile {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  title: string;
-  picture: string;
+import IconButton from "@mui/material/IconButton";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import axios from "axios";
+import { Avatar, Button, TextField } from "@mui/material";
+import "../ProfilePage/MyFriends";
+import httpClient from "../../thunk/interceptor";
+
+interface TablePaginationActionsProps {
+  count: number;
+  page: number;
+  rowsPerPage: number;
+  onPageChange: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    newPage: number
+  ) => void;
 }
 
-function ProfileListing() {
-  const navigate = useNavigate();
+function createData(name: string, calories: number, fat: number) {
+  return { name, calories, fat };
+}
 
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [filteredProfile, setFilteredProfile] = useState<Profile[]>([]);
+export default function MyFriends() {
+  interface userData {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+    employeeId: string;
+    addressline1: string;
+    mobile: string;
+    city: string;
+    pinCode: string;
+    profilePicture: string;
+    isActive: boolean;
+    subscribedTo: any;
+    bookmarkLists: any;
+  }
 
-  useEffect(() => {
-    //call api to fetch profile -- to be changed to actual profile listing
-    axios
-      .get("https://tutorial4-api.herokuapp.com/api/users/")
-      .then(function (response: any) {
-        setProfiles(response.data.data);
-        setFilteredProfile(response.data.data);
-      })
-      .catch(function (error: any) {});
+  const [data, setData] = React.useState<any[]>();
+  const [searchtxt, setsearchtxt] = React.useState<string>();
+
+  React.useEffect(() => {
+    fetchData();
   }, []);
 
-  const searchUsers = (searchValue: string) => {
-    if (searchValue !== "") {
-      const filtered = profiles.filter((item) => {
-        return (
-          item.firstName.toLowerCase().includes(searchValue.toLowerCase()) ||
-          item.lastName.toLowerCase().includes(searchValue.toLowerCase())
-        );
+  const fetchData = (): void => {
+    console.log("Fetch Data");
+    httpClient
+      .get("/userprofile")
+      .then((result: any) => {
+        console.log(result.data);
+        setData(result.data.users);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Something wrong with API");
       });
-
-      setFilteredProfile(filtered);
-    } else {
-      setFilteredProfile(profiles);
-    }
   };
 
+  // Avoid a layout jump when reaching the last page with empty rows.
+
+  function searchfilter(event: React.ChangeEvent<HTMLInputElement>) {
+    //Ref: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_filter_table
+
+    const {
+      target: { value },
+    } = event;
+    setsearchtxt(value);
+    let input: string = value;
+    console.log(input);
+    console.log(input?.length);
+    let filter = input.toUpperCase();
+    let table = document.getElementById("myTable");
+    // if (table != null) {
+    //   let tr = table.getElementsByTagName("tr");
+
+    //   let td_name: any;
+
+    //   for (let i = 0; i < tr.length; i++) {
+    //     td_name = tr[i].getElementsByTagName("td")[1];
+
+    //     if (td_name) {
+    //       let txtValue_firstName: string = td_name.textContent;
+
+    //       if (txtValue_firstName?.toUpperCase().indexOf(filter) > -1) {
+    //         tr[i].style.display = "";
+    //       }
+    //       else {
+    //         tr[i].style.display = "none"
+    //       }
+    //     }
+
+    //   }
+
+    // }
+  }
   return (
-    <Box>
-      <TextField
-        type="text"
-        label="Search"
-        variant="outlined"
-        className="TextFields"
-        onChange={(e) => {
-          searchUsers(e.target.value);
-        }}
-      />
-      <TableContainer sx={{ width: "80%", margin: "auto" }} component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="right">First Name</TableCell>
-              <TableCell align="right">Last Name</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Title</TableCell>
-              <TableCell align="right">Picture</TableCell>
-              <TableCell align="right">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredProfile.map((profile) => (
-              <TableRow
-                key={profile.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                onClick={() => {}}
-              >
-                <TableCell align="right">{profile.firstName}</TableCell>
-                <TableCell align="right">{profile.lastName}</TableCell>
-                <TableCell align="right">{profile.email}</TableCell>
-                <TableCell align="right">{profile.title}</TableCell>
-                <TableCell align="right">
-                  <img src={profile.picture} alt="new" />
-                </TableCell>
-                <TableCell align="right">
-                  <Button variant="contained">Deactivate</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+    <>
+      <div className="maindiv">
+        <div className="elements">
+          <div className="searchbox">
+            <TextField
+              id="searchfilter"
+              onChange={searchfilter}
+              label="Search User with firstname or lastname"
+              helperText="Search User with firstname or lastname"
+              variant="outlined"
+              value={searchtxt}
+              fullWidth
+            />
+          </div>
+          <div className="table-users">
+            <table cellSpacing="0" id="myTable">
+              <tbody>
+                {data?.length
+                  ? data.map((user, index) => {
+                      console.log(data.length);
+                      return (
+                        <tr key={index}>
+                          <td>{user.firstname + " " + user.lastname}</td>
+                          <td>{user.email}</td>
+                          <td>{user.isActive}</td>
+
+                          <td>
+                            {" "}
+                            <Button variant="contained" color="error">
+                              Inactive
+                            </Button>
+                            {"          "}
+                            <Button variant="contained" color="success">
+                              Active
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : null}
+                ;
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
-
-export default ProfileListing;

@@ -29,6 +29,11 @@ interface feed {
   user: any;
   _id: string;
   reactions: any;
+  bookmarkListName: string;
+  removeFromBookmarkList: (
+    postId: string,
+    removeFromBookmarkListName: string,
+  ) => any;
 }
 
 function Feed(props: feed) {
@@ -39,7 +44,7 @@ function Feed(props: feed) {
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
 
   const [feed, setFeed] = useState({
@@ -54,6 +59,8 @@ function Feed(props: feed) {
     image: props.image,
     user: props.user,
     reactions: props.reactions,
+    bookmarkListName: props.bookmarkListName,
+    removeFromBookmarkList: props.removeFromBookmarkList,
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
@@ -67,7 +74,7 @@ function Feed(props: feed) {
     });
   }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
   const open = Boolean(anchorElement);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -91,11 +98,11 @@ function Feed(props: feed) {
         userId: userId,
         userName: userName,
       })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.message);
         navigate(0);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
@@ -118,13 +125,13 @@ function Feed(props: feed) {
         loggedInUserId: userId,
         SubscribeToUserId: props.user._id,
       })
-      .then((res) => {
+      .then(res => {
         setSubscribed(true);
         navigate(0);
 
         console.log(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
@@ -134,16 +141,17 @@ function Feed(props: feed) {
         loggedInUserId: userId,
         SubscribeToUserId: props.user._id,
       })
-      .then((res) => {
+      .then(res => {
         setSubscribed(false);
         navigate(0);
 
         console.log(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
+
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
     <>
@@ -161,6 +169,7 @@ function Feed(props: feed) {
                 <Typography variant="h5" component="div">
                   {props.user.firstname + " " + props.user.lastname}
                 </Typography>
+                <h5>Bookmarked in: {props.bookmarkListName}</h5>
                 <Typography
                   variant="body2"
                   component="div"
@@ -222,7 +231,7 @@ function Feed(props: feed) {
                   >
                     <FacebookSelector
                       iconSize={20}
-                      onSelect={(select) => {
+                      onSelect={select => {
                         console.log(select);
                         callbackend(select);
                         // toast.info("🦄 Cool reaction!", {
@@ -239,7 +248,7 @@ function Feed(props: feed) {
                   </Popover>
 
                   <Button
-                    onClick={(e) => {
+                    onClick={e => {
                       setAnchorEl(e.currentTarget);
                     }}
                     // style={{ float: "right" }}
@@ -255,14 +264,27 @@ function Feed(props: feed) {
 
               <Grid item md={4} xs={12}>
                 <div className={classes.tags}>
-                  <BookmarkSelector />
+                  {props.bookmarkListName ? (
+                    <Chip
+                      label={props.bookmarkListName}
+                      variant="outlined"
+                      onDelete={() => {
+                        props.removeFromBookmarkList(
+                          props._id,
+                          props.bookmarkListName,
+                        );
+                      }}
+                    />
+                  ) : (
+                    <BookmarkSelector />
+                  )}
                 </div>
               </Grid>
               {props.tags.length > 0 ? (
                 <Grid item md={4} xs={12}>
                   <div className={classes.tags}>
                     {" "}
-                    {props.tags.map((tag) => (
+                    {props.tags.map(tag => (
                       <Chip label={tag} className={classes.tag} />
                     ))}
                   </div>
