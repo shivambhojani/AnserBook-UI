@@ -19,12 +19,11 @@ const Routing: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Form />} />
-
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route element={<AuthGuard />}>
         <Route path="/post" element={<Post />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/feeds" element={<Feeds />} />
         <Route path="/editappreciation" element={<EditAppreciation />} />
         <Route path="/userprofile" element={<MyAccount />} />

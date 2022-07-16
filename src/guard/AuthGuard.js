@@ -4,8 +4,8 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const AuthGuard = () => {
   const authentication = useSelector((state) => state.authentication);
-  console.log("lalalalalalalalal" + authentication.token);
-  return authentication.token === "" ? <Navigate to="/" /> : <Outlet />;
+  console.log("redux state token:: " + authentication.token);
+  return authentication.token === null ? <Navigate to="/" /> : <Outlet />;
 };
 
 export default AuthGuard;
