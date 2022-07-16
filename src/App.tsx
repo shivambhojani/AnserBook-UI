@@ -12,7 +12,7 @@ function App() {
 
   return (
     <>
-      {location.pathname !== "/" ? <NavBar /> : null}
+      {localStorage.getItem("userID")? <NavBar /> : null}
       <Routing />
       <ToastContainer />
     </>
