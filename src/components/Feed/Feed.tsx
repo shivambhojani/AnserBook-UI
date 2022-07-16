@@ -30,7 +30,10 @@ interface feed {
   _id: string;
   reactions: any;
 }
-
+/*
+ * @author: Shivangi Bhatt
+ *
+ */
 function Feed(props: feed) {
   const classes = useStyles();
   const navigate = useNavigate();

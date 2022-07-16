@@ -8,6 +8,10 @@ import { useEffect, useState } from "react";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
 
+/*
+ * @author: Shivangi Bhatt
+ *
+ */
 export default function Employee(props: any) {
   const classes = useStyles();
   const [subscribed, setSubscribed] = useState(false);

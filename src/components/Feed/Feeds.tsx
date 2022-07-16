@@ -16,87 +16,12 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
-
+/*
+ * @author: Shivangi Bhatt
+ *
+ */
 function Feeds() {
   const classes = useStyles();
-  // const [feeds, setFeeds] = React.useState([
-  //   {
-  //     initials: "SB",
-  //     username: "Shivangi Bhatt",
-  //     date: "Februrary 28, 2022",
-  //     image: "./assets/Post.png",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Social",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "HB",
-  //     username: "Hardik Bhatt",
-  //     date: "Februrary 28, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Technical",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "DS",
-  //     username: "Donna Singh",
-  //     date: "Februrary 29, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Social",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "AS",
-  //     username: "Aadesh Shah",
-  //     date: "January 28, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Technical",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "BS",
-  //     username: "Bhushan Singh",
-  //     date: "Februrary 28, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Technical",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  // ]);
-  // const [employees, setEmployees] = React.useState([
-  //   {
-  //     username: "Shivangi Bhatt",
-  //     image: "./assets/userImage.jpg",
-  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-  //     score: 100,
-  //     badge: "Gold",
-  //   },
-
-  //   {
-  //     username: "Raj Patel",
-  //     image: "./assets/userImage.jpg",
-  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-  //     score: 90,
-  //     badge: "Gold",
-  //   },
-
-  //   {
-  //     username: "Donna Singh",
-  //     image: "./assets/userImage.jpg",
-  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-  //     score: 80,
-  //     badge: "Silver",
-  //   },
-  // ]);
   const [feeds, setFeeds] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
