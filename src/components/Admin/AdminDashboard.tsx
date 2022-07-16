@@ -1,3 +1,4 @@
+//author - Aman Singh BHandari
 import React from "react";
 import Highcharts from "highcharts/highstock";
 import HighChartsReact from "highcharts-react-official";
@@ -6,6 +7,7 @@ import { Grid } from "@mui/material";
 import { Container } from "@mui/system";
 
 const options = {
+  //dashboard values
   chart: {
     type: "spline",
     height: "300px",
