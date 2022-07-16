@@ -18,6 +18,7 @@ export default function Employee(props: any) {
   const [userId, setUserId] = useState();
   console.log("props", props);
 
+  // get user Id and subscribe user tof the logged in user
   useEffect(() => {
     UtilityUser().then(function (response) {
       setUserId(response.user._id);

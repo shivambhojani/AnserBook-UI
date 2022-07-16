@@ -29,6 +29,11 @@ interface feed {
   user: any;
   _id: string;
   reactions: any;
+  bookmarkListName: string;
+  removeFromBookmarkList: (
+    postId: string,
+    removeFromBookmarkListName: string
+  ) => any;
 }
 /*
  * @author: Shivangi Bhatt
@@ -57,6 +62,8 @@ function Feed(props: feed) {
     image: props.image,
     user: props.user,
     reactions: props.reactions,
+    bookmarkListName: props.bookmarkListName,
+    removeFromBookmarkList: props.removeFromBookmarkList,
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
@@ -86,6 +93,7 @@ function Feed(props: feed) {
       },
     });
   };
+  // add reaction
 
   const callbackend = (select: any) => {
     httpClient
@@ -147,6 +155,7 @@ function Feed(props: feed) {
         console.log(err);
       });
   };
+
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
     <>
@@ -164,6 +173,7 @@ function Feed(props: feed) {
                 <Typography variant="h5" component="div">
                   {props.user.firstname + " " + props.user.lastname}
                 </Typography>
+                <h5>Bookmarked in: {props.bookmarkListName}</h5>
                 <Typography
                   variant="body2"
                   component="div"
@@ -258,7 +268,20 @@ function Feed(props: feed) {
 
               <Grid item md={4} xs={12}>
                 <div className={classes.tags}>
-                  <BookmarkSelector />
+                  {props.bookmarkListName ? (
+                    <Chip
+                      label={props.bookmarkListName}
+                      variant="outlined"
+                      onDelete={() => {
+                        props.removeFromBookmarkList(
+                          props._id,
+                          props.bookmarkListName
+                        );
+                      }}
+                    />
+                  ) : (
+                    <BookmarkSelector />
+                  )}
                 </div>
               </Grid>
               {props.tags.length > 0 ? (

@@ -11,7 +11,11 @@ function App() {
 
   return (
     <>
+<<<<<<< HEAD
       {localStorage.getItem("userID") ? <NavBar /> : null}
+=======
+      {localStorage.getItem("userID")? <NavBar /> : null}
+>>>>>>> 10d74497c27060dc397ba9c5b5ae5f54556421be
       <Routing />
       <ToastContainer />
     </>

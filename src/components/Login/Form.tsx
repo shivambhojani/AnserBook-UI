@@ -21,6 +21,8 @@ const Form = (props: any): any => {
 
           localStorage.setItem("token","Bearer "+response.data.token)
           localStorage.setItem("userID", values.email);
+        
+          IsSubmitted(true)
         }
         else {
           toast.error(response.data.message)
@@ -34,6 +36,7 @@ const Form = (props: any): any => {
     errors: err,
     handleChange: manageChanges,
     handleSubmit: onsubmit,
+    IsSubmitted
   }: any = useForm(login, validate);
   const [_, setLoggedIn] = useState(false);
   const navigate = useNavigate();
