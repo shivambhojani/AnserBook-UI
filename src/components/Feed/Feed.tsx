@@ -37,6 +37,7 @@ function Feed(props: feed) {
   const [emojiSelector, setEmojiSelector] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [userId, setUserId] = useState();
+  const [userName, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -62,6 +63,7 @@ function Feed(props: feed) {
     UtilityUser().then(function (response) {
       setUserId(response.user._id);
       setSubscribed(response.user.subscribedTo.includes(props.user._id));
+      setUserName(response.user.firstname + " " + response.user.lastname);
     });
   }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
@@ -83,12 +85,11 @@ function Feed(props: feed) {
   };
 
   const callbackend = (select: any) => {
-    console.log(select);
     httpClient
       .post("/feeds/addReactions/" + props._id, {
         reaction: select,
-        userId: "62cf74a88ae652bb3c6cd3b4",
-        userName: "kb bhim",
+        userId: userId,
+        userName: userName,
       })
       .then((res) => {
         console.log(res.data.message);
@@ -207,25 +208,9 @@ function Feed(props: feed) {
           </CardActionArea>
 
           <div className={classes.lastRow}>
-            <Grid container spacing={2}>
-              {props.tags.length > 0 ? (
-                <Grid item md={4} xs={12}>
-                  <div className={classes.tags}>
-                    {" "}
-                    {props.tags.map((tag) => (
-                      <Chip label={tag} className={classes.tag} />
-                    ))}
-                  </div>
-                </Grid>
-              ) : null}
-
+            <Grid container spacing={2} className={classes.lastRow}>
               <Grid item md={4} xs={12}>
                 <div className={classes.tags}>
-                  <BookmarkSelector />
-                </div>
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <div className={classes.end}>
                   <Popover
                     open={Boolean(anchorEl)}
                     anchorEl={anchorEl}
@@ -257,15 +242,32 @@ function Feed(props: feed) {
                     onClick={(e) => {
                       setAnchorEl(e.currentTarget);
                     }}
-                    style={{ float: "right" }}
+                    // style={{ float: "right" }}
                   >
                     <FacebookCounter
                       counters={props.reactions}
                       alwaysShowOthers={true}
+                      user={userName}
                     />
                   </Button>
                 </div>
               </Grid>
+
+              <Grid item md={4} xs={12}>
+                <div className={classes.tags}>
+                  <BookmarkSelector />
+                </div>
+              </Grid>
+              {props.tags.length > 0 ? (
+                <Grid item md={4} xs={12}>
+                  <div className={classes.tags}>
+                    {" "}
+                    {props.tags.map((tag) => (
+                      <Chip label={tag} className={classes.tag} />
+                    ))}
+                  </div>
+                </Grid>
+              ) : null}
             </Grid>
           </div>
         </CardContent>
