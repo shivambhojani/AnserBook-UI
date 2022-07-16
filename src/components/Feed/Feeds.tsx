@@ -15,7 +15,6 @@ import Employee from "./Employee";
 import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
-import { BackendURL } from "../../data/constants";
 import UtilityUser from "../Utility/UtilityUser";
 import { bookmarkService } from "../../services/bookmark.service";
 
@@ -105,10 +104,12 @@ function Feeds() {
   const [currentUserId, setCurrentUserId] = useState("");
   const [bookmarkedPosts, setBookmarkedPosts] = useState<any>({});
   const [fetchAgain, setFetchAgain] = useState(false);
+  const [subscribedTo, setSubscribedTo] = useState([]);
 
   // get the user details to check out the bookmark lists
   useEffect(() => {
-    UtilityUser().then(response => {
+    UtilityUser().then(function (response) {
+      setSubscribedTo(response.user.subscribedTo);
       console.log("User fetched for bms:", response.user);
       setCurrentUserId(response.user._id);
     });
@@ -143,22 +144,39 @@ function Feeds() {
     httpClient
       .get("/feeds/feeds/" + filter)
       .then(res => {
-        console.log("Before setting the feeds", res.data.message);
-        const interimFeeds: any = res.data.message;
+        if (filter.toLowerCase() == "subscribed") {
+          console.log("Before setting the feeds", res.data.message);
+          const interimFeeds: any = res.data.message;
 
-        for (let f of interimFeeds) {
-          const fId: any = f._id;
-          if (bookmarkedPosts[fId]) {
-            f.bookmarkListName = bookmarkedPosts[fId];
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
           }
+          let posts = interimFeeds;
+
+          let filteredPosts = posts.filter((post: any) =>
+            subscribedTo.includes(post.userId as never),
+          );
+          setFeeds(filteredPosts);
+        } else {
+          console.log("Before setting the feeds", res.data.message);
+          const interimFeeds: any = res.data.message;
+
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
+          }
+          setFeeds(interimFeeds);
         }
-        setFeeds(interimFeeds);
       })
       .catch(err => {
         console.log(err);
       });
   }, [filter, bookmarkedPosts, fetchAgain]);
-
   const removeFromBookmarkList = async (
     postId: string,
     removeFromBookmarkListName: string,

@@ -14,7 +14,7 @@ const useForm = (callback:any, authenticate:any) => {
   const handleSubmit = (event:any) => {
     if (event) event.preventDefault();
     setErrors(authenticate(values));
-    IsSubmitted(true);
+
     
   };
 
@@ -30,7 +30,8 @@ const useForm = (callback:any, authenticate:any) => {
     handleChange,
     handleSubmit,
     values,
-    errors
+    errors,
+    IsSubmitted
   };
 };
 

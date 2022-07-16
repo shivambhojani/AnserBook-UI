@@ -28,13 +28,14 @@ const useStyles = makeStyles({
   lastRow: {
     display: "flex",
     marginTop: "20px",
+    alignItems: "center",
     justifyContent: "space-between",
   },
   tags: {
     display: "flex",
   },
   tag: {
-    marginRight: "10px",
+    marginLeft: "10px",
   },
   icon: {
     marginRight: "10px",
