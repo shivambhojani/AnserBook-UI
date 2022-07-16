@@ -1,23 +1,19 @@
 //author - Aman Singh BHandari
 import React from "react";
-import Highcharts from "highcharts/highstock";
+import Highcharts from "highcharts";
 import PieChart from "highcharts-react-official";
 import UtilityUser from "../Utility/UtilityUser";
 import httpClient from "../../thunk/interceptor";
 
 export default class AnalyticsAppreciation extends React.Component {
-  componentDidMount = () => {};
+  componentWillMount = () => {
+    console.log("calling setoption in componentn did mount");
+    this.setOptions();
+    console.log("finished setoption in componentn did mount");
+  };
 
-  constructor(props: any) {
-    super(props);
-  }
-
-  getOptions() {
-    // const { user } = await UtilityUser();
-    // console.log("user details:::::::" + user._id);
-    // const response = await httpClient.get("/appreciation/" + user._id);
-
-    var options = {
+  state = {
+    options: {
       chart: {
         plotBackgroundColor: null,
         plotBorderWidth: null,
@@ -25,7 +21,7 @@ export default class AnalyticsAppreciation extends React.Component {
         type: "pie",
       },
       title: {
-        text: "Reputation Earned: 80",
+        text: "Reputation Earned: ",
       },
       tooltip: {
         pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
@@ -52,40 +48,65 @@ export default class AnalyticsAppreciation extends React.Component {
           data: [
             {
               name: "Earned from Comments",
-              y: 10,
+              y: 1,
               sliced: true,
               selected: true,
             },
             {
               name: "Earned from Likes",
-              y: 5,
+              y: 1,
             },
             {
               name: "Earned from Posts",
-              y: 12,
+              y: 1,
             },
             {
               name: "Earned from Best Answer",
-              y: 53,
+              y: 99,
             },
           ],
         },
       ],
-    };
+    },
+  };
 
-    // options.series[0].data[0].y = response.data.appreciation.commentsScore;
-    // options.series[0].data[1].y = response.data.appreciation.likesScore;
-    // options.series[0].data[2].y = response.data.appreciation.postsScore;
-    // options.series[0].data[3].y = response.data.appreciation.bestAnswerScore;
-    // console.log("-------------" + options.series[0].data[0].y);
+  constructor(props: any) {
+    super(props);
+  }
 
-    return options;
+  setOptions() {
+    var options = this.state.options;
+
+    UtilityUser().then((response) => {
+      httpClient.get("/appreciation/" + response.user._id).then((response) => {
+        options.series[0].data[0].y = response.data.appreciation.commentsScore;
+        options.series[0].data[1].y = response.data.appreciation.likesScore;
+        options.series[0].data[2].y = response.data.appreciation.postsScore;
+        options.series[0].data[3].y =
+          response.data.appreciation.bestAnswerScore;
+        options.title.text +=
+          options.series[0].data[0].y +
+          options.series[0].data[1].y +
+          options.series[0].data[2].y +
+          options.series[0].data[3].y;
+
+        this.setState({
+          options: options,
+        });
+      });
+    });
   }
 
   render() {
+    const { options } = this.state;
+
     return (
       <div>
-        <PieChart highcharts={Highcharts} options={this.getOptions()} />
+        <PieChart
+          highcharts={Highcharts}
+          options={options}
+          updateArgs={[true]}
+        />
       </div>
     );
   }
