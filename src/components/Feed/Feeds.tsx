@@ -15,7 +15,6 @@ import Employee from "./Employee";
 import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
-import { BackendURL } from "../../data/constants";
 import UtilityUser from "../Utility/UtilityUser";
 
 function Feeds() {
@@ -101,10 +100,13 @@ function Feeds() {
   const [feeds, setFeeds] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
+  const [subscribedTo, setSubscribedTo] = useState([]);
 
   // get the user details to check out the bookmark lists
   useEffect(() => {
     UtilityUser().then(function (response) {
+      setSubscribedTo(response.user.subscribedTo);
+
       console.log("User fetched for bms:", response.user);
     });
   }, []);
@@ -112,20 +114,30 @@ function Feeds() {
   useEffect(() => {
     httpClient
       .get("/feeds/feeds/" + filter)
-      .then(res => {
-        setFeeds(res.data.message);
+      .then((res) => {
+        if (filter.toLowerCase() == "subscribed") {
+          let posts = res.data.message;
+          console.log(posts[0].user);
+
+          let filteredPosts = posts.filter((post: any) =>
+            subscribedTo.includes(post.userId as never)
+          );
+          setFeeds(filteredPosts);
+        } else {
+          setFeeds(res.data.message);
+        }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, [filter]);
   useEffect(() => {
     httpClient
       .get("/feeds/getStarEmployees")
-      .then(res => {
+      .then((res) => {
         setEmployees(res.data.message);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
