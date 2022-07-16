@@ -38,33 +38,48 @@ function EditPost() {
   const [del, setDel] = React.useState(false);
 
   const [tags, setTags] = React.useState<string[]>(data.state.tags);
-  const [errorstags, setErrostags] = React.useState<{ tags: string }>();
 
   const [topic, setTopic] = React.useState<string>(data.state.topic);
-  const [errorstopic, setErrostopic] = React.useState<{ topic: string }>();
 
   const [body, setBody] = React.useState<string>(data.state.body);
-  const [errorsbody, setErrosbody] = React.useState<{ body: string }>();
+  const [errorsbody, setErrosbody] = React.useState<{ name: string }>();
 
   const [id, setId] = React.useState<string>(data.state._id);
 
   const [type, setType] = React.useState(data.state.type);
 
   const postClick = () => {
-    //setDel(true);
-    const postBody = {   
-      "body": body,  
-      "tags": tags,  
-      "type": type,  
-    }
-    
-    console.log(postBody);
 
-    axios.put(`https://csci5709-answerme-backend.herokuapp.com/posts/putPost/`+id, postBody)
-      .then(res => {
-        console.log(res);
-		navigate("/userprofile");
-      })
+    setErrosbody({name: ""});
+
+    let err:number = 0;
+
+    let str = body || "";
+    let result1 = typeof str === "string" ? str.trim() : "";
+    if (result1.length === 0) {
+      setErrosbody({ name: "Body cannot be empty" });
+      err = err + 1;
+    }else if (result1.length < 30){
+      setErrosbody({ name: "Body should have atleast 30 characters" });
+      err = err + 1;
+    }
+
+    if(err == 0){
+      //setDel(true);
+      const postBody = {
+        "body": body,
+        "tags": tags,
+        "type": type,
+      }
+
+      console.log(postBody);
+
+      axios.put(`https://csci5709-answerme-backend.herokuapp.com/posts/putPost/`+id, postBody)
+        .then(res => {
+          console.log(res);
+      navigate("/userprofile");
+        })
+    }
   };
 
   const discardClick = () => {
@@ -91,25 +106,6 @@ function EditPost() {
 
   return (
     <Grid container spacing={4} alignItems="center" justifyContent="center">
-      <div>
-        <Modal open={del} onClose={handleDeleteCloseOption}>
-          <Box sx={style}>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              This post is now visible to public.
-            </Typography>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              Topic: {topic}
-            </Typography>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              Body: {body}
-            </Typography>
-            <Typography id="title" variant="h6" component="h2" display="block">
-              Tags: {tags}
-            </Typography>
-          </Box>
-        </Modal>
-      </div>
-
       <Grid item xs={12} md={7}>
         <Stack
           className="divProfileFields"
@@ -160,6 +156,8 @@ function EditPost() {
                   multiline
                   rows={6}
                   id="body"
+                  error={Boolean(errorsbody?.name)}
+                  helperText={errorsbody?.name}
                   defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo."
                 />
               </Stack>

@@ -13,6 +13,7 @@ import MyPosts from "./MyPosts";
 import MyBookmarkLists from "../BookmarksList/MyBookmarkLists";
 import axios from 'axios';
 import UtilityUser from "../Utility/UtilityUser";
+import ResetPasswprd from "./ResetPassword";
 
 export default function MyAccount() {
   const [value, setValue] = React.useState("1");
@@ -25,7 +26,6 @@ export default function MyAccount() {
     setValue(newValue);
   };
 
- 
   React.useEffect(() => {
     fetchPosts();
   },[])
@@ -61,6 +61,7 @@ export default function MyAccount() {
               <Tab label="Subscribed Users" value="3" />
               <Tab label="My Reputation" value="4" />
               <Tab label="My Bookmark lists" value="5" />
+              <Tab label="Reset Password" value="6" />
             </Tabs>
           </div>
         </Box>
@@ -97,6 +98,9 @@ export default function MyAccount() {
         </TabPanel>
         <TabPanel value="5">
           <MyBookmarkLists />
+        </TabPanel>
+        <TabPanel value="6">
+          <ResetPasswprd />
         </TabPanel>
       </TabContext>
     </Box>
