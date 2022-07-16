@@ -7,15 +7,42 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import bmListData from "../../data/dummy-bookmark-lists.json";
+// import bmListData from "../../data/dummy-bookmark-lists.json";
 import { BookmarkList } from "../../models";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { bookmarkService } from "../../services";
 
-const filter = createFilterOptions<BookmarkList>();
+const filter = createFilterOptions<{
+  id?: string;
+  name: string;
+  inputValue?: string;
+  getOptionLabel?: string;
+}>();
 
-const BookmarkSelector: React.FC = () => {
-  const [value, setValue] = useState<BookmarkList | null>(null);
+interface Props {
+  postId: string;
+  addPostToBookmarkList: (postId: string, addToBookmarkListName: string) => any;
+  bookmarkListNames: Array<{
+    id?: string;
+    name: string;
+    inputValue?: string;
+    getOptionLabel?: string;
+  }>;
+}
+
+const BookmarkSelector: React.FC<Props> = ({
+  postId,
+  addPostToBookmarkList,
+  bookmarkListNames,
+}) => {
+  console.log("the ll::", bookmarkListNames);
+  const [value, setValue] = useState<{
+    id?: string;
+    name: string;
+    inputValue?: string;
+    getOptionLabel?: string;
+  } | null>(null);
   const [open, toggleOpen] = useState(false);
 
   const handleClose = () => {
@@ -34,6 +61,9 @@ const BookmarkSelector: React.FC = () => {
     setValue({
       name: dialogValue.name,
     });
+
+    const bmListName: string = dialogValue.name;
+    addPostToBookmarkList(postId, bmListName);
     toast.success(`${dialogValue.name} is now added to the list`);
     handleClose();
   };
@@ -43,6 +73,19 @@ const BookmarkSelector: React.FC = () => {
       <Autocomplete
         value={value}
         onChange={(event, newValue) => {
+          const newInputValue = newValue;
+
+          if (typeof newInputValue === "object") {
+            const bmListNameSelected = newInputValue!.name;
+
+            for (let bmLN of bookmarkListNames) {
+              if (bmLN.name === bmListNameSelected) {
+                addPostToBookmarkList(postId, bmListNameSelected);
+                toast.success(`${dialogValue.name} is now added to the list`);
+              }
+            }
+          }
+
           if (typeof newValue === "string") {
             setTimeout(() => {
               toggleOpen(true);
@@ -72,7 +115,7 @@ const BookmarkSelector: React.FC = () => {
           return filtered;
         }}
         id="free-solo-dialog-demo"
-        options={bmListData}
+        options={bookmarkListNames}
         getOptionLabel={option => {
           if (typeof option === "string") {
             return option;

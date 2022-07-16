@@ -11,7 +11,16 @@ const addPostToBookmarkList = async (
   userId: string,
   postId: string,
   addToBookmarkListName: string,
-) => {};
+) => {
+  const body = {
+    postId,
+    bookmarkListName: addToBookmarkListName,
+  };
+  return httpClient.post(`/bookmark/add/${userId}`, body).then(response => {
+    console.log("Response after adding the bookmark:", response);
+    return response;
+  });
+};
 
 const removePostFromBookmarkList = async (
   userId: string,
