@@ -7,7 +7,7 @@
 
 .imagecontainer {
   display: flex;
-  background: #6d7dda;
+  background: white;
   align-items: center;
   justify-content: center;
 }
@@ -20,11 +20,9 @@
 
 .imagebox {
   background: white;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #6d7dda;
 }
 
 .imageframe {
@@ -33,24 +31,27 @@
 }
 
 .image {
-  padding: 50px;
+  padding: 0px;
 }
 
 .title {
-  color: #ffffff;
+  color: #300b0b;
   text-align: center;
-  font-size: 3rem !important;
+  font-size: 4rem !important;
 }
 
 .titlecontainer {
-  margin: 0px 0px 1.5rem 0px;
+  margin: 30px 0px 3rem 0px;
   font-weight: 700 !important;
 }
 
-.box {
+.loginBox {
+  background-color: rgb(230, 230, 255);
   margin: 10 10 10 10;
-  width: 60%;
-  /* position: absolute;
+  width: 40%;
+  position: absolute;
   top: 50%;
-  transform: translate(10%, -50%); */
+  transform: translate(10%, -50%);
+  padding: 2.25rem;
+  border-radius: 10px;
 }
