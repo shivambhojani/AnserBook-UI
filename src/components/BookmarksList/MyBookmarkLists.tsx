@@ -40,7 +40,7 @@ const MyBookmarkLists: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    bookmarkService.getBookmarkListOfUser(currentUserId).then(result => {
+    bookmarkService.getBookmarkListOfUser(currentUserId).then((result) => {
       const bmListsRes = result.data;
 
       console.log("The whole bmList", bmListsRes);
@@ -52,10 +52,10 @@ const MyBookmarkLists: React.FC = () => {
           // Fetch the post
           httpClient
             .get(`/posts/getOne/${postId}`)
-            .then(res => {
+            .then((res) => {
               const bmPost = res.data.post;
               // setting the state
-              setBookmarkLists(prevBmList => {
+              setBookmarkLists((prevBmList) => {
                 let added = false;
                 const newBmList = prevBmList;
                 for (let bmList of newBmList) {
@@ -81,7 +81,7 @@ const MyBookmarkLists: React.FC = () => {
                 return [...newBmList];
               });
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
             });
         }
@@ -102,12 +102,12 @@ const MyBookmarkLists: React.FC = () => {
       }}
     >
       {console.log("bmfinall", bookmarkLists)}
-      {bookmarkLists.map(bmList => (
+      {bookmarkLists.map((bmList) => (
         <div style={{ width: "100%" }}>
           <h1 style={{ marginTop: "0.5rem" }}>
             Bookmark list: <b>{bmList.bmListName}</b>
           </h1>
-          {bmList.posts.map(post => (
+          {bmList.posts.map((post) => (
             <Accordion key={post._id}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
