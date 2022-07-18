@@ -27,6 +27,7 @@ const Form = (props:any) => {
         email: values.email,
       })
       .then(() => {
+        
        toast("Password reset link sent successfully") 
         navigate("/login");
       }).catch((error: Error) => {
