@@ -5,23 +5,35 @@ import validate from "./LoginFormValidationRules";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Grid, Typography, Box } from "@mui/material";
-import logo from "../../assets/app-logo.png";
+import logo from "../../assets/app-logo-2.png";
 import Paper from "@mui/material/Paper";
 import httpClient from "../../thunk/interceptor";
+import { toast } from "react-toastify";
+import { failedAuth, gotAuth } from "../../store/reducers/authentication";
+import { useDispatch } from "react-redux";
 
 const Form = (props: any): any => {
+  const dispatch = useDispatch();
+
   const submitHandler = () => {
     httpClient
       .post("/auth/login", {
         email: values.email,
         password: values.password,
       })
-      .then(function (response) {
-        localStorage.setItem("token", "Bearer " + response.data.token);
-        localStorage.setItem("userID", values.email);
+      .then((response) => {
+        if (response.data.message === "ok") {
+          localStorage.setItem("token", response.data.token); //DON'T UNCOMMENT THIS!!!!
+          localStorage.setItem("userID", values.email);
+          console.log("----------" + response.data.token);
+          dispatch(gotAuth(response.data)); //store token in redux state---DONT DELETE THIS!!
 
-        console.log(`EMAILD` + localStorage.getItem("userID"));
-        console.log(`BEARER::::` + localStorage.getItem("token"));
+          login();
+          //IsSubmitted(true);
+        } else {
+          toast.error(response.data.message);
+          failedAuth(""); //failed .. so store failed response
+        }
       });
   };
 
@@ -30,12 +42,14 @@ const Form = (props: any): any => {
     errors: err,
     handleChange: manageChanges,
     handleSubmit: onsubmit,
+    IsSubmitted,
   }: any = useForm(login, validate);
   const [_, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   function login() {
     setLoggedIn(true);
+    console.log("logining----");
     if (values.email === "admin@xyz.com") {
       navigate("/adminhome");
     } else {
@@ -48,13 +62,6 @@ const Form = (props: any): any => {
       <Grid item xs={false} sm={5} md={6} className="imagecontainer">
         <Grid container direction="column" className="imagegrid">
           <Grid>
-            <Box className="titlecontainer">
-              <Typography component="h1" variant="h5" className="title">
-                Answer Book
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid>
             <section className="imagebox">
               <Box className="imageframe">
                 <img src={logo} alt="Logo" className="image" />
@@ -64,8 +71,15 @@ const Form = (props: any): any => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} sm={7} md={6} component={Paper} elevation={6}>
-        <div className="box">
+      <Grid item xs={12} sm={7} md={6} component={Paper} elevation={0}>
+        <Grid>
+          <Box className="titlecontainer">
+            <Typography component="h1" variant="h5" className="title">
+              Answer Book
+            </Typography>
+          </Box>
+        </Grid>
+        <div className="loginBox">
           <form onSubmit={onsubmit} noValidate>
             <div className="attributes">
               <label className="label">Email Address</label>

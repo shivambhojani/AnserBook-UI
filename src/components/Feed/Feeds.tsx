@@ -15,8 +15,8 @@ import Employee from "./Employee";
 import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
-import { BackendURL } from "../../data/constants";
 import UtilityUser from "../Utility/UtilityUser";
+import { bookmarkService } from "../../services/bookmark.service";
 
 function Feeds() {
   const classes = useStyles();
@@ -101,24 +101,134 @@ function Feeds() {
   const [feeds, setFeeds] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
+  const [currentUserId, setCurrentUserId] = useState("");
+  const [bookmarkedPosts, setBookmarkedPosts] = useState<any>({});
+  const [bookmarkListNames, setBookmarkListNames] = useState<any>([]);
+  const [fetchAgain, setFetchAgain] = useState(false);
+  const [subscribedTo, setSubscribedTo] = useState([]);
 
   // get the user details to check out the bookmark lists
   useEffect(() => {
     UtilityUser().then(function (response) {
+      setSubscribedTo(response.user.subscribedTo);
       console.log("User fetched for bms:", response.user);
+      setCurrentUserId(response.user._id);
     });
   }, []);
+
+  useEffect(() => {
+    bookmarkService
+      .getBookmarkListOfUser(currentUserId)
+      .then(result => {
+        console.log("bmLists:::", result);
+        const bookmarkLists = result.data;
+        const bmPosts: any = {};
+        const bmListNames: any = [];
+        let i = 0;
+
+        for (let bmList of bookmarkLists) {
+          const bmListName = bmList.bookmarkListName;
+          const postIds = bmList.postIds;
+
+          bmListNames.push({
+            id: ++i,
+            name: bmListName,
+            inputValue: "",
+            getOptionLabel: "",
+          });
+          for (let postId of postIds) {
+            bmPosts[postId] = bmListName;
+          }
+        }
+
+        console.log("bmPostsMap::", bmPosts);
+        setBookmarkedPosts(bmPosts);
+        console.log("bmPostListNames::", bmListNames);
+        setBookmarkListNames(bmListNames);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [currentUserId, fetchAgain]);
 
   useEffect(() => {
     httpClient
       .get("/feeds/feeds/" + filter)
       .then(res => {
-        setFeeds(res.data.message);
+        if (filter.toLowerCase() == "subscribed") {
+          console.log("Before setting the feeds", res.data.message);
+          const interimFeeds: any = res.data.message;
+
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
+          }
+          let posts = interimFeeds;
+
+          let filteredPosts = posts.filter((post: any) =>
+            subscribedTo.includes(post.userId as never),
+          );
+          setFeeds(filteredPosts);
+        } else {
+          console.log("Before setting the feeds", res.data.message);
+          const interimFeeds: any = res.data.message;
+
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
+          }
+          setFeeds(interimFeeds);
+        }
       })
       .catch(err => {
         console.log(err);
       });
-  }, [filter]);
+  }, [filter, bookmarkedPosts, bookmarkListNames, fetchAgain]);
+
+  const addPostToBookmarkList = async (
+    postId: string,
+    addPostToBookmarkListName: string,
+  ) => {
+    console.log(
+      `Will add post ${postId} to bmList ${addPostToBookmarkListName} for the user ${currentUserId}`,
+    );
+    bookmarkService
+      .addPostToBookmarkList(currentUserId, postId, addPostToBookmarkListName)
+      .then(result => {
+        console.log("Res in frontend after adding the bookmark", result);
+        setFetchAgain(prev => !prev);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const removeFromBookmarkList = async (
+    postId: string,
+    removeFromBookmarkListName: string,
+  ) => {
+    console.log(
+      `Will delete post ${postId} from bmList ${removeFromBookmarkListName} for the user ${currentUserId}`,
+    );
+    bookmarkService
+      .removePostFromBookmarkList(
+        currentUserId,
+        postId,
+        removeFromBookmarkListName,
+      )
+      .then(result => {
+        console.log("Res in frontend after deleting the bookmark", result);
+        setFetchAgain(prev => !prev);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     httpClient
       .get("/feeds/getStarEmployees")
@@ -168,7 +278,15 @@ function Feeds() {
               </FormControl>
             </div>
             {feeds.length > 0 ? (
-              feeds.map((feed: any) => <Feed {...feed} filter={filter} />)
+              feeds.map((feed: any) => (
+                <Feed
+                  {...feed}
+                  addPostToBookmarkList={addPostToBookmarkList}
+                  removeFromBookmarkList={removeFromBookmarkList}
+                  bookmarkListNames={bookmarkListNames}
+                  filter={filter}
+                />
+              ))
             ) : (
               <Card color="red">
                 <CardContent>

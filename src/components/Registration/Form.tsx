@@ -2,26 +2,54 @@ import React, { useState } from "react";
 import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import { useNavigate } from "react-router-dom";
+import httpClient from "../../thunk/interceptor";
+import { useDispatch } from "react-redux";
+import { failedAuth, gotAuth } from "../../store/reducers/authentication";
+import { toast } from "react-toastify";
 
 const Form = () => {
+  const dispatch = useDispatch();
+
   const {
     values,
     errors: err,
     handleChange: manageChanges,
     handleSubmit: onsubmit,
-  }:any = useForm(login, validate);
+  }: any = useForm(login, validate);
 
   const navigate = useNavigate();
 
   function login() {
-    navigate("/")
+    httpClient
+      .post("/auth/register", {
+
+        email: values.email,
+        password: values.password,
+        firstname: values.firstName,
+        lastname: values.lastName
+      })
+      .then((response) => {
+        if (response.data.message === "OK") {
+          localStorage.setItem("token", response.data.token); //DON'T UNCOMMENT THIS!!!!
+          localStorage.setItem("userID", values.email);
+          console.log("----------" + response.data.token);
+          dispatch(gotAuth(response.data)); //store token in redux state---DONT DELETE THIS!!
+
+          // login();
+          // IsSubmitted(true);
+          navigate("/");
+        } else {
+          toast.error(response.data.message);
+          failedAuth(""); //failed .. so store failed response
+        }
+      });
   }
 
   return (
     <div className="section hightlight">
       <div className="container">
         <div className="column is-6 is-offset-3">
-          <div className="box">
+          <div className="">
             <h1>Register</h1>
             <form onSubmit={onsubmit} noValidate>
               <div className="attributes">

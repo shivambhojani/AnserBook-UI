@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { failedAuth, gotAuth } from "./store/reducers/authentication";
 import {
   AppBar,
   Toolbar,
@@ -173,6 +175,7 @@ const NavBar = () => {
     }
   }, [searchValue]);
 
+  const dispatch = useDispatch();
   return (
     <AppBar position="static">
       <Toolbar>
@@ -226,6 +229,20 @@ const NavBar = () => {
             <AddIcon />
             Create Post
           </Button>
+          <Button
+            color="inherit"
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("userID");
+              dispatch(gotAuth({ message: "", token: "" }));
+              navigate("/login");
+            }}
+          >
+            {" "}
+            <AddIcon />
+            Logout
+          </Button>
+
           <IconButton onClick={handleOpen} color="inherit">
             <NotificationsIcon className={classes.menus} />
           </IconButton>

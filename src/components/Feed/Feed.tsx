@@ -29,6 +29,21 @@ interface feed {
   user: any;
   _id: string;
   reactions: any;
+  bookmarkListName: string;
+  addPostToBookmarkList: (
+    postId: string,
+    addPostToBookmarkListName: string,
+  ) => any;
+  removeFromBookmarkList: (
+    postId: string,
+    removeFromBookmarkListName: string,
+  ) => any;
+  bookmarkListNames: Array<{
+    id: string;
+    name: string;
+    inputValue: string;
+    getOptionLabel: string;
+  }>;
 }
 
 function Feed(props: feed) {
@@ -37,8 +52,9 @@ function Feed(props: feed) {
   const [emojiSelector, setEmojiSelector] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const [userId, setUserId] = useState();
+  const [userName, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
+    null,
   );
 
   const [feed, setFeed] = useState({
@@ -53,6 +69,10 @@ function Feed(props: feed) {
     image: props.image,
     user: props.user,
     reactions: props.reactions,
+    bookmarkListName: props.bookmarkListName,
+    addPostToBookmarkList: props.addPostToBookmarkList,
+    removeFromBookmarkList: props.removeFromBookmarkList,
+    bookmarkListNames: props.bookmarkListNames,
   });
   {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
@@ -62,16 +82,11 @@ function Feed(props: feed) {
     UtilityUser().then(function (response) {
       setUserId(response.user._id);
       setSubscribed(response.user.subscribedTo.includes(props.user._id));
-      console.log(
-        "user details::" + response.user.subscribedTo,
-        props.user._id,
-        "   " + response.user.subscribedTo.includes(props.user._id)
-      );
-      console.log("props", props);
+      setUserName(response.user.firstname + " " + response.user.lastname);
     });
   }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
   const open = Boolean(anchorElement);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -87,21 +102,19 @@ function Feed(props: feed) {
       },
     });
   };
-  console.log("subscribed", subscribed);
 
   const callbackend = (select: any) => {
-    console.log(select);
     httpClient
       .post("/feeds/addReactions/" + props._id, {
         reaction: select,
-        userId: "62cf74a88ae652bb3c6cd3b4",
-        userName: "kb bhim",
+        userId: userId,
+        userName: userName,
       })
-      .then((res) => {
+      .then(res => {
         console.log(res.data.message);
-        window.location.reload();
+        navigate(0);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
@@ -124,10 +137,13 @@ function Feed(props: feed) {
         loggedInUserId: userId,
         SubscribeToUserId: props.user._id,
       })
-      .then((res) => {
+      .then(res => {
+        setSubscribed(true);
+        navigate(0);
+
         console.log(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
@@ -137,13 +153,17 @@ function Feed(props: feed) {
         loggedInUserId: userId,
         SubscribeToUserId: props.user._id,
       })
-      .then((res) => {
+      .then(res => {
+        setSubscribed(false);
+        navigate(0);
+
         console.log(res.data.message);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
   };
+
   return (
     // The below code is referred from https://mui.com/material-ui/react-card/#complex-interaction
     <>
@@ -208,22 +228,9 @@ function Feed(props: feed) {
           </CardActionArea>
 
           <div className={classes.lastRow}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} className={classes.lastRow}>
               <Grid item md={4} xs={12}>
                 <div className={classes.tags}>
-                  {" "}
-                  {props.tags.map((tag) => (
-                    <Chip label={tag} className={classes.tag} />
-                  ))}
-                </div>
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <div className={classes.tags}>
-                  <BookmarkSelector />
-                </div>
-              </Grid>
-              <Grid item md={4} xs={12}>
-                <div className={classes.end}>
                   <Popover
                     open={Boolean(anchorEl)}
                     anchorEl={anchorEl}
@@ -235,7 +242,7 @@ function Feed(props: feed) {
                   >
                     <FacebookSelector
                       iconSize={20}
-                      onSelect={(select) => {
+                      onSelect={select => {
                         console.log(select);
                         callbackend(select);
                         // toast.info("🦄 Cool reaction!", {
@@ -252,18 +259,52 @@ function Feed(props: feed) {
                   </Popover>
 
                   <Button
-                    onClick={(e) => {
+                    onClick={e => {
                       setAnchorEl(e.currentTarget);
                     }}
-                    style={{ float: "right" }}
+                    // style={{ float: "right" }}
                   >
                     <FacebookCounter
                       counters={props.reactions}
                       alwaysShowOthers={true}
+                      user={userName}
                     />
                   </Button>
                 </div>
               </Grid>
+
+              <Grid item md={4} xs={12}>
+                <div className={classes.tags}>
+                  {props.bookmarkListName ? (
+                    <Chip
+                      label={`Bookmarked in ${props.bookmarkListName}`}
+                      variant="outlined"
+                      onDelete={() => {
+                        feed.removeFromBookmarkList(
+                          props._id,
+                          props.bookmarkListName,
+                        );
+                      }}
+                    />
+                  ) : (
+                    <BookmarkSelector
+                      postId={feed._id}
+                      addPostToBookmarkList={props.addPostToBookmarkList}
+                      bookmarkListNames={props.bookmarkListNames}
+                    />
+                  )}
+                </div>
+              </Grid>
+              {props.tags.length > 0 ? (
+                <Grid item md={4} xs={12}>
+                  <div className={classes.tags}>
+                    {" "}
+                    {props.tags.map(tag => (
+                      <Chip label={tag} className={classes.tag} />
+                    ))}
+                  </div>
+                </Grid>
+              ) : null}
             </Grid>
           </div>
         </CardContent>
