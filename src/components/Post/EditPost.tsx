@@ -79,7 +79,7 @@ function EditPost() {
 
       console.log(postBody);
 
-      axios.put(`http://localhost:5000/posts/putPost/`+id, postBody)
+      axios.put(`https://csci5709-answerme-backend.herokuapp.com/posts/putPost/`+id, postBody)
         .then(res => {
           console.log(res);
       navigate("/userprofile");
