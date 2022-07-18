@@ -27,6 +27,7 @@ function createData(name: string, calories: number, fat: number) {
 }
 
 export default function MyFriends() {
+
   interface userData {
     _id: string;
     firstname: string;
@@ -64,6 +65,27 @@ export default function MyFriends() {
         alert("Something wrong with API");
       });
   };
+
+  function makeuserActive(index: any, emailid:any) {
+    httpClient.put('/userprofile/makeactive?email='+ emailid).then(() => {
+      const list: any[] = JSON.parse(JSON.stringify(data));
+      list[index].isActive = true;
+      setData(list);
+      // alert("User Activated");
+
+    })
+    .catch((err) => console.log(err));
+  }
+
+  function makeuserinActive(index: any, emailid:any) {
+    httpClient.put('/userprofile/makeinactive?email='+ emailid).then(() => {
+      const list: any[] = JSON.parse(JSON.stringify(data));
+      list[index].isActive = false;
+      setData(list);
+      // alert("User Deactivated");
+    })
+    .catch((err) => console.log(err));
+  }
 
   // Avoid a layout jump when reaching the last page with empty rows.
 
@@ -128,14 +150,20 @@ export default function MyFriends() {
                           <td>{user.firstname + " " + user.lastname}</td>
                           <td>{user.email}</td>
                           <td>{user.isActive}</td>
-
+                          {console.log(user.isActive)} 
                           <td>
                             {" "}
-                            <Button variant="contained" color="error">
+                            <Button variant="contained" 
+                              color="error" 
+                              disabled={!user.isActive} 
+                              onClick={() => makeuserinActive(index, user.email)}>
                               Inactive
                             </Button>
                             {"          "}
-                            <Button variant="contained" color="success">
+                            <Button variant="contained" 
+                              color="success" 
+                                disabled = {user.isActive} 
+                                onClick={() => makeuserActive(index, user.email)}>
                               Active
                             </Button>
                           </td>
