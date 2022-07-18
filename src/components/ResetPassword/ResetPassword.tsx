@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-import useForm from "./useForm";
-import validate from "./LoginFormValidationRules";
-import {  useNavigate } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import httpClient from "../../thunk/interceptor";
 import {toast} from "react-toastify"
 
 const Form = (props:any) => {
-  const {
-    values,
-    errors: err,
-    handleChange: manageChanges,
-    handleSubmit: onsubmit,
-  }:any = useForm(login, validate);
+ 
   const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const params =  useParams()
 
   function login(e: any) {
     e.preventDefault();
-    if(!values.email){
-      toast.error("email is required")
+    if(!params.token){
       return
     }
+    if(!password.trim().length){
+      toast.error("Password is required")
+      return
+    }
+   
     httpClient
-      .post("/auth/request-password-reset", {
-        email: values.email,
+      .post("/auth/reset-password", {
+        password,
+        token: params.token 
       })
       .then(() => {
-       toast("Password reset link sent successfully") 
+       toast("Password update successfully") 
         navigate("/login");
       }).catch((error: Error) => {
         toast.error(error.message)
@@ -38,23 +38,20 @@ const Form = (props:any) => {
       <div className="container">
         <div className="column is-6 is-offset-3">
           <div className="box">
-            <h1 className="is-size-3">Forgot Password</h1>
+            <h1 className="is-size-3">Update Password</h1>
 
-            <form  noValidate>
               <div className="attributes mt-5">
-                <label className="label">Email Address</label>
+                <label className="label">New Password</label>
                 <div className="data-block">
                   <input
-                    placeholder="Enter email to reset the password"
+                    placeholder="A very strong new password that you remember"
                     autoComplete="off"
-                    className={`input ${err.email && "is-danger"}`}
-                    type="email"
-                    name="email"
-                    onChange={manageChanges}
-                    value={values.email || ""}
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     required
+                    className="input"
                   />
-                  {err.email && <p className="help is-danger">{err.email}</p>}
                 </div>
               </div>
 
@@ -62,12 +59,9 @@ const Form = (props:any) => {
                 className="button is-block is-info is-fullwidth my-3"
                 onClick={(e) =>login(e)}
               >
-                Reset Password
+                Update Password
               </button>
-             <Link to='/login'>
-              <p className="mt-5">Go Back</p>
-             </Link>
-            </form>
+             
           </div>
         </div>
       </div>

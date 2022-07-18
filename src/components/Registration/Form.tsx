@@ -28,7 +28,7 @@ const Form = () => {
         firstname: values.firstName,
         lastname: values.lastName
       })
-      .then((response) => {
+      .then((response:any) => {
         if (response.data.message === "OK") {
           localStorage.setItem("token", response.data.token); //DON'T UNCOMMENT THIS!!!!
           localStorage.setItem("userID", values.email);
@@ -39,9 +39,12 @@ const Form = () => {
           // IsSubmitted(true);
           navigate("/");
         } else {
+          
           toast.error(response.data.message);
           failedAuth(""); //failed .. so store failed response
         }
+      }).catch((error: any) => {
+        toast.error(error.message)
       });
   }
 
