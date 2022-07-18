@@ -3,6 +3,8 @@ import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import {  useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import httpClient from "../../thunk/interceptor";
+import {toast} from "react-toastify"
 
 const Form = (props:any) => {
   const {
@@ -11,11 +13,28 @@ const Form = (props:any) => {
     handleChange: manageChanges,
     handleSubmit: onsubmit,
   }:any = useForm(login, validate);
-  const [setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  function login() {
-    navigate("/login");
+  function login(e: any) {
+    
+    e.preventDefault();
+    if(!values.email){
+      toast.error("email is required")
+      return
+    }
+    httpClient
+      .post("/auth/request-password-reset", {
+        email: values.email,
+      })
+      .then(() => {
+        
+       toast("Password reset link sent successfully") 
+        navigate("/login");
+      }).catch((error: Error) => {
+        console.log("errror");
+        
+        toast.error(error.message)
+      });
   }
 
   return (
@@ -25,7 +44,7 @@ const Form = (props:any) => {
           <div className="box">
             <h1 className="is-size-3">Forgot Password</h1>
 
-            <form onSubmit={onsubmit} noValidate>
+            <form  noValidate>
               <div className="attributes mt-5">
                 <label className="label">Email Address</label>
                 <div className="data-block">
@@ -44,8 +63,8 @@ const Form = (props:any) => {
               </div>
 
               <button
-                type="submit"
                 className="button is-block is-info is-fullwidth my-3"
+                onClick={(e) =>login(e)}
               >
                 Reset Password
               </button>

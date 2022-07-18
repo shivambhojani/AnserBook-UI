@@ -11,6 +11,8 @@ import axios from 'axios';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import "./Post.css";
 
 /*The code has been referenced from: https://mui.com/material-ui/react-modal/*/
 const style = {
@@ -38,6 +40,7 @@ function EditPost() {
   const [del, setDel] = React.useState(false);
 
   const [tags, setTags] = React.useState<string[]>(data.state.tags);
+  const [taginput, setTaginput] = React.useState('');
 
   const [topic, setTopic] = React.useState<string>(data.state.topic);
 
@@ -48,23 +51,25 @@ function EditPost() {
 
   const [type, setType] = React.useState(data.state.type);
 
+  
+
   const postClick = () => {
 
     setErrosbody({name: ""});
 
-    let err:number = 0;
+    let errorFlag:number = 0;
 
-    let str = body || "";
-    let result1 = typeof str === "string" ? str.trim() : "";
-    if (result1.length === 0) {
+    let enteredValue = body || "";
+    let trimmedString = typeof enteredValue === "string" ? enteredValue.trim() : "";
+    if (trimmedString.length === 0) {
       setErrosbody({ name: "Body cannot be empty" });
-      err = err + 1;
-    }else if (result1.length < 30){
+      errorFlag = errorFlag + 1;
+    }else if (trimmedString.length < 30){
       setErrosbody({ name: "Body should have atleast 30 characters" });
-      err = err + 1;
+      errorFlag = errorFlag + 1;
     }
 
-    if(err == 0){
+    if(errorFlag == 0){
       //setDel(true);
       const postBody = {
         "body": body,
@@ -81,6 +86,40 @@ function EditPost() {
         })
     }
   };
+
+    // Tags
+    const deleteTag = (index:Number) => {
+      setTags(prevState => prevState.filter((tag, i) => i !== index))
+    }
+  
+    const onTagsInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const {
+        target: { value },
+      } = event;
+  
+      setTaginput(value);
+    };
+    
+    const onTagsKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      const editedInput = taginput.trim();
+      const { key } = event;
+  
+      if (!taginput.length && key === "Backspace" && tags.length > 0) {
+        event.preventDefault();
+        const tagsCopy = [...tags]; // shallow copy
+        const deletedTag: string = tagsCopy.pop()!;
+  
+        setTags(tagsCopy);
+        setTaginput(deletedTag);
+      }
+    
+      if (editedInput.length && (key === ',' || key === 'Enter') && !tags.includes(editedInput)) {
+        event.preventDefault();
+        setTags(prevState => [...prevState, editedInput]);
+        setTaginput('');
+      }
+  
+    };
 
   const discardClick = () => {
     navigate("/feeds");
@@ -105,23 +144,21 @@ function EditPost() {
   };
 
   return (
-    <Grid container spacing={4} alignItems="center" justifyContent="center">
-      <Grid item xs={12} md={7}>
+    <Grid  item xs={12} md={7} spacing={4} alignItems="center" justifyContent="center">
         <Stack
-          className="divProfileFields"
-          direction="row"
-          spacing={5}
-          mb={3}
-          mt={5}
-          sx={{ paddingLeft: "2%", paddingRight: "2%", paddingTop: "2%" }}
+          direction="column"
+          spacing={3}
+          justifyContent="flex-start"
+          alignItems="left"
+          className="grid-container"
         >
-          <Stack className="profileFields">
-            <Stack
-              direction="column"
-              spacing={3}
-              sx={{ paddingTop: "1%" }}
-              justifyContent="flex-start"
-            >
+          <Stack 
+          direction="column"
+          spacing={3}
+          sx={{ paddingTop: "1%" }}
+          justifyContent="flex-start"
+          alignItems="left" 
+          className="grid-container-child">
               <Stack spacing={2}>
                 <Typography variant="h5" style={{ fontWeight: 600 }}>
                   Topic
@@ -168,12 +205,20 @@ function EditPost() {
                 <Typography variant="body2" color="text.secondary">
                   Add tags to explain what your post is
                 </Typography>
-                <TagsInput
-                  name="tags-input"
-                  value={tags}
-                  onChange={setTags}
-                  placeHolder="Enter tags here"
-                />
+                <TextField
+                  value={taginput}
+                  placeholder="Enter a tag"
+                  onKeyDown={onTagsKeyDown}
+                  onChange={onTagsInputChange}
+                  />
+                <div className="tag-container">
+                {tags.map((tag, index) => (
+                      <div className="tag">
+                        <p className="tag-body">{tag}</p>
+                        <button onClick={() => deleteTag(index)}><ClearOutlinedIcon fontSize="small"/></button>
+                      </div>
+                  ))}
+            </div>
               </Stack>
               <Stack spacing={2}>
                 <Typography variant="h5" style={{ fontWeight: 600 }}>
@@ -211,9 +256,7 @@ function EditPost() {
               </Stack>
             </Stack>
           </Stack>
-        </Stack>
       </Grid>
-    </Grid>
   );
 }
 

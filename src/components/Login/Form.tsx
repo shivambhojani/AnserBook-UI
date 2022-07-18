@@ -5,7 +5,7 @@ import validate from "./LoginFormValidationRules";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Grid, Typography, Box } from "@mui/material";
-import logo from "../../assets/app-logo.png";
+import logo from "../../assets/app-logo-2.png";
 import Paper from "@mui/material/Paper";
 import httpClient from "../../thunk/interceptor";
 import { toast } from "react-toastify";
@@ -62,13 +62,6 @@ const Form = (props: any): any => {
       <Grid item xs={false} sm={5} md={6} className="imagecontainer">
         <Grid container direction="column" className="imagegrid">
           <Grid>
-            <Box className="titlecontainer">
-              <Typography component="h1" variant="h5" className="title">
-                Answer Book
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid>
             <section className="imagebox">
               <Box className="imageframe">
                 <img src={logo} alt="Logo" className="image" />
@@ -78,8 +71,15 @@ const Form = (props: any): any => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} sm={7} md={6} component={Paper} elevation={6}>
-        <div className="box">
+      <Grid item xs={12} sm={7} md={6} component={Paper} elevation={0}>
+        <Grid>
+          <Box className="titlecontainer">
+            <Typography component="h1" variant="h5" className="title">
+              Answer Book
+            </Typography>
+          </Box>
+        </Grid>
+        <div className="loginBox">
           <form onSubmit={onsubmit} noValidate>
             <div className="attributes">
               <label className="label">Email Address</label>
