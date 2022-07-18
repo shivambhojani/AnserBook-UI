@@ -16,8 +16,7 @@ const Form = (props:any) => {
   const navigate = useNavigate();
 
   function login(e: any) {
-    console.log("Fp");
-
+    
     e.preventDefault();
     if(!values.email){
       toast.error("email is required")
@@ -28,6 +27,7 @@ const Form = (props:any) => {
         email: values.email,
       })
       .then(() => {
+        
        toast("Password reset link sent successfully") 
         navigate("/login");
       }).catch((error: Error) => {
