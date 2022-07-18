@@ -1,21 +1,15 @@
 import { Stack, TextField } from "@mui/material";
 import {
-  Typography,
-  makeStyles,
-  Divider,
   styled,
   Grid,
   Button,
 } from "@material-ui/core";
 import "./ProfilePage.css";
 import { Container } from "@mui/system";
-
-import CountrySelect from "./CountrySelect";
 import React, { useEffect } from "react";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import httpClient from "../../thunk/interceptor";
-import { SendToMobile } from "@mui/icons-material";
+import { Buffer } from "buffer";
+
 
 const MyComponent = styled("div")({
   color: "white",
@@ -29,12 +23,10 @@ const Input = styled("input")({
   display: "none",
 });
 
-
-
 const ProfilePage = () => {
   const loggedInUserEmailId = localStorage.getItem("userID");
   console.log('email', loggedInUserEmailId)
-  
+
   const [dob, setdob] = React.useState<Date | null>(null);
 
   const [disable, setDisable] = React.useState(false);
@@ -56,9 +48,7 @@ const ProfilePage = () => {
   const [errorslocation, setErroslocation] = React.useState<{ name: string }>();
 
   const [id, setid] = React.useState<string>();
-  const [errorsid, setErrorsid] = React.useState<{
-    name: string;
-  }>();
+  const [errorsid, setErrorsid] = React.useState<{ name: string }>();
 
   const [pin, setpin] = React.useState<string>();
   const [errorspin, setErrospin] = React.useState<{ name: string }>();
@@ -69,6 +59,8 @@ const ProfilePage = () => {
   const [city, setcity] = React.useState<string>();
   const [errorscity, setErroscity] = React.useState<{ name: string }>();
 
+  const [imagedata, setimagedata] = React.useState<string>();
+  const [newImage, setnewImage] = React.useState<string>();
 
 
   useEffect(() => {
@@ -84,11 +76,20 @@ const ProfilePage = () => {
       setPhone(res.data.user.mobile);
       setpin(res.data.user.pinCode)
 
+      console.log("Get profile image")
+      httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
+        .then((res) => {
+          console.log(res);
+          setimagedata(res.data.userImage.image)
+
+        })
+        .catch((err) => console.log(err));
     })
       .catch((err) => {
         console.log(err);
       });
-
+    setTimeout(() => {
+    }, 5000);
   }, []);
 
 
@@ -146,7 +147,7 @@ const ProfilePage = () => {
         .then((res) => {
           console.log(res.data);
           alert("Information Saved Successfully")
-          window.location.reload();
+          // window.location.reload();
         })
         .catch((err) => {
           console.log(err);
@@ -240,6 +241,41 @@ const ProfilePage = () => {
       setDisable(true);
       setErroslastname({ name: "Only Alphabets are allowed with spaces" });
     }
+  };
+
+  const uploadImage = () => {
+    let str = imagedata;
+    let result1 = typeof str === "string" ? str.trim() : "";
+    if (result1.length === 0 && false) {
+      alert("Choose image before uploading")
+    }
+    else {
+      httpClient
+        .post("/userprofile/uploadImage?email=" + loggedInUserEmailId, {
+          image: imagedata
+        })
+        .then((res) => {
+          alert("Saved Successfully")
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  function onImageInputChange(event: any) {
+
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      console.log('base64', reader.result)
+      console.log(typeof (reader.result))
+      let text = reader.result?.toString();
+      setimagedata(text);
+    }
+
   };
 
   return (
@@ -369,11 +405,26 @@ const ProfilePage = () => {
               <div className="card-body text-center">
                 <div className="cardBodyItems m-3">
                   <div>
+                    {/* {
+                      imagedata.map((singleData: Buffer) => {
+                        const base64String = btoa(
+                          String.fromCharCode(...new Uint8Array((singleData.image.data)))
+                        );
+                        <img
+                          className="img-account-profile rounded-circle mb-2"
+                          src={`imagedata:image/png;base, ${base64String}`}
+                          alt=""
+                        ></img>
+                      })
+
+                    } */}
                     <img
                       className="img-account-profile rounded-circle mb-2"
-                      src="http://bootdey.com/img/Content/avatar/avatar7.png"
+                      src={imagedata}
                       alt=""
                     ></img>
+
+
                   </div>
                   <div>
                     <div className="small font-italic text-muted mb-4">
@@ -387,15 +438,26 @@ const ProfilePage = () => {
                         id="contained-button-file"
                         multiple
                         type="file"
+                        onChange={onImageInputChange}
                       />
                       <Button
                         variant="contained"
                         component="span"
-                        color="primary"
+                        color="secondary"
                       >
-                        Upload
+                        Choose File
                       </Button>
+
                     </label>
+                    {'   '}
+                    <Button
+                      variant="contained"
+                      component="span"
+                      color="primary"
+                      onClick={uploadImage}
+                    >
+                      Upload
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -406,4 +468,5 @@ const ProfilePage = () => {
     </Container>
   );
 };
+
 export default ProfilePage;
