@@ -16,6 +16,8 @@ const Form = (props:any) => {
   const navigate = useNavigate();
 
   function login(e: any) {
+    console.log("Fp");
+
     e.preventDefault();
     if(!values.email){
       toast.error("email is required")
