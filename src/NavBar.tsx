@@ -23,6 +23,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MailIcon from "@mui/icons-material/Mail";
+import httpClient from "./thunk/interceptor";
 
 import Modal from "@mui/material/Modal";
 const style = {
@@ -67,6 +68,12 @@ const options = [
 }
 
 const NavBar = () => {
+
+  const loggedInUserEmailId = localStorage.getItem("userID");
+  console.log('email', loggedInUserEmailId)
+
+  const [imagedata, setimagedata] = React.useState<any>();
+
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState<{
@@ -141,7 +148,7 @@ const NavBar = () => {
         >
           <Avatar
             alt="Remy Sharp"
-            src="http://bootdey.com/img/Content/avatar/avatar7.png"
+            src={imagedata}
             sx={{ width: 30, height: 30, backgroundColor: "white" }}
             onClick={avatarclick}
           />
@@ -151,6 +158,14 @@ const NavBar = () => {
     </Menu>
   );
   useEffect(() => {
+
+    httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
+    .then((res) => {
+      setimagedata(res.data.userImage.image)
+      console.log('Image Set')
+    })
+    .catch((err) => console.log(err));
+
     if (searchValue && searchValue.groupBy) {
       if (searchValue.groupBy == "User") {
         navigate("/openprofile");
@@ -249,7 +264,7 @@ const NavBar = () => {
           <IconButton color="inherit">
             <Avatar
               alt="Remy Sharp"
-              src="http://bootdey.com/img/Content/avatar/avatar7.png"
+              src={imagedata}
               sx={{ width: 50, height: 50, backgroundColor: "white" }}
               onClick={avatarclick}
             ></Avatar>
