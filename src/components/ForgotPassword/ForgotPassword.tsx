@@ -31,6 +31,8 @@ const Form = (props:any) => {
        toast("Password reset link sent successfully") 
         navigate("/login");
       }).catch((error: Error) => {
+        console.log("errror");
+        
         toast.error(error.message)
       });
   }
