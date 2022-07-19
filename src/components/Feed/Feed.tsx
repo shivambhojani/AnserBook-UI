@@ -29,6 +29,8 @@ export interface feed {
   user: any;
   _id: string;
   reactions: any;
+  filter: any;
+  setFilter: any;
   bookmarkListName: string;
   addPostToBookmarkList: (
     postId: string,
@@ -56,6 +58,7 @@ function Feed(props: feed) {
   const [subscribed, setSubscribed] = useState(false);
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState("");
+  const [update, setupdate] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -71,6 +74,8 @@ function Feed(props: feed) {
     type: props.type,
     image: props.image,
     user: props.user,
+    filter: props.filter,
+    setFilter: props.setFilter,
     reactions: props.reactions,
     bookmarkListName: props.bookmarkListName,
     addPostToBookmarkList: props.addPostToBookmarkList,
@@ -116,11 +121,14 @@ function Feed(props: feed) {
       })
       .then((res) => {
         console.log(res.data.message);
+        // setupdate(true);
+        // props.setFilter(props.filter);
         navigate(0);
       })
       .catch((err) => {
         console.log(err);
       });
+    // setTimeout(() => setupdate(false), 50000);
   };
 
   const handleClose = () => {

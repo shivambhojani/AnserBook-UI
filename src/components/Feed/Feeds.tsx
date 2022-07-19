@@ -159,6 +159,8 @@ function Feeds() {
     httpClient
       .get("/feeds/getStarEmployees")
       .then((res) => {
+        console.log("employees", res.data.message);
+
         setEmployees(res.data.message);
       })
       .catch((err) => {
@@ -211,6 +213,7 @@ function Feeds() {
                   removeFromBookmarkList={removeFromBookmarkList}
                   bookmarkListNames={bookmarkListNames}
                   filter={filter}
+                  setFilter={setFilter}
                 />
               ))
             ) : (

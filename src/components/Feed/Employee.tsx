@@ -70,7 +70,10 @@ export default function Employee(props: any) {
       <CardMedia
         component="img"
         height="140"
-        image={props.image ? props.image : "./assets/userImage.jpg"}
+        image={
+          props.images ? props.images.image : "./assets/defaultProfile.jpg"
+        }
+        style={{ maxHeight: "250px" }}
         alt="green iguana"
       />
       <CardContent>
