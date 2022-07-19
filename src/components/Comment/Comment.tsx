@@ -14,6 +14,7 @@ import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 import { getThemeProps } from "@mui/system";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
+import moment from "moment";
 
 interface comment {
   avatar: string;
@@ -65,7 +66,7 @@ export default function Comment(props: comment) {
           </Avatar>
         }
         title={attributes.author}
-        subheader={attributes.date}
+        subheader={moment(attributes.date).format("MMM Do YYYY")}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
