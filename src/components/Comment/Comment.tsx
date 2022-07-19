@@ -13,6 +13,7 @@ import { Typography, Button } from "@mui/material";
 import DownloadDoneRoundedIcon from "@mui/icons-material/DownloadDoneRounded";
 import { getThemeProps } from "@mui/system";
 import httpClient from "../../thunk/interceptor";
+import UtilityUser from "../Utility/UtilityUser";
 
 interface comment {
   avatar: string;
@@ -22,11 +23,38 @@ interface comment {
   isBestAnswer: boolean;
   _id: string;
   userId: string;
+  postOwner: string;
 }
 
 export default function Comment(props: comment) {
   const [attributes, setAttributes] = useState<comment>(props);
   const [hidden, setHidden] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+
+  useEffect(() => {
+    UtilityUser().then((response) => {
+      console.log("comment => current user id ::" + response.user._id);
+      setCurrentUser(response.user._id);
+    });
+  }, []);
+
+  const canMarkAnswer = () => {
+    console.log("canMarkAnswer::" + currentUser + " " + attributes.postOwner);
+    if (currentUser === attributes.postOwner) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const canDelete = () => {
+    console.log("canDelete::" + currentUser + " " + attributes.postOwner);
+    if (currentUser === attributes.userId) {
+      return false;
+    }
+
+    return true;
+  };
 
   return (
     <Card className="card" hidden={hidden}>
@@ -53,34 +81,40 @@ export default function Comment(props: comment) {
             />
           </IconButton>
         ) : null}
-        <Button
-          onClick={() => {
-            httpClient
-              .put("/comment", {
-                _id: attributes._id,
-                userId: attributes.userId,
-                isBestAnswer: !attributes.isBestAnswer,
-              })
-              .then((response) => {
-                var attr = JSON.parse(JSON.stringify(attributes));
-                attr.isBestAnswer = !attr.isBestAnswer;
-                setAttributes(attr);
-              });
-          }}
-        >
-          {attributes.isBestAnswer
-            ? "Unmark as correct answer"
-            : "Mark as correct answer"}
-        </Button>
-        <Button
-          onClick={() => {
-            httpClient.delete("/comment/" + attributes._id).then((response) => {
-              setHidden(true);
-            });
-          }}
-        >
-          Delete
-        </Button>
+        <div hidden={canMarkAnswer()}>
+          <Button
+            onClick={() => {
+              httpClient
+                .put("/comment", {
+                  _id: attributes._id,
+                  userId: attributes.userId,
+                  isBestAnswer: !attributes.isBestAnswer,
+                })
+                .then((response) => {
+                  var attr = JSON.parse(JSON.stringify(attributes));
+                  attr.isBestAnswer = !attr.isBestAnswer;
+                  setAttributes(attr);
+                });
+            }}
+          >
+            {attributes.isBestAnswer
+              ? "Unmark as correct answer"
+              : "Mark as correct answer"}
+          </Button>
+        </div>
+        <div hidden={canDelete()}>
+          <Button
+            onClick={() => {
+              httpClient
+                .delete("/comment/" + attributes._id)
+                .then((response) => {
+                  setHidden(true);
+                });
+            }}
+          >
+            Delete
+          </Button>
+        </div>
       </CardActions>
     </Card>
   );
