@@ -169,6 +169,7 @@ function Feed(props: feed) {
     <>
       <br />
       <Card>
+        {console.log("Props that I got", props)};
         <CardContent>
           <div className={classes.flex}>
             <div className={classes.tags}>

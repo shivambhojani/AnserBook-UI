@@ -110,6 +110,7 @@ function Post(props: any) {
 
   return (
     <Container className="mt-3">
+      {console.log("Feed tha I got", feedc)};
       <Feed {...feedc} />
       <Typography variant="h5" component="div" className={classes.margin}>
         0 Answers
