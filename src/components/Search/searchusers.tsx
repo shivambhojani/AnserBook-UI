@@ -156,7 +156,9 @@ export default function SearchUsers() {
             {/* <CardActionArea onClick={(e) => openUserProfile(user.email)}> */}
             <Avatar
               alt="Tony Stark"
-              src={user.picture}
+              src={
+                user.images ? user.images.image : "./assets/defaultProfile.jpg"
+              }
               className="fex2"
               sx={{ width: 120, height: 120 }}
             />

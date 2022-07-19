@@ -97,6 +97,23 @@ function Feeds() {
             subscribedTo.includes(post.userId as never)
           );
           setFeeds(filteredPosts);
+        } else if (filter.toLowerCase() == "hottopics") {
+          res.data.message.sort(
+            (a: any, b: any) =>
+              parseFloat(a.reactionCount) - parseFloat(b.reactionCount)
+          );
+          const interimFeeds: any = res.data.message.sort(
+            (a: any, b: any) =>
+              parseFloat(a.reactionCount) - parseFloat(b.reactionCount)
+          );
+
+          for (let f of interimFeeds) {
+            const fId: any = f._id;
+            if (bookmarkedPosts[fId]) {
+              f.bookmarkListName = bookmarkedPosts[fId];
+            }
+          }
+          setFeeds(interimFeeds);
         } else {
           console.log("Before setting the feeds", res.data.message);
           const interimFeeds: any = res.data.message;
@@ -198,7 +215,7 @@ function Feeds() {
                   <MenuItem value="All">
                     <em>All</em>
                   </MenuItem>
-                  <MenuItem value={"hotTopics"}>Hot Topics</MenuItem>
+                  <MenuItem value={"hottopics"}>Hot Topics</MenuItem>
                   <MenuItem value={"social"}>Social</MenuItem>
                   <MenuItem value={"technical"}>Technical</MenuItem>
                   <MenuItem value={"subscribed"}>Subscribed</MenuItem>

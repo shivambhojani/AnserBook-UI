@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { failedAuth, gotAuth } from "./store/reducers/authentication";
 
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import {
   AppBar,
   Toolbar,
@@ -16,9 +16,8 @@ import {
   Menu,
   MenuItem,
   Badge,
-
 } from "@mui/material";
-import Card from '@mui/material/Card';
+import Card from "@mui/material/Card";
 
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import useStyles from "./Style";
@@ -26,11 +25,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import httpClient from "./thunk/interceptor";
 import Avatar from "@mui/material/Avatar";
 import CardHeader from "@mui/material/CardHeader";
-
 
 import Modal from "@mui/material/Modal";
 import { display } from "@mui/system";
@@ -76,13 +74,12 @@ const options = [
 }
 
 const NavBar = () => {
-
   const loggedInUserEmailId = localStorage.getItem("userID");
-  console.log('email', loggedInUserEmailId)
+  console.log("email", loggedInUserEmailId);
 
   const [imagedata, setimagedata] = React.useState<string>();
   const [invisible, setInvisible] = React.useState(false);
-  const [notification, setNotification] = React.useState(true)
+  const [notification, setNotification] = React.useState(true);
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -92,8 +89,8 @@ const NavBar = () => {
   }>();
 
   const handleOpen = () => {
-    setOpen(true)
-    setInvisible(true)
+    setOpen(true);
+    setInvisible(true);
   };
   const handleClose = () => setOpen(false);
   function avatarclick() {
@@ -183,14 +180,19 @@ const NavBar = () => {
     </Menu>
   );
   useEffect(() => {
-
-    httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
+    httpClient
+      .get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
       .then((res) => {
-        setimagedata(res.data.userImage.image)
-        console.log('Image Set')
+        setimagedata(
+          res.data.userImage != null
+            ? res.data.userImage.image
+            : "./assets/defaultProfile.jpg"
+        );
+        console.log("Image Set-=-=-=-=-=-=", res.data);
       })
       .catch((err) => console.log(err));
-
+  }, []);
+  useEffect(() => {
     if (searchValue && searchValue.groupBy) {
       if (searchValue.groupBy == "User") {
         navigate("/openprofile");
@@ -221,6 +223,7 @@ const NavBar = () => {
       <Toolbar>
         <a href="/feeds" className={classes.link}>
           <Typography
+            m={2}
             variant="h6"
             noWrap
             component="div"
@@ -230,7 +233,7 @@ const NavBar = () => {
           </Typography>
         </a>
         {/* Referred from https://mui.com/material-ui/react-autocomplete/#grouped */}
-        <Autocomplete
+        {/* <Autocomplete
           id="free-solo-2-demo"
           disableClearable
           value={searchValue}
@@ -260,11 +263,10 @@ const NavBar = () => {
               }}
             />
           )}
-        />
+        /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-
           <Button color="inherit" onClick={searchclick}>
             {" "}
             <SearchIcon />
@@ -327,42 +329,42 @@ const NavBar = () => {
         >
           <>
             <Box sx={style}>
-
               <Card sx={{ minWidth: 275 }}>
                 <div className="div">
-
-                  <CardHeader action={
-                    <IconButton onClick={() => {
-                      setOpen(false)
-                      setNotification(false)
-                    }} aria-label="settings">
-                      <CloseIcon />
-                    </IconButton>
-                  }
+                  <CardHeader
+                    action={
+                      <IconButton
+                        onClick={() => {
+                          setOpen(false);
+                          setNotification(false);
+                        }}
+                        aria-label="settings"
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    }
                     subheader="you have created a post"
                   />
-
                 </div>
-
               </Card>
-
 
               <Card sx={{ minWidth: 275 }} style={{ marginTop: "20px" }}>
                 <div className="div">
-
-                  <CardHeader action={
-                    <IconButton onClick={() => {
-                      setOpen(false)
-                      setNotification(false)
-                    }} aria-label="settings">
-                      <CloseIcon />
-                    </IconButton>
-                  }
+                  <CardHeader
+                    action={
+                      <IconButton
+                        onClick={() => {
+                          setOpen(false);
+                          setNotification(false);
+                        }}
+                        aria-label="settings"
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    }
                     subheader="you have edited a post"
                   />
-
                 </div>
-
               </Card>
             </Box>
           </>
