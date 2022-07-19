@@ -22,6 +22,7 @@ export interface CommentDetail {
   createdOn: Date;
   updatedOn: Date;
   displayUserName: string;
+  postOwner: string; //userid of the post owner
 }
 
 function Post(props: any) {
@@ -39,7 +40,6 @@ function Post(props: any) {
   };
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log("form submitted");
     UtilityUser()
       .then((response) => {
         console.log("current user id ::" + response.user._id);
@@ -84,6 +84,7 @@ function Post(props: any) {
                 if (user._id === commentResponse.userId) {
                   commentResponse.displayUserName =
                     user.firstname + " " + user.lastname;
+                  commentResponse.postOwner = feedc.user._id;
 
                   console.log(
                     "Display Name=====" + commentResponse.displayUserName
@@ -151,6 +152,7 @@ function Post(props: any) {
           isBestAnswer={oldComment.isBestAnswer}
           _id={oldComment._id}
           userId={oldComment.userId}
+          postOwner={oldComment.postOwner}
         ></Comment>
       ))}
     </Container>
