@@ -16,88 +16,14 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import useStyles from "./Style";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
+/*
+ * @author: Shivangi Bhatt
+ *
+ */
 import { bookmarkService } from "../../services/bookmark.service";
 
 function Feeds() {
   const classes = useStyles();
-  // const [feeds, setFeeds] = React.useState([
-  //   {
-  //     initials: "SB",
-  //     username: "Shivangi Bhatt",
-  //     date: "Februrary 28, 2022",
-  //     image: "./assets/Post.png",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Social",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "HB",
-  //     username: "Hardik Bhatt",
-  //     date: "Februrary 28, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Technical",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "DS",
-  //     username: "Donna Singh",
-  //     date: "Februrary 29, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Social",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "AS",
-  //     username: "Aadesh Shah",
-  //     date: "January 28, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Technical",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  //   {
-  //     initials: "BS",
-  //     username: "Bhushan Singh",
-  //     date: "Februrary 28, 2022",
-  //     question:
-  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet tellus vel cursus luctus. Cras molestie lacus auctor, volutpat felis et, bibendum ipsum. Praesent tincidunt consequat enim et aliquam. Cras tempor orci vel lorem imperdiet, at egestas ipsum tempus. Aenean nec felis tristique, congue sem quis, euismod leo.",
-  //     tags: ["Tag1", "Tag2", "Tag3"],
-  //     type: "Technical",
-  //     shortQuestion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit?",
-  //   },
-  // ]);
-  // const [employees, setEmployees] = React.useState([
-  //   {
-  //     username: "Shivangi Bhatt",
-  //     image: "./assets/userImage.jpg",
-  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-  //     score: 100,
-  //     badge: "Gold",
-  //   },
-
-  //   {
-  //     username: "Raj Patel",
-  //     image: "./assets/userImage.jpg",
-  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-  //     score: 90,
-  //     badge: "Gold",
-  //   },
-
-  //   {
-  //     username: "Donna Singh",
-  //     image: "./assets/userImage.jpg",
-  //     info: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur laoreet",
-  //     score: 80,
-  //     badge: "Silver",
-  //   },
-  // ]);
   const [feeds, setFeeds] = React.useState([]);
   const [employees, setEmployees] = React.useState([]);
   const [filter, setFilter] = useState("all");
@@ -107,7 +33,7 @@ function Feeds() {
   const [fetchAgain, setFetchAgain] = useState(false);
   const [subscribedTo, setSubscribedTo] = useState([]);
 
-  // get the user details to check out the bookmark lists
+  // get the user details to check out the bookmark lists and subscribed users
   useEffect(() => {
     UtilityUser().then(function (response) {
       setSubscribedTo(response.user.subscribedTo);
@@ -119,7 +45,7 @@ function Feeds() {
   useEffect(() => {
     bookmarkService
       .getBookmarkListOfUser(currentUserId)
-      .then(result => {
+      .then((result) => {
         console.log("bmLists:::", result);
         const bookmarkLists = result.data;
         const bmPosts: any = {};
@@ -146,15 +72,15 @@ function Feeds() {
         console.log("bmPostListNames::", bmListNames);
         setBookmarkListNames(bmListNames);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, [currentUserId, fetchAgain]);
-
+  // getting all the feeds
   useEffect(() => {
     httpClient
       .get("/feeds/feeds/" + filter)
-      .then(res => {
+      .then((res) => {
         if (filter.toLowerCase() == "subscribed") {
           console.log("Before setting the feeds", res.data.message);
           const interimFeeds: any = res.data.message;
@@ -168,7 +94,7 @@ function Feeds() {
           let posts = interimFeeds;
 
           let filteredPosts = posts.filter((post: any) =>
-            subscribedTo.includes(post.userId as never),
+            subscribedTo.includes(post.userId as never)
           );
           setFeeds(filteredPosts);
         } else {
@@ -184,47 +110,47 @@ function Feeds() {
           setFeeds(interimFeeds);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, [filter, bookmarkedPosts, bookmarkListNames, fetchAgain]);
 
   const addPostToBookmarkList = async (
     postId: string,
-    addPostToBookmarkListName: string,
+    addPostToBookmarkListName: string
   ) => {
     console.log(
-      `Will add post ${postId} to bmList ${addPostToBookmarkListName} for the user ${currentUserId}`,
+      `Will add post ${postId} to bmList ${addPostToBookmarkListName} for the user ${currentUserId}`
     );
     bookmarkService
       .addPostToBookmarkList(currentUserId, postId, addPostToBookmarkListName)
-      .then(result => {
+      .then((result) => {
         console.log("Res in frontend after adding the bookmark", result);
-        setFetchAgain(prev => !prev);
+        setFetchAgain((prev) => !prev);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
   const removeFromBookmarkList = async (
     postId: string,
-    removeFromBookmarkListName: string,
+    removeFromBookmarkListName: string
   ) => {
     console.log(
-      `Will delete post ${postId} from bmList ${removeFromBookmarkListName} for the user ${currentUserId}`,
+      `Will delete post ${postId} from bmList ${removeFromBookmarkListName} for the user ${currentUserId}`
     );
     bookmarkService
       .removePostFromBookmarkList(
         currentUserId,
         postId,
-        removeFromBookmarkListName,
+        removeFromBookmarkListName
       )
-      .then(result => {
+      .then((result) => {
         console.log("Res in frontend after deleting the bookmark", result);
-        setFetchAgain(prev => !prev);
+        setFetchAgain((prev) => !prev);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -232,10 +158,12 @@ function Feeds() {
   useEffect(() => {
     httpClient
       .get("/feeds/getStarEmployees")
-      .then(res => {
+      .then((res) => {
+        console.log("employees", res.data.message);
+
         setEmployees(res.data.message);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }, []);
@@ -285,6 +213,7 @@ function Feeds() {
                   removeFromBookmarkList={removeFromBookmarkList}
                   bookmarkListNames={bookmarkListNames}
                   filter={filter}
+                  setFilter={setFilter}
                 />
               ))
             ) : (

@@ -2,6 +2,15 @@
     margin: auto !important;
 }
 
+.fex1{
+text-align: center;
+margin:20px
+}
+.fex2{
+text-align: center;
+margin: auto;
+}
+
 /* .css-8je8zh-MuiTouchRipple-root {
     overflow: hidden !important;
     pointer-events: none !important;

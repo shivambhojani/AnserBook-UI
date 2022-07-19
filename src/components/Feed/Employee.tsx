@@ -8,12 +8,17 @@ import { useEffect, useState } from "react";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
 
+/*
+ * @author: Shivangi Bhatt
+ *
+ */
 export default function Employee(props: any) {
   const classes = useStyles();
   const [subscribed, setSubscribed] = useState(false);
   const [userId, setUserId] = useState();
   console.log("props", props);
 
+  // get user Id and subscribe user tof the logged in user
   useEffect(() => {
     UtilityUser().then(function (response) {
       setUserId(response.user._id);
@@ -65,7 +70,10 @@ export default function Employee(props: any) {
       <CardMedia
         component="img"
         height="140"
-        image={props.image ? props.image : "./assets/userImage.jpg"}
+        image={
+          props.images ? props.images.image : "./assets/defaultProfile.jpg"
+        }
+        style={{ maxHeight: "250px" }}
         alt="green iguana"
       />
       <CardContent>
