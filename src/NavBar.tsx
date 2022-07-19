@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { failedAuth, gotAuth } from "./store/reducers/authentication";
-import LogoutIcon from '@mui/icons-material/Logout';
 import {
   AppBar,
   Toolbar,
@@ -9,7 +8,6 @@ import {
   Box,
   Button,
   IconButton,
-  Avatar,
   TextField,
   InputAdornment,
   Autocomplete,
@@ -25,6 +23,9 @@ import { Link, useNavigate } from "react-router-dom";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MailIcon from "@mui/icons-material/Mail";
 import httpClient from "./thunk/interceptor";
+import Avatar from "@mui/material/Avatar";
+import CardHeader from "@mui/material/CardHeader";
+
 
 import Modal from "@mui/material/Modal";
 const style = {
@@ -73,7 +74,7 @@ const NavBar = () => {
   const loggedInUserEmailId = localStorage.getItem("userID");
   console.log('email', loggedInUserEmailId)
 
-  const [imagedata, setimagedata] = React.useState<any>();
+  const [imagedata, setimagedata] = React.useState<string>();
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -86,6 +87,9 @@ const NavBar = () => {
   const handleClose = () => setOpen(false);
   function avatarclick() {
     navigate("/userprofile");
+  }
+  function searchclick() {
+    navigate("/search");
   }
   function createPostClick() {
     navigate("/createPost");
@@ -147,12 +151,21 @@ const NavBar = () => {
           aria-haspopup="true"
           color="inherit"
         >
-          <Avatar
+          <CardHeader
+            avatar={
+              <Avatar
+                alt="Tony Stark"
+                src={imagedata}
+                sx={{ width: 30, height: 30 }}
+              />
+            }
+          />
+          {/* <Avatar
             alt="Remy Sharp"
             src={imagedata}
-            sx={{ width: 30, height: 30, backgroundColor: "white" }}
+            sx={{ width: 30, height: 30 }}
             onClick={avatarclick}
-          />
+          /> */}
         </Button>
         <p>Profile</p>
       </MenuItem>
@@ -161,11 +174,11 @@ const NavBar = () => {
   useEffect(() => {
 
     httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
-    .then((res) => {
-      setimagedata(res.data.userImage.image)
-      console.log('Image Set')
-    })
-    .catch((err) => console.log(err));
+      .then((res) => {
+        setimagedata(res.data.userImage.image)
+        console.log('Image Set')
+      })
+      .catch((err) => console.log(err));
 
     if (searchValue && searchValue.groupBy) {
       if (searchValue.groupBy == "User") {
@@ -240,6 +253,13 @@ const NavBar = () => {
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
+
+          <Button color="inherit" onClick={searchclick}>
+            {" "}
+            <AddIcon />
+            Search
+          </Button>
+
           <Button color="inherit" onClick={createPostClick}>
             {" "}
             <AddIcon />
@@ -255,7 +275,7 @@ const NavBar = () => {
             }}
           >
             {" "}
-            <LogoutIcon />
+            <AddIcon />
             Logout
           </Button>
 
