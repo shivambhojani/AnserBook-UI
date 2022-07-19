@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
 
-interface feed {
+export interface feed {
   initials: string;
   image?: any;
   username: string;
@@ -32,11 +32,11 @@ interface feed {
   bookmarkListName: string;
   addPostToBookmarkList: (
     postId: string,
-    addPostToBookmarkListName: string,
+    addPostToBookmarkListName: string
   ) => any;
   removeFromBookmarkList: (
     postId: string,
-    removeFromBookmarkListName: string,
+    removeFromBookmarkListName: string
   ) => any;
   bookmarkListNames: Array<{
     id: string;
@@ -54,7 +54,7 @@ function Feed(props: feed) {
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState("");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null,
+    null
   );
 
   const [feed, setFeed] = useState({
@@ -86,7 +86,7 @@ function Feed(props: feed) {
     });
   }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
-    null,
+    null
   );
   const open = Boolean(anchorElement);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -98,7 +98,7 @@ function Feed(props: feed) {
   const redirectToPost = () => {
     navigate("/post", {
       state: {
-        feed,
+        feed: JSON.parse(JSON.stringify(feed)),
       },
     });
   };
@@ -110,11 +110,11 @@ function Feed(props: feed) {
         userId: userId,
         userName: userName,
       })
-      .then(res => {
+      .then((res) => {
         console.log(res.data.message);
         navigate(0);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -137,13 +137,13 @@ function Feed(props: feed) {
         loggedInUserId: userId,
         SubscribeToUserId: props.user._id,
       })
-      .then(res => {
+      .then((res) => {
         setSubscribed(true);
         navigate(0);
 
         console.log(res.data.message);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -153,13 +153,13 @@ function Feed(props: feed) {
         loggedInUserId: userId,
         SubscribeToUserId: props.user._id,
       })
-      .then(res => {
+      .then((res) => {
         setSubscribed(false);
         navigate(0);
 
         console.log(res.data.message);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -242,7 +242,7 @@ function Feed(props: feed) {
                   >
                     <FacebookSelector
                       iconSize={20}
-                      onSelect={select => {
+                      onSelect={(select) => {
                         console.log(select);
                         callbackend(select);
                         // toast.info("🦄 Cool reaction!", {
@@ -259,7 +259,7 @@ function Feed(props: feed) {
                   </Popover>
 
                   <Button
-                    onClick={e => {
+                    onClick={(e) => {
                       setAnchorEl(e.currentTarget);
                     }}
                     // style={{ float: "right" }}
@@ -282,7 +282,7 @@ function Feed(props: feed) {
                       onDelete={() => {
                         feed.removeFromBookmarkList(
                           props._id,
-                          props.bookmarkListName,
+                          props.bookmarkListName
                         );
                       }}
                     />
@@ -299,7 +299,7 @@ function Feed(props: feed) {
                 <Grid item md={4} xs={12}>
                   <div className={classes.tags}>
                     {" "}
-                    {props.tags.map(tag => (
+                    {props.tags.map((tag) => (
                       <Chip label={tag} className={classes.tag} />
                     ))}
                   </div>
