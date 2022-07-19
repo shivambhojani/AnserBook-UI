@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import httpClient from "../../thunk/interceptor";
 import { useDispatch } from "react-redux";
 import { failedAuth, gotAuth } from "../../store/reducers/authentication";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify"
+
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const Form = () => {
         firstname: values.firstName,
         lastname: values.lastName
       })
-      .then((response) => {
+      .then((response:any) => {
         if (response.data.message === "OK") {
           localStorage.setItem("token", response.data.token); //DON'T UNCOMMENT THIS!!!!
           localStorage.setItem("userID", values.email);
@@ -39,9 +40,12 @@ const Form = () => {
           // IsSubmitted(true);
           navigate("/");
         } else {
+          
           toast.error(response.data.message);
           failedAuth(""); //failed .. so store failed response
         }
+      }).catch((error: any) => {
+        toast.error(error.message)
       });
   }
 

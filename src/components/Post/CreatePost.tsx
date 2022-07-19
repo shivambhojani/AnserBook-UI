@@ -41,6 +41,7 @@ const CreatePost = () => {
 
   const postClick = () => {
 
+    
     setErrostopic({name: ""});
     setErrosbody({name: ""});
     setErrostype({name: ""});
@@ -87,7 +88,7 @@ const CreatePost = () => {
 
       console.log(postBody);
 
-      axios.post(`http://localhost:5000/posts/savePost`, postBody)
+      axios.post(`https://csci5709-answerme-backend.herokuapp.com/posts/savePost`, postBody)
         .then(res => {
           console.log(res);
         })

@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   IconButton,
-  Avatar,
   TextField,
   InputAdornment,
   Autocomplete,
@@ -23,6 +22,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MailIcon from "@mui/icons-material/Mail";
+import httpClient from "./thunk/interceptor";
+import Avatar from "@mui/material/Avatar";
+import CardHeader from "@mui/material/CardHeader";
+
 
 import Modal from "@mui/material/Modal";
 const style = {
@@ -67,6 +70,12 @@ const options = [
 }
 
 const NavBar = () => {
+
+  const loggedInUserEmailId = localStorage.getItem("userID");
+  console.log('email', loggedInUserEmailId)
+
+  const [imagedata, setimagedata] = React.useState<string>();
+
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState<{
@@ -78,6 +87,9 @@ const NavBar = () => {
   const handleClose = () => setOpen(false);
   function avatarclick() {
     navigate("/userprofile");
+  }
+  function searchclick() {
+    navigate("/search");
   }
   function createPostClick() {
     navigate("/createPost");
@@ -139,18 +151,35 @@ const NavBar = () => {
           aria-haspopup="true"
           color="inherit"
         >
-          <Avatar
-            alt="Remy Sharp"
-            src="http://bootdey.com/img/Content/avatar/avatar7.png"
-            sx={{ width: 30, height: 30, backgroundColor: "white" }}
-            onClick={avatarclick}
+          <CardHeader
+            avatar={
+              <Avatar
+                alt="Tony Stark"
+                src={imagedata}
+                sx={{ width: 30, height: 30 }}
+              />
+            }
           />
+          {/* <Avatar
+            alt="Remy Sharp"
+            src={imagedata}
+            sx={{ width: 30, height: 30 }}
+            onClick={avatarclick}
+          /> */}
         </Button>
         <p>Profile</p>
       </MenuItem>
     </Menu>
   );
   useEffect(() => {
+
+    httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
+      .then((res) => {
+        setimagedata(res.data.userImage.image)
+        console.log('Image Set')
+      })
+      .catch((err) => console.log(err));
+
     if (searchValue && searchValue.groupBy) {
       if (searchValue.groupBy == "User") {
         navigate("/openprofile");
@@ -224,6 +253,13 @@ const NavBar = () => {
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
+
+          <Button color="inherit" onClick={searchclick}>
+            {" "}
+            <AddIcon />
+            Search
+          </Button>
+
           <Button color="inherit" onClick={createPostClick}>
             {" "}
             <AddIcon />
@@ -249,7 +285,7 @@ const NavBar = () => {
           <IconButton color="inherit">
             <Avatar
               alt="Remy Sharp"
-              src="http://bootdey.com/img/Content/avatar/avatar7.png"
+              src={imagedata}
               sx={{ width: 50, height: 50, backgroundColor: "white" }}
               onClick={avatarclick}
             ></Avatar>

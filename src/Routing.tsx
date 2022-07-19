@@ -14,6 +14,8 @@ import UserProfile from "./components/ProfilePage/UserProfile";
 import CreatePost from "./components/Post/CreatePost";
 import EditPost from "./components/Post/EditPost";
 import AuthGuard from "./guard/AuthGuard";
+import ResetPassword from "./components/ResetPassword/ResetPassword"
+import Search from "./components/Search/search";
 
 const Routing: React.FC = () => {
   return (
@@ -22,15 +24,17 @@ const Routing: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path='/reset-password/:token' element={<ResetPassword />}/>
       <Route element={<AuthGuard />}>
         <Route path="/post" element={<Post />} />
         <Route path="/feeds" element={<Feeds />} />
         <Route path="/editappreciation" element={<EditAppreciation />} />
         <Route path="/userprofile" element={<MyAccount />} />
         <Route path="/adminhome" element={<AdminHome />} />
-        <Route path="/openprofile" element={<UserProfile />} />
+        <Route path="/openprofile/:emailid" element={<UserProfile />} />
         <Route path="/createpost" element={<CreatePost />} />
         <Route path="/editpost" element={<EditPost />} />
+        <Route path="/search" element={<Search />} />
       </Route>
     </Routes>
   );
