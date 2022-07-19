@@ -10,6 +10,7 @@ import "./search.css";
 import axios from 'axios';
 import UtilityUser from "../Utility/UtilityUser";
 import SearchUsers from "./searchusers";
+import SearchPosts from "./searchposts";
 
 
 export default function MyAccount() {
@@ -60,22 +61,10 @@ export default function MyAccount() {
                     </div>
                 </Box>
                 <TabPanel value="1">
-                    <h1>Search Posts</h1>
+                    <SearchPosts></SearchPosts>
                 </TabPanel>
                 <TabPanel value="2">
                 <SearchUsers></SearchUsers> 
-                </TabPanel>
-                <TabPanel value="3">
-
-                </TabPanel>
-                <TabPanel value="4">
-
-                </TabPanel>
-                <TabPanel value="5">
-
-                </TabPanel>
-                <TabPanel value="6">
-
                 </TabPanel>
             </TabContext>
         </Box>

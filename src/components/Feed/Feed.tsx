@@ -190,6 +190,7 @@ function Feed(props: feed) {
     <>
       <br />
       <Card>
+        {console.log("Props that I got", props)};
         <CardContent>
           <div className={classes.flex}>
             <div className={classes.tags}>
@@ -301,7 +302,7 @@ function Feed(props: feed) {
                       label={`Bookmarked in ${props.bookmarkListName}`}
                       variant="outlined"
                       onDelete={() => {
-                        feed.removeFromBookmarkList(
+                        props.removeFromBookmarkList(
                           props._id,
                           props.bookmarkListName
                         );

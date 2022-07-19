@@ -16,16 +16,16 @@ const options = {
     text: "",
   },
   xAxis: {
-    categories: ["January", "February", "March", "April", "May", "June"],
+    categories: ["May", "June", "July"],
     crosshair: true,
   },
   series: [
     {
-      data: [40, 80, 30, 90, 100, 10],
+      data: [1, 3, 12],
       name: "Total Posts",
     },
     {
-      data: [20, 50, 17, 50, 72, 3],
+      data: [0, 2, 6],
       name: "Answered Posts",
       color: "orange",
     },
@@ -53,24 +53,19 @@ export default class AdminDashboard extends React.Component {
         <Grid container spacing={2}>
           <Grid item xs={6} md={3}>
             <div style={{ textAlign: "center" }}>
-              <OutlinedCard title="Total Posts" body="1231"></OutlinedCard>
+              <OutlinedCard title="Total Posts" body="16"></OutlinedCard>
             </div>
           </Grid>
           <Grid item xs={6} md={3}>
             <div style={{ textAlign: "center" }}>
-              <OutlinedCard title="Total Users" body="635"></OutlinedCard>
-            </div>
-          </Grid>
-          <Grid item xs={6} md={3}>
-            <div style={{ textAlign: "center" }}>
-              <OutlinedCard title="Total Roles" body="2"></OutlinedCard>
+              <OutlinedCard title="Total Users" body="8"></OutlinedCard>
             </div>
           </Grid>
           <Grid item xs={6} md={3}>
             <div style={{ textAlign: "center" }}>
               <OutlinedCard
                 title="Total Posts Answered"
-                body="973"
+                body="6"
               ></OutlinedCard>
             </div>
           </Grid>
