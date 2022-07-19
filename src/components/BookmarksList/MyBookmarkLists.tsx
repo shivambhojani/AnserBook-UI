@@ -11,7 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UtilityUser from "../Utility/UtilityUser";
 import { bookmarkService } from "../../services/bookmark.service";
-
+import Divider from '@mui/material/Divider';
 
 interface bmListType {
   bmListName: string;
@@ -232,13 +232,13 @@ const MyBookmarkLists: React.FC = () => {
         }
       }
     });
-  }, [currentUserId]);
+  }, [currentUserId, fetchAgain]);
 
   return (
     <Grid
       container
       sx={{
-        bgcolor: "#ffffaa",
+        bgcolor: "#79dfef",
         color: "#000000",
         padding: "1rem",
         margin: "auto",
@@ -249,30 +249,34 @@ const MyBookmarkLists: React.FC = () => {
       {console.log("bmfinall", bookmarkLists)}
       {bookmarkLists.map(bmList => (
         <div style={{ width: "100%" }}>
-          <h1 style={{ marginTop: "0.5rem" }}>
+          <Typography style={{ marginLeft: "0.5rem", marginTop: "0.5rem" }} variant="h5" component="h5">
             Bookmark list: <b>{bmList.bmListName}</b>
-          </h1>
+          </Typography>
           {bmList.posts.map(post => (
             <Accordion key={post._id}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
               >
-                <Typography style={{ marginLeft: "0.5rem" }}>
+                <Typography style={{ marginLeft: "0.5rem" }} variant="h6" component="h6">
                   {post.topic}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails
-                onClick={() => {
-                  redirectToBookmarkedPost(post);
-                }}
+                style={{cursor: "pointer"}}
               >
-                <div>
-                  <Typography>{post.body}</Typography>
+                <div style={{display: "flex", "justifyContent": "space-between", "alignItems": "center"}}>
+                  <Typography
+                    onClick={() => {
+                      redirectToBookmarkedPost(post);
+                    }}
+                    style={{ marginLeft: "0.5rem" }}>
+                      {post.body}
+                  </Typography>
                   <IconButton
                     aria-label="delete"
                     onClick={() => {
-                      alert("Will remove this from the list");
+                      removeFromBookmarkList(post._id, bmList.bmListName);
                     }}
                   >
                     <DeleteIcon />
@@ -281,6 +285,8 @@ const MyBookmarkLists: React.FC = () => {
               </AccordionDetails>
             </Accordion>
           ))}
+          <Divider variant="middle" />
+          <br/>
         </div>
       ))}
     </Grid>
