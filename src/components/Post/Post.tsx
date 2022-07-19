@@ -1,34 +1,114 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Feed from "../Feed/Feed";
+import { feed } from "../Feed/Feed";
 import { useLocation } from "react-router-dom";
 import { Container } from "@mui/system";
 import { Typography, TextField, Grid, Button } from "@mui/material";
 import useStyles from "../../Style";
 import Comment from "../Comment/Comment";
+import httpClient from "../../thunk/interceptor";
+import UtilityUser from "../Utility/UtilityUser";
 
 interface feedInterface {
-  feed: any;
+  feed: feed;
 }
+
+export interface CommentDetail {
+  _id: string;
+  userId: string;
+  postId: string;
+  content: string;
+  isBestAnswer: boolean;
+  createdOn: Date;
+  updatedOn: Date;
+  displayUserName: string;
+}
+
 function Post(props: any) {
   const location = useLocation();
   const state = location.state as feedInterface;
-  const { feed } = state;
+  const [feedc, setFeedc] = useState<feed>(state.feed);
   const classes = useStyles();
-  const [comment, setComment] = useState("");
-
+  const [comments, setComments] = useState<CommentDetail[]>([]); //List of old commnents to display
+  const [comment, setComment] = useState(""); //comment inserted by user
   const handleCancel = () => {
     setComment("");
   };
   const handleChange = (e: any) => {
     setComment(e.target.value);
   };
-  const handleSubmit = () => {
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
     console.log("form submitted");
+    UtilityUser()
+      .then((response) => {
+        console.log("current user id ::" + response.user._id);
+        const userId = response.user._id;
+
+        httpClient
+          .post("/comment", {
+            userId,
+            postId: feedc._id,
+            content: comment,
+            isBestAnswer: false,
+          })
+          .then((response) => {
+            setComment("");
+            updateComments();
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  const updateComments = () => {
+    httpClient
+      .get("/comment/" + feedc._id)
+      .then((response) => {
+        const commentsResponse = response.data.comments;
+        console.log("Comments fetched ::" + commentsResponse);
+
+        //Get all users and set diaplay user in comment list
+        httpClient
+          .get("/userprofile")
+          .then((response) => {
+            console.log("User response" + response.data.users);
+            response.data.users.map((user: any) => {
+              console.log("userId====" + user._id);
+              console.log("Comments fetched inside ::" + commentsResponse);
+
+              commentsResponse.map((commentResponse: any) => {
+                console.log("comment====" + commentResponse.userId);
+                if (user._id === commentResponse.userId) {
+                  commentResponse.displayUserName =
+                    user.firstname + " " + user.lastname;
+
+                  console.log(
+                    "Display Name=====" + commentResponse.displayUserName
+                  );
+                }
+              });
+            });
+            console.log("Setting comment again-----" + comments);
+            setComments(commentsResponse);
+          })
+          .catch((err) => {
+            console.log("Error in fetching users ::" + err);
+          });
+      })
+      .catch((err) => {
+        console.log("Error in fetching comments ::" + err);
+      });
+  };
+
+  useEffect(() => {
+    updateComments();
+  }, []);
 
   return (
     <Container className="mt-3">
-      <Feed {...feed} />
+      <Feed {...feedc} />
       <Typography variant="h5" component="div" className={classes.margin}>
         0 Answers
       </Typography>
@@ -60,27 +140,18 @@ function Post(props: any) {
           </Grid>
         </Grid>
       </form>
-      <Comment
-        avatar="A"
-        author="Anupam Ratha"
-        date="June 14, 2022"
-        content="The simplest way to specify/override the color of an Icon in Material-UI is to use a custom CSS class name. Suppose that you want to show a green checkbox rather than a red triangle, depending on the outcome of some process."
-        isBestAnswer={true}
-      ></Comment>
-      <Comment
-        avatar="S"
-        author="Sachin Sharma"
-        date="June 12, 2022"
-        content="Let's just think this differently and disregard rules established by HTML5 and focusing only on JSX. JSX has exactly two ways of passing true, <MyComponent prop /> and <MyComponent prop={true} /> and exactly one way of passing false <MyComponent prop={false} />."
-        isBestAnswer={false}
-      ></Comment>
-      <Comment
-        avatar="P"
-        author="Patrick Wright"
-        date="May 10, 2022"
-        content="This is where JSX's behavior differ from HTML5's boolean attributes behavior. There is not such thing as defaulting to false in JSX; it is only applicable for passing an explicit true."
-        isBestAnswer={false}
-      ></Comment>
+
+      {comments.map((oldComment) => (
+        <Comment
+          avatar="A"
+          author={oldComment.displayUserName}
+          date={oldComment.createdOn}
+          content={oldComment.content}
+          isBestAnswer={oldComment.isBestAnswer}
+          _id={oldComment._id}
+          userId={oldComment.userId}
+        ></Comment>
+      ))}
     </Container>
   );
 }
