@@ -9,7 +9,8 @@ import { Container } from "@mui/system";
 import React, { useEffect } from "react";
 import httpClient from "../../thunk/interceptor";
 import { Buffer } from "buffer";
-
+import Avatar from "@mui/material/Avatar";
+import CardHeader from "@mui/material/CardHeader";
 
 const MyComponent = styled("div")({
   color: "white",
@@ -65,26 +66,27 @@ const ProfilePage = () => {
 
   useEffect(() => {
 
-    httpClient.get("/userprofile/currentuser?email=" + loggedInUserEmailId).then((res) => {
-      console.log(res.data);
-      setfirstname(res.data.user.firstname);
-      setlastname(res.data.user.lastname);
-      setemail(res.data.user.email);
-      setid(res.data.user._id);
-      setAddress(res.data.user.addressline1);
-      setcity(res.data.user.city);
-      setPhone(res.data.user.mobile);
-      setpin(res.data.user.pinCode)
+    httpClient.get("/userprofile/currentuser?email=" + loggedInUserEmailId)
+      .then((res) => {
+        console.log(res.data);
+        setfirstname(res.data.user.firstname);
+        setlastname(res.data.user.lastname);
+        setemail(res.data.user.email);
+        setid(res.data.user._id);
+        setAddress(res.data.user.addressline1);
+        setcity(res.data.user.city);
+        setPhone(res.data.user.mobile);
+        setpin(res.data.user.pinCode)
 
-      console.log("Get profile image")
-      httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
-        .then((res) => {
-          console.log(res);
-          setimagedata(res.data.userImage.image)
+        console.log("Get profile image")
+        httpClient.get("/userprofile/getprofileImage?email=" + loggedInUserEmailId)
+          .then((res) => {
+            console.log(res);
+            setimagedata(res.data.userImage.image)
 
-        })
-        .catch((err) => console.log(err));
-    })
+          })
+          .catch((err) => console.log(err));
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -418,11 +420,20 @@ const ProfilePage = () => {
                       })
 
                     } */}
-                    <img
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          alt="Tony Stark"
+                          src={imagedata}
+                          sx={{ width: 200, height: 200 }}
+                        />
+                      }
+                    />
+                    {/* <img
                       className="img-account-profile rounded-circle mb-2"
                       src={imagedata}
                       alt=""
-                    ></img>
+                    ></img> */}
 
 
                   </div>

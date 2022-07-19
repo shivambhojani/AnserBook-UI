@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import httpClient from "../../thunk/interceptor";
 import UtilityUser from "../Utility/UtilityUser";
 
-interface feed {
+export interface feed {
   initials: string;
   image?: any;
   username: string;
@@ -32,7 +32,7 @@ interface feed {
   bookmarkListName: string;
   addPostToBookmarkList: (
     postId: string,
-    addPostToBookmarkListName: string,
+    addPostToBookmarkListName: string
   ) => any;
   removeFromBookmarkList: (
     postId: string,
@@ -101,7 +101,7 @@ function Feed(props: feed) {
   const redirectToPost = () => {
     navigate("/post", {
       state: {
-        feed,
+        feed: JSON.parse(JSON.stringify(feed)),
       },
     });
   };

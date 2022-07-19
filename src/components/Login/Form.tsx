@@ -14,9 +14,14 @@ import { useDispatch } from "react-redux";
 
 const Form = (props: any): any => {
   const dispatch = useDispatch();
-
+  const loggedInUserEmailId = localStorage.getItem("userID");
+  
   const submitHandler = () => {
-    httpClient
+    
+    httpClient.get("/userprofile/currentuser?email=" + values.email).then((res) => {
+      const isActive = res.data.user.isActive;
+       if(isActive === true){
+      httpClient
       .post("/auth/login", {
         email: values.email,
         password: values.password,
@@ -35,6 +40,12 @@ const Form = (props: any): any => {
           failedAuth(""); //failed .. so store failed response
         }
       });
+  }else{
+    toast("user inactive")
+  }
+      
+  })
+ 
   };
 
   const {
@@ -48,6 +59,7 @@ const Form = (props: any): any => {
   const navigate = useNavigate();
 
   function login() {
+    
     setLoggedIn(true);
     console.log("logining----");
     if (values.email === "admin@xyz.com") {
@@ -55,6 +67,8 @@ const Form = (props: any): any => {
     } else {
       navigate("/feeds");
     }
+  
+  
   }
 
   return (

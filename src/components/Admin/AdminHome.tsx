@@ -10,6 +10,7 @@ import "./AdminHome.css";
 import AdminDashboard from "./AdminDashboard";
 import AppreciationManage from "./AppreciationManage";
 import ProfileListing from "./ProfileListing";
+import TagBasedAnalytics from "./TagBasedAnalytics";
 
 export default function AdminHome() {
   const [value, setValue] = React.useState("1");
@@ -32,6 +33,7 @@ export default function AdminHome() {
               <Tab label="Dashboard" value="1" />
               <Tab label="Edit Appreciation" value="2" />
               <Tab label="Manage Users" value="3" />
+			  <Tab label="Tag Based Analytics" value="4" />
             </TabList>
           </div>
         </Box>
@@ -43,6 +45,9 @@ export default function AdminHome() {
         </TabPanel>
         <TabPanel value="3">
           <ProfileListing />
+        </TabPanel>
+		<TabPanel value="4">
+		  <TagBasedAnalytics></TagBasedAnalytics>
         </TabPanel>
       </TabContext>
     </Box>

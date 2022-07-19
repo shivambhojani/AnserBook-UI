@@ -12,6 +12,7 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import "./UserProfile.css";
+import httpClient from "../../thunk/interceptor";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -28,8 +29,16 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const Profile = () => {
+const UserProfile = () => {
+
+  let { userid } = useParams();
+
   const [expanded, setExpanded] = React.useState(false);
+
+  const [firstname, setfirstname] = React.useState<string>();
+  const [lastname, setlastname] = React.useState<string>();
+  const [email, setemail] = React.useState<String>();
+  const [imagedata, setimagedata] = React.useState<string>();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -44,26 +53,32 @@ const Profile = () => {
     picture: string;
   }
 
-  let { userid } = useParams();
-  const [data, setData] = useState<userData>();
+  let { emailid } = useParams();
 
-  // const fetchData = (): void => {
-  //     let url: string = 'https://tutorial4-api.herokuapp.com/api/users/' + userid;
-  //     axios.get(url).then(result => {
+  useEffect(() => {
+    console.log("UserPRofile", emailid)
+    httpClient.get("/userprofile/currentuser?email=" + emailid)
+      .then((res) => {
+        console.log(res.data);
+        setfirstname(res.data.user.firstname);
+        setlastname(res.data.user.lastname);
+        setemail(res.data.user.email);
 
-  //         setData(result.data.data)
-  //         console.log(result.data.data);
-  //     }).catch(err => {
-  //         console.error(err);
-  //         alert("Something wrong with API")
-  //     });
-  // };
+        httpClient.get("/userprofile/getprofileImage?email=" + emailid)
+          .then((res) => {
+            console.log(res);
+            setimagedata(res.data.userImage.image)
 
-  // useEffect(() => {
-  //     fetchData();
-  // }, [])
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setTimeout(() => {
+    }, 5000);
+  }, []);
 
-  // console.log(userid)
   return (
     <>
       <div className="maindiv">
@@ -74,7 +89,7 @@ const Profile = () => {
               avatar={
                 <Avatar
                   alt="Tony Stark"
-                  src="https://randomuser.me/api/portraits/women/82.jpg"
+                  src={imagedata}
                   sx={{ width: 200, height: 200 }}
                 />
               }
@@ -85,17 +100,13 @@ const Profile = () => {
           </div>
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-              {" "}
-              ID: 5788{" "}
+              {firstname}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Title: Miss.
+              {lastname}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Name: Lilly Collins
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Email: lilly@gmail.com
+              {email}
             </Typography>
           </CardContent>
         </Card>
@@ -105,4 +116,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UserProfile;
