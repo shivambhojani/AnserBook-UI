@@ -280,7 +280,7 @@ function Feed(props: feed) {
                       label={`Bookmarked in ${props.bookmarkListName}`}
                       variant="outlined"
                       onDelete={() => {
-                        feed.removeFromBookmarkList(
+                        props.removeFromBookmarkList(
                           props._id,
                           props.bookmarkListName
                         );
