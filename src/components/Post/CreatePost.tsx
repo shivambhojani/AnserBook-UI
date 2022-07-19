@@ -41,6 +41,7 @@ const CreatePost = () => {
 
   const postClick = () => {
 
+    
     setErrostopic({name: ""});
     setErrosbody({name: ""});
     setErrostype({name: ""});
