@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { failedAuth, gotAuth } from "./store/reducers/authentication";
-import LogoutIcon from '@mui/icons-material/Logout';
 import {
   AppBar,
   Toolbar,
@@ -255,7 +254,7 @@ const NavBar = () => {
             }}
           >
             {" "}
-            <LogoutIcon />
+            <AddIcon />
             Logout
           </Button>
 
