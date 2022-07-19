@@ -19,7 +19,11 @@ const Form = (props: any): any => {
   const submitHandler = () => {
     
     httpClient.get("/userprofile/currentuser?email=" + values.email).then((res) => {
-      const isActive = res.data.user.isActive;
+      if(res.data.user === null){
+        toast.error("User not found")
+        return
+      }
+      const isActive = res.data.user?.isActive;
        if(isActive === true){
       httpClient
       .post("/auth/login", {
