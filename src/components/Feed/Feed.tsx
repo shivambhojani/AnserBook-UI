@@ -59,6 +59,7 @@ function Feed(props: feed) {
   const [userId, setUserId] = useState();
   const [userName, setUserName] = useState("");
   const [update, setupdate] = useState(false);
+  const [reactions, setReactions] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -86,19 +87,33 @@ function Feed(props: feed) {
     /* Below code was referenced from https://mui.com/material-ui/react-menu/#customization */
   }
 
-  useEffect(() => {
-    UtilityUser().then(function (response) {
-      setUserId(response.user._id);
-      setSubscribed(response.user.subscribedTo.includes(props.user._id));
-      setUserName(response.user.firstname + " " + response.user.lastname);
-    });
-  }, []);
   const [anchorElement, setAnchorElement] = React.useState<null | HTMLElement>(
     null
   );
   const open = Boolean(anchorElement);
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElement(event.currentTarget);
+  };
+  useEffect(() => {
+    UtilityUser().then(function (response) {
+      setUserId(response.user._id);
+      setSubscribed(response.user.subscribedTo.includes(props.user._id));
+      setUserName(response.user.firstname + " " + response.user.lastname);
+    });
+    getReactions();
+  }, []);
+
+  const getReactions = () => {
+    httpClient
+      .get("/posts/getOne/" + props._id)
+      .then((res) => {
+        setReactions(res.data.post.reactions);
+        // setupdate(true);
+        // props.setFilter(props.filter);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const handleCloseMenu = () => {
     setAnchorElement(null);
@@ -121,9 +136,9 @@ function Feed(props: feed) {
       })
       .then((res) => {
         console.log(res.data.message);
+        getReactions();
         // setupdate(true);
         // props.setFilter(props.filter);
-        navigate(0);
       })
       .catch((err) => {
         console.log(err);
@@ -151,9 +166,6 @@ function Feed(props: feed) {
       })
       .then((res) => {
         setSubscribed(true);
-        navigate(0);
-
-        console.log(res.data.message);
       })
       .catch((err) => {
         console.log(err);
@@ -167,9 +179,6 @@ function Feed(props: feed) {
       })
       .then((res) => {
         setSubscribed(false);
-        navigate(0);
-
-        console.log(res.data.message);
       })
       .catch((err) => {
         console.log(err);
@@ -277,7 +286,7 @@ function Feed(props: feed) {
                     // style={{ float: "right" }}
                   >
                     <FacebookCounter
-                      counters={props.reactions}
+                      counters={reactions}
                       alwaysShowOthers={true}
                       user={userName}
                     />
