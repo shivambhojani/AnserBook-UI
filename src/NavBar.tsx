@@ -21,7 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import MailIcon from "@mui/icons-material/Mail";
+import LogoutIcon from '@mui/icons-material/Logout';
 import httpClient from "./thunk/interceptor";
 import Avatar from "@mui/material/Avatar";
 import CardHeader from "@mui/material/CardHeader";
@@ -75,6 +75,7 @@ const NavBar = () => {
   console.log('email', loggedInUserEmailId)
 
   const [imagedata, setimagedata] = React.useState<string>();
+ const [invisible, setInvisible] = React.useState(false);
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -83,7 +84,8 @@ const NavBar = () => {
     search: any;
   }>();
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {setOpen(true)
+  setInvisible(true)};
   const handleClose = () => setOpen(false);
   function avatarclick() {
     navigate("/userprofile");
@@ -275,13 +277,16 @@ const NavBar = () => {
             }}
           >
             {" "}
-            <AddIcon />
+            <LogoutIcon />
             Logout
           </Button>
 
           <IconButton onClick={handleOpen} color="inherit">
-            <NotificationsIcon className={classes.menus} />
+             <Badge color="secondary" variant="dot" invisible={invisible}>
+                <NotificationsIcon />
+            </Badge> 
           </IconButton>
+
           <IconButton color="inherit">
             <Avatar
               alt="Remy Sharp"
