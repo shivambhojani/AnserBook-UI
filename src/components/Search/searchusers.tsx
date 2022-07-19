@@ -1,19 +1,20 @@
-import * as React from "react";
-
-import { Avatar, Button, TextField } from "@mui/material";
+import {
+    Button,
+    Card,
+    CardActionArea,
+    CardContent,
+    CardMedia,
+    Grid,
+    TextField,
+    Typography,
+} from "@mui/material";
 import "../ProfilePage/MyFriends";
 import httpClient from "../../thunk/interceptor";
+import { Container } from "@mui/system";
+
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface TablePaginationActionsProps {
-    count: number;
-    page: number;
-    rowsPerPage: number;
-    onPageChange: (
-        event: React.MouseEvent<HTMLButtonElement>,
-        newPage: number
-    ) => void;
-}
 
 function createData(name: string, calories: number, fat: number) {
     return { name, calories, fat };
@@ -21,24 +22,11 @@ function createData(name: string, calories: number, fat: number) {
 
 export default function SearchUsers() {
 
-    const navigate = useNavigate();
+    const [users, setUsers] = useState<any[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
+    const [search, setSearch] = useState<string>("");
 
-    interface userData {
-        _id: string;
-        firstname: string;
-        lastname: string;
-        email: string;
-        password: string;
-        employeeId: string;
-        addressline1: string;
-        mobile: string;
-        city: string;
-        pinCode: string;
-        profilePicture: string;
-        isActive: boolean;
-        subscribedTo: any;
-        bookmarkLists: any;
-    }
+    const navigate = useNavigate();
 
     const [data, setData] = React.useState<any[]>();
     const [searchtxt, setsearchtxt] = React.useState<string>();
@@ -47,15 +35,28 @@ export default function SearchUsers() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        // Reference taken from https://masteringjs.io/tutorials/fundamentals/filter-array-of-objects
+        const filteredUsersTemp = users.filter(
+            (user) =>
+                user.firstname.toLowerCase().startsWith(search.toLowerCase()) ||
+                user.lastname.toLowerCase().startsWith(search.toLowerCase())
+        );
+        setFilteredUsers(filteredUsersTemp);
+    }, [search]);
+
+
     const fetchData = (): void => {
         console.log("Fetch Data");
         httpClient
             .get("/userprofile")
             .then((result: any) => {
                 console.log(result.data);
-                setData(result.data.users);
+                setUsers(result.data.users);
+                console.log("Users",users);
             })
             .catch((err) => {
+                setUsers(err.response.data.message);
                 console.error(err);
                 alert("Something wrong with API");
             });
@@ -101,9 +102,54 @@ export default function SearchUsers() {
 
         // }
     }
+
+    const renderUsers = (userArray: any) => {
+        return userArray.map((user: any) => (
+            <Grid item xs={12} sm={6} md={4}>
+                <Card variant="outlined">
+                    <CardActionArea onClick={(e) => openUserProfile(user.email)}>
+                        <CardContent>
+                            <img style={{ width: "100%" }} src={user.picture} />
+                            <Typography variant="h6" gutterBottom component={"p"}>
+                             {user.firstname} {user.lastname}
+                            </Typography>
+                            <Typography variant="subtitle1" component={"p"}>
+                                Email: {user.email}
+                            </Typography>
+                            <Typography variant="subtitle1" component={"p"}>
+                                Mobile: {user.mobile}
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            </Grid>
+        ));
+    };
     return (
         <>
-            <div className="maindiv">
+            <Container>
+                <Grid container spacing={2} m={5}>
+                    <TextField
+                        label="Search"
+                        variant="outlined"
+                        fullWidth
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                        }}
+                    />
+                    {search.length != 0 ? (
+                        <>
+                            {filteredUsers.length != 0
+                                ? renderUsers(filteredUsers)
+                                : "No user found"}
+                        </>
+                    ) : (
+                        renderUsers(users)
+                    )}
+                </Grid>
+            </Container>
+            {/* <div className="maindiv">
                 <div className="elements">
                     <div className="searchbox">
                         <TextField
@@ -131,7 +177,7 @@ export default function SearchUsers() {
                                                 <td>
                                                     <Button variant="contained"
                                                         color="primary"
-                                                        onClick={()=>openUserProfile(user.email)}>
+                                                        onClick={() => openUserProfile(user.email)}>
                                                         User Info
                                                     </Button>
                                                 </td>
@@ -144,7 +190,7 @@ export default function SearchUsers() {
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     );
 }
