@@ -63,6 +63,7 @@ function Post(props: any) {
   };
 
   const updateComments = () => {
+    setComments([]);
     httpClient
       .get("/comment/" + feedc._id)
       .then((response) => {
@@ -143,7 +144,7 @@ function Post(props: any) {
 
       {comments.map((oldComment) => (
         <Comment
-          avatar="A"
+          avatar={oldComment.displayUserName.charAt(0)}
           author={oldComment.displayUserName}
           date={oldComment.createdOn}
           content={oldComment.content}

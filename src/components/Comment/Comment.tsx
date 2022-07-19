@@ -26,9 +26,10 @@ interface comment {
 
 export default function Comment(props: comment) {
   const [attributes, setAttributes] = useState<comment>(props);
+  const [hidden, setHidden] = useState(false);
 
   return (
-    <Card className="card">
+    <Card className="card" hidden={hidden}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -70,6 +71,15 @@ export default function Comment(props: comment) {
           {attributes.isBestAnswer
             ? "Unmark as correct answer"
             : "Mark as correct answer"}
+        </Button>
+        <Button
+          onClick={() => {
+            httpClient.delete("/comment/" + attributes._id).then((response) => {
+              setHidden(true);
+            });
+          }}
+        >
+          Delete
         </Button>
       </CardActions>
     </Card>
