@@ -233,7 +233,7 @@ const NavBar = () => {
           </Typography>
         </a>
         {/* Referred from https://mui.com/material-ui/react-autocomplete/#grouped */}
-        <Autocomplete
+        {/* <Autocomplete
           id="free-solo-2-demo"
           disableClearable
           value={searchValue}
@@ -263,7 +263,7 @@ const NavBar = () => {
               }}
             />
           )}
-        />
+        /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
