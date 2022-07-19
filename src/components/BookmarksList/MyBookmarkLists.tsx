@@ -156,10 +156,9 @@ const MyBookmarkLists: React.FC = () => {
           }
           f.initials = f.user.firstname.charAt(0) + f.user.lastname.charAt(0);
           f.username = f.user.firstname + " " + f.user.lastname;
-          f.image = "";
-          f.addPostToBookmarkList = addPostToBookmarkList;
-          f.removeFromBookmarkList = removeFromBookmarkList;
-          f.bookmarkListNames = bookmarkListNames;
+          // f.addPostToBookmarkList = addPostToBookmarkList;
+          // f.removeFromBookmarkList = removeFromBookmarkList;
+          // f.bookmarkListNames = bookmarkListNames;
         }
         setFeeds(interimFeeds);
         console.log("interimFeeds", interimFeeds);
@@ -174,6 +173,9 @@ const MyBookmarkLists: React.FC = () => {
     const feedPassed = feeds.filter((f: feedType) => f._id === feed._id);
 
     console.log("FEPassed", feedPassed[0]);
+    feedPassed[0].addPostToBookmarkList = addPostToBookmarkList;
+    feedPassed[0].removeFromBookmarkList = removeFromBookmarkList;
+    feedPassed[0].bookmarkListNames = bookmarkListNames;
 
     navigate("/post", {
       state: {
@@ -181,8 +183,6 @@ const MyBookmarkLists: React.FC = () => {
       },
     });
   };
-
-
 
   useEffect(() => {
     bookmarkService.getBookmarkListOfUser(currentUserId).then(result => {
