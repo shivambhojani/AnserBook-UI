@@ -16,7 +16,7 @@ import {
   Menu,
   MenuItem,
   Badge,
-  
+
 } from "@mui/material";
 import Card from '@mui/material/Card';
 
@@ -81,8 +81,8 @@ const NavBar = () => {
   console.log('email', loggedInUserEmailId)
 
   const [imagedata, setimagedata] = React.useState<string>();
- const [invisible, setInvisible] = React.useState(false);
- const [notification, setNotification] = React.useState(true)
+  const [invisible, setInvisible] = React.useState(false);
+  const [notification, setNotification] = React.useState(true)
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -91,8 +91,10 @@ const NavBar = () => {
     search: any;
   }>();
 
-  const handleOpen = () => {setOpen(true)
-  setInvisible(true)};
+  const handleOpen = () => {
+    setOpen(true)
+    setInvisible(true)
+  };
   const handleClose = () => setOpen(false);
   function avatarclick() {
     navigate("/userprofile");
@@ -265,7 +267,7 @@ const NavBar = () => {
 
           <Button color="inherit" onClick={searchclick}>
             {" "}
-            <AddIcon />
+            <SearchIcon />
             Search
           </Button>
 
@@ -289,9 +291,9 @@ const NavBar = () => {
           </Button>
 
           <IconButton onClick={handleOpen} color="inherit">
-             <Badge color="secondary" variant="dot" invisible={invisible}>
-                <NotificationsIcon />
-            </Badge> 
+            <Badge color="secondary" variant="dot" invisible={invisible}>
+              <NotificationsIcon />
+            </Badge>
           </IconButton>
 
           <IconButton color="inherit">
@@ -304,7 +306,7 @@ const NavBar = () => {
           </IconButton>
         </Box>
         {/* Referred from https://mui.com/material-ui/react-app-bar/#app-bar-with-a-primary-search-field */}
-        <Box  sx={{ display: { xs: "flex", md: "none" }, marginLeft: "30px"}}>
+        <Box sx={{ display: { xs: "flex", md: "none" }, marginLeft: "30px" }}>
           <IconButton
             size="large"
             aria-label="show more"
@@ -325,43 +327,43 @@ const NavBar = () => {
         >
           <>
             <Box sx={style}>
-          
-    <Card sx={{ minWidth: 275 }}>
-     <div className="div">
-  
-      <CardHeader action={
-          <IconButton onClick={()=>{
-            setOpen(false)
-            setNotification(false)
-            }} aria-label="settings">
-            <CloseIcon />
-          </IconButton>
-        } 
-         subheader="you have created a post"
-         />
-         
-     </div>
-      
-    </Card>
+
+              <Card sx={{ minWidth: 275 }}>
+                <div className="div">
+
+                  <CardHeader action={
+                    <IconButton onClick={() => {
+                      setOpen(false)
+                      setNotification(false)
+                    }} aria-label="settings">
+                      <CloseIcon />
+                    </IconButton>
+                  }
+                    subheader="you have created a post"
+                  />
+
+                </div>
+
+              </Card>
 
 
-    <Card  sx={{ minWidth: 275 }} style={{marginTop:"20px"}}>
-     <div className="div">
-  
-      <CardHeader action={
-          <IconButton onClick={()=>{
-            setOpen(false)
-            setNotification(false)
-            }} aria-label="settings">
-            <CloseIcon />
-          </IconButton>
-        } 
-         subheader="you have edited a post"
-         />
-         
-     </div>
-      
-    </Card>
+              <Card sx={{ minWidth: 275 }} style={{ marginTop: "20px" }}>
+                <div className="div">
+
+                  <CardHeader action={
+                    <IconButton onClick={() => {
+                      setOpen(false)
+                      setNotification(false)
+                    }} aria-label="settings">
+                      <CloseIcon />
+                    </IconButton>
+                  }
+                    subheader="you have edited a post"
+                  />
+
+                </div>
+
+              </Card>
             </Box>
           </>
         </Modal>
