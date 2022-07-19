@@ -75,7 +75,7 @@ const NavBar = () => {
   console.log('email', loggedInUserEmailId)
 
   const [imagedata, setimagedata] = React.useState<string>();
- const [invisible, setInvisible] = React.useState(false);
+  const [invisible, setInvisible] = React.useState(false);
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -84,8 +84,10 @@ const NavBar = () => {
     search: any;
   }>();
 
-  const handleOpen = () => {setOpen(true)
-  setInvisible(true)};
+  const handleOpen = () => {
+    setOpen(true)
+    setInvisible(true)
+  };
   const handleClose = () => setOpen(false);
   function avatarclick() {
     navigate("/userprofile");
@@ -258,7 +260,7 @@ const NavBar = () => {
 
           <Button color="inherit" onClick={searchclick}>
             {" "}
-            <AddIcon />
+            <SearchIcon />
             Search
           </Button>
 
@@ -282,9 +284,9 @@ const NavBar = () => {
           </Button>
 
           <IconButton onClick={handleOpen} color="inherit">
-             <Badge color="secondary" variant="dot" invisible={invisible}>
-                <NotificationsIcon />
-            </Badge> 
+            <Badge color="secondary" variant="dot" invisible={invisible}>
+              <NotificationsIcon />
+            </Badge>
           </IconButton>
 
           <IconButton color="inherit">
