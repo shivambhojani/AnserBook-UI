@@ -18,7 +18,7 @@ const Form = (props: any): any => {
   
   const submitHandler = () => {
     
-    httpClient.get("/userprofile/currentuser?email=" + loggedInUserEmailId).then((res) => {
+    httpClient.get("/userprofile/currentuser?email=" + values.email).then((res) => {
       const isActive = res.data.user.isActive;
        if(isActive === true){
       httpClient
