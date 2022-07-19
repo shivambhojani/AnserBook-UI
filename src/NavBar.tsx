@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { failedAuth, gotAuth } from "./store/reducers/authentication";
+
+import CloseIcon from '@mui/icons-material/Close';
 import {
   AppBar,
   Toolbar,
@@ -14,7 +16,10 @@ import {
   Menu,
   MenuItem,
   Badge,
+  
 } from "@mui/material";
+import Card from '@mui/material/Card';
+
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import useStyles from "./Style";
 import SearchIcon from "@mui/icons-material/Search";
@@ -28,6 +33,7 @@ import CardHeader from "@mui/material/CardHeader";
 
 
 import Modal from "@mui/material/Modal";
+import { display } from "@mui/system";
 const style = {
   position: "absolute" as "absolute",
   top: "15%",
@@ -76,6 +82,7 @@ const NavBar = () => {
 
   const [imagedata, setimagedata] = React.useState<string>();
  const [invisible, setInvisible] = React.useState(false);
+ const [notification, setNotification] = React.useState(true)
 
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -297,7 +304,7 @@ const NavBar = () => {
           </IconButton>
         </Box>
         {/* Referred from https://mui.com/material-ui/react-app-bar/#app-bar-with-a-primary-search-field */}
-        <Box sx={{ display: { xs: "flex", md: "none" }, marginLeft: "30px" }}>
+        <Box  sx={{ display: { xs: "flex", md: "none" }, marginLeft: "30px"}}>
           <IconButton
             size="large"
             aria-label="show more"
@@ -318,12 +325,43 @@ const NavBar = () => {
         >
           <>
             <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Alert
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                user x liked your post
-              </Typography>
+          
+    <Card sx={{ minWidth: 275 }}>
+     <div className="div">
+  
+      <CardHeader action={
+          <IconButton onClick={()=>{
+            setOpen(false)
+            setNotification(false)
+            }} aria-label="settings">
+            <CloseIcon />
+          </IconButton>
+        } 
+         subheader="you have created a post"
+         />
+         
+     </div>
+      
+    </Card>
+
+
+    <Card  sx={{ minWidth: 275 }} style={{marginTop:"20px"}}>
+     <div className="div">
+  
+      <CardHeader action={
+          <IconButton onClick={()=>{
+            setOpen(false)
+            setNotification(false)
+            }} aria-label="settings">
+            <CloseIcon />
+          </IconButton>
+        } 
+         subheader="you have edited a post"
+         />
+         
+     </div>
+      
+    </Card>
             </Box>
           </>
         </Modal>
